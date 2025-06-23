@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="theme-switcher" id="theme-switcher">☀️</div>
+    <div class="main-container">
+        <button class="back-arrow" id="admin-back-arrow" style="display:block;position:absolute;top:24px;left:24px;background:none;border:none;cursor:pointer;font-size:2rem;z-index:10;" title="Назад">&#8592;</button>
+        <h1 class="main-title">Админ-панель</h1>
+        <div id="admin-login">
+            <form id="admin-login-form" class="modern-form" style="max-width: 320px; margin: auto;">
+                <div class="form-group">
+                    <input type="text" id="admin-username" class="form-input" placeholder=" " required>
+                    <label for="admin-username" class="form-label">Логин</label>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="admin-password" class="form-input" placeholder=" " required>
+                    <label for="admin-password" class="form-label">Пароль</label>
+                </div>
+                <button id="admin-login-btn" type="submit" class="role-btn">Войти</button>
+            </form>
+            <div id="admin-login-result" style="margin-top: 16px;"></div>
+        </div>
+        <div id="admin-panel" style="display:none;">
+            <div id="doctor-management" style="margin-bottom: 40px;">
+                <h3>Управление врачами</h3>
+                <form id="add-doctor-form" class="modern-form" style="max-width: 480px; margin: 24px auto; display: flex; gap: 16px; align-items: center;">
+                    <div class="form-group" style="margin: 0; flex-grow: 1;">
+                        <input type="text" id="new-doctor-name" class="form-input" placeholder=" " required>
+                        <label for="new-doctor-name" class="form-label">ФИО врача</label>
+                    </div>
+                    <div class="form-group" style="margin: 0; flex-grow: 1;">
+                        <input type="text" id="new-doctor-specialty" class="form-input" placeholder=" " required>
+                        <label for="new-doctor-specialty" class="form-label">Специальность</label>
+                    </div>
+                    <button type="submit" class="signup-btn" style="margin: 0; width: auto; flex-shrink: 0;">Добавить</button>
+                </form>
+            </div>
+            
+            <h3>Выберите доктора для просмотра записей</h3>
+            <div id="admin-doctor-list"></div>
+            <div id="admin-appointments"></div>
+            <button class="role-btn back-btn" id="admin-logout-btn">Выйти</button>
+        </div>
+        <div id="doctor-profile-modal" class="modal-bg" style="display:none;">
+            <div class="modal" style="min-width:340px;max-width:400px;">
+                <h2>Профиль врача</h2>
+                <div id="doctor-profile-info"></div>
+                <form id="doctor-credentials-form" class="modern-form" style="margin-top:18px;">
+                    <div class="form-group">
+                        <input type="text" id="doctor-username" class="form-input" placeholder=" ">
+                        <label for="doctor-username" class="form-label">Логин</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="doctor-password" class="form-input" placeholder=" ">
+                        <label for="doctor-password" class="form-label">Пароль</label>
+                    </div>
+                    <button type="submit" class="signup-btn">Сохранить</button>
+                </form>
+                <button id="doctor-profile-close" class="role-btn back-btn" style="width:100%;margin-top:10px;">Закрыть</button>
+                <button id="doctor-profile-view-apps" class="role-btn" style="width:100%;margin-top:10px;background:#1976d2;">Посмотреть записи</button>
+                <div id="doctor-profile-result" style="margin-top:10px;color:#1976d2;"></div>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

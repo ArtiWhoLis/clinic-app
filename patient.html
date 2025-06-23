@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Запись к врачу</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="theme-switcher" id="theme-switcher">☀️</div>
+    <div class="main-container">
+        <h1 class="main-title">Запись к врачу</h1>
+        <button class="role-btn" id="my-appointments-btn" style="margin-bottom: 18px;">Мои записи</button>
+        <table class="doctor-table" id="doctor-table">
+            <thead>
+                <tr>
+                    <th>Имя врача</th>
+                    <th>Специальность</th>
+                    <th>Время записи</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="doctor-table-body">
+                <!-- JS вставит строки -->
+            </tbody>
+        </table>
+        <button class="back-arrow" id="patient-back-arrow" style="display:block;position:absolute;top:24px;left:24px;background:none;border:none;cursor:pointer;font-size:2rem;z-index:10;" title="Назад">&#8592;</button>
+    </div>
+
+    <!-- Модальное окно для записи -->
+    <div id="modal-bg" class="modal-bg" style="display:none;">
+        <div class="modal">
+            <h2>Запись к врачу</h2>
+            <div id="modal-info" style="text-align:center; margin-bottom:18px; display:none;"></div>
+            <form id="signup-form" class="modern-form" style="max-width: 320px; margin: auto;">
+                <div class="form-group flex-group">
+                    <span class="input-icon">&#128100;</span>
+                    <input type="text" id="fio" class="form-input" placeholder=" " required>
+                    <label for="fio" class="form-label">ФИО</label>
+                </div>
+                <div class="form-group flex-group">
+                    <span class="input-icon">&#128274;</span>
+                    <input type="text" id="snils" class="form-input" placeholder=" "
+                           pattern="\d{3}-\d{3}-\d{3} \d{2}"
+                           required
+                           maxlength="14"
+                           title="Введите СНИЛС в формате 123-456-789 01">
+                    <label for="snils" class="form-label">СНИЛС</label>
+                </div>
+                <div class="form-group flex-group">
+                    <span class="input-icon">&#128222;</span>
+                    <span class="input-prefix">+7</span>
+                    <input type="tel" id="phone" class="form-input with-prefix" placeholder=" "
+                           pattern="\d{10}"
+                           required
+                           maxlength="10"
+                           title="Введите 10 цифр номера">
+                    <label for="phone" class="form-label">Телефон</label>
+                </div>
+                <button type="submit" class="signup-btn">Подтвердить запись</button>
+                <button type="button" class="role-btn back-btn" id="close-modal">Отмена</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast-уведомление -->
+    <div id="toast" class="toast" style="display:none;"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
