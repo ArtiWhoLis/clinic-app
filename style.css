@@ -481,60 +481,113 @@ body {
     .main-container {
         max-width: 98vw;
         margin: 24px 0 24px 0;
-        padding: 16px 4px;
+        padding: 8px 2px;
         border-radius: 12px;
     }
     .main-title {
-        font-size: 1.5rem;
-        margin-bottom: 24px;
-    }
-    .doctor-table th, .doctor-table td {
-        padding: 8px 4px;
-        font-size: 0.95rem;
+        font-size: 1.2rem;
+        margin-bottom: 18px;
     }
     .doctor-table {
-        font-size: 0.95rem;
-        margin: 16px 0;
+        font-size: 0.97rem;
+        margin: 10px 0;
+        width: 100%;
+        border-radius: 10px;
+        box-shadow: none;
+    }
+    .doctor-table thead {
+        display: none;
+    }
+    .doctor-table tbody tr {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        background: var(--main-bg-color);
+        margin-bottom: 10px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px var(--shadow-color);
+        padding: 8px 0 8px 0;
+    }
+    .doctor-table td {
+        padding: 6px 8px;
+        text-align: left;
+        font-size: 1rem;
+        border: none;
+        width: 100%;
+    }
+    .time-select {
+        width: 100%;
+        min-width: 0;
+        font-size: 1rem;
+        margin: 6px 0;
     }
     .role-btn, .signup-btn, .back-btn, .profile-icon-btn {
         width: 100%;
         min-width: 0;
-        margin: 10px 0;
+        margin: 8px 0;
         font-size: 1rem;
-        padding: 12px 0;
+        padding: 10px 0;
+        border-radius: 10px;
     }
     .profile-icon-btn {
         margin-left: 0;
         margin-right: 0;
-        font-size: 1.2rem;
-        height: 40px;
-        width: 40px;
+        font-size: 1.1rem;
+        height: 38px;
+        width: 38px;
     }
     .form-group, .form-group.flex-group {
         max-width: 100%;
-        margin: 16px 0;
+        margin: 12px 0;
         flex-direction: column;
         align-items: stretch;
     }
     .form-input, .form-input.with-prefix {
         font-size: 1rem;
-        padding: 12px 10px;
+        padding: 10px 8px;
     }
     .modal {
         max-width: 98vw;
-        padding: 12px 2px;
+        padding: 8px 2px;
         min-width: unset;
         margin: 0 2px;
     }
     .modal h2 {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
     .back-arrow {
-        top: 8px;
-        left: 8px;
+        top: 6px;
+        left: 6px;
+        width: 32px;
+        height: 32px;
+        font-size: 1.1rem;
+    }
+    /* Админка: карточки врачей */
+    #admin-doctor-list > div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin: 8px 0;
+        padding: 0;
+    }
+    #admin-doctor-list .role-btn {
+        font-size: 0.98rem;
+        padding: 10px 0;
+        margin: 0 4px 0 0;
+        border-radius: 8px;
+    }
+    #admin-doctor-list .profile-icon-btn {
+        margin: 0 4px;
+        font-size: 1.1rem;
         width: 36px;
         height: 36px;
-        font-size: 1.3rem;
+    }
+    #admin-doctor-list .delete-btn {
+        font-size: 0.98rem;
+        padding: 8px 0;
+        margin: 0 0 0 4px;
+        border-radius: 8px;
+        width: 70px;
     }
 }
 

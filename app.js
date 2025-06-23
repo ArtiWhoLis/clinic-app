@@ -249,6 +249,17 @@ if (window.location.pathname.endsWith('patient.html')) {
         });
     };
 
+    // Фильтрация ФИО: только буквы и пробелы, максимум 40 символов
+    const fioInput = document.getElementById('fio');
+    if (fioInput) {
+        fioInput.addEventListener('input', (e) => {
+            let val = e.target.value;
+            val = val.replace(/[^А-Яа-яA-Za-zЁё\s]/g, '');
+            if (val.length > 40) val = val.slice(0, 40);
+            e.target.value = val;
+        });
+    }
+
     if (patientBackArrow) {
         patientBackArrow.onclick = () => {
             window.location.href = 'index.html';
@@ -594,4 +605,15 @@ if (window.location.pathname.endsWith('admin.html')) {
         doctorProfileModal.style.display = 'none';
         loadAppointments(currentProfileDoctor.id, currentProfileDoctor.name, currentProfileDoctor.specialty);
     };
+
+    // Фильтрация ФИО врача: только буквы и пробелы, максимум 40 символов
+    const newDoctorNameInput = document.getElementById('new-doctor-name');
+    if (newDoctorNameInput) {
+        newDoctorNameInput.addEventListener('input', (e) => {
+            let val = e.target.value;
+            val = val.replace(/[^А-Яа-яA-Za-zЁё\s]/g, '');
+            if (val.length > 40) val = val.slice(0, 40);
+            e.target.value = val;
+        });
+    }
 }
