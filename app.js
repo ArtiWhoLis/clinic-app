@@ -287,27 +287,65 @@ if (window.location.pathname.endsWith('my-appointments.html')) {
                 if (!apps.length) {
                     myAppointmentsList.innerHTML = '<div style="color:#1976d2;">У вас нет записей</div>';
                 } else {
-                    const sortedApps = apps.sort((a, b) => a.time.localeCompare(b.time));
-                    myAppointmentsList.innerHTML = `
-                        <table class="doctor-table">
-                            <thead>
-                                <tr>
-                                    <th>Время</th>
-                                    <th>Врач</th>
-                                    <th>Специальность</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${sortedApps.map(a => `
-                                    <tr>
-                                        <td>${a.time}</td>
-                                        <td>${a.doctorName || 'Врач'}</td>
-                                        <td>${a.specialty || '-'}</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    `;
+                    // Разделяем на прошедшие и будущие
+                    const now = new Date();
+                    // Если в будущем появится дата — сравнивать по дате, сейчас только по времени
+                    const future = [], past = [];
+                    apps.forEach(a => {
+                        // a.time в формате "HH:MM"
+                        const [h, m] = a.time.split(':').map(Number);
+                        const appDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m);
+                        if (appDate >= now) future.push(a); else past.push(a);
+                    });
+                    let html = '';
+                    if (future.length) {
+                        html += '<div style="margin-bottom:12px;"><b>Будущие записи:</b></div>';
+                        html += `<table class="doctor-table"><thead><tr><th>Время</th><th>Врач</th><th>Специальность</th><th></th></tr></thead><tbody>`;
+                        html += future.map(a => `
+                            <tr>
+                                <td>${a.time}</td>
+                                <td>${a.doctorName || 'Врач'}</td>
+                                <td>${a.specialty || '-'}</td>
+                                <td><button class="delete-btn" data-id="${a.id}">Отменить</button></td>
+                            </tr>
+                        `).join('');
+                        html += '</tbody></table>';
+                    }
+                    if (past.length) {
+                        html += '<div style="margin:18px 0 8px 0;"><b>Прошедшие записи:</b></div>';
+                        html += `<table class="doctor-table"><thead><tr><th>Время</th><th>Врач</th><th>Специальность</th></tr></thead><tbody>`;
+                        html += past.map(a => `
+                            <tr>
+                                <td>${a.time}</td>
+                                <td>${a.doctorName || 'Врач'}</td>
+                                <td>${a.specialty || '-'}</td>
+                            </tr>
+                        `).join('');
+                        html += '</tbody></table>';
+                    }
+                    myAppointmentsList.innerHTML = html;
+                    // Кнопки отмены только для будущих
+                    myAppointmentsList.querySelectorAll('.delete-btn').forEach(btn => {
+                        btn.onclick = () => {
+                            confirmModal('Вы уверены, что хотите отменить эту запись?').then(ok => {
+                                if (!ok) return;
+                                fetch(`/api/appointments/${btn.dataset.id}`, {
+                                    method: 'DELETE',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ name: myNameInput.value.trim(), phone: myPhoneInput.value.trim() })
+                                })
+                                .then(res => res.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        btn.closest('tr').remove();
+                                    } else {
+                                        alert(data.message || 'Ошибка удаления');
+                                    }
+                                })
+                                .catch(() => alert('Ошибка соединения'));
+                            });
+                        };
+                    });
                 }
             })
             .catch(() => {
@@ -339,6 +377,10 @@ if (window.location.pathname.endsWith('admin.html')) {
         e.preventDefault();
         const username = document.getElementById('admin-username').value;
         const password = document.getElementById('admin-password').value;
+        const loginBtn = document.getElementById('admin-login-btn');
+        const origText = loginBtn.textContent;
+        loginBtn.innerHTML = 'Вход... <span class="button-spinner"></span>';
+        loginBtn.disabled = true;
         fetch(`/api/admin/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -346,6 +388,8 @@ if (window.location.pathname.endsWith('admin.html')) {
         })
         .then(res => res.json())
         .then(data => {
+            loginBtn.innerHTML = origText;
+            loginBtn.disabled = false;
             if (data.success) {
                 token = data.token;
                 loginDiv.style.display = 'none';
@@ -361,23 +405,23 @@ if (window.location.pathname.endsWith('admin.html')) {
                 .then(res => res.json())
                 .then(docData => {
                     if (docData.success) {
-                        // Вход как врач
                         loginDiv.style.display = 'none';
                         panelDiv.style.display = 'block';
-                        // Скрываем управление врачами
                         document.getElementById('doctor-management').style.display = 'none';
                         document.getElementById('admin-doctor-list').style.display = 'none';
                         var docListTitle = document.getElementById('admin-doctor-list-title');
                         if (docListTitle) docListTitle.style.display = 'none';
-                        // Показываем только свои записи
                         loadAppointments(docData.doctorId, docData.name, docData.specialty, true);
-                        // Скрываем кнопку выхода (или можно оставить)
-                        // logoutBtn.style.display = 'none';
                     } else {
                         loginResult.textContent = docData.message || 'Ошибка входа';
                     }
                 });
             }
+        })
+        .catch(() => {
+            loginBtn.innerHTML = origText;
+            loginBtn.disabled = false;
+            loginResult.textContent = 'Ошибка соединения';
         });
     };
 
@@ -403,6 +447,12 @@ if (window.location.pathname.endsWith('admin.html')) {
                 btn.style.flexGrow = '1';
                 btn.onclick = () => loadAppointments(doc.id, doc.name, doc.specialty);
                 
+                const editBtn = document.createElement('button');
+                editBtn.className = 'profile-icon-btn';
+                editBtn.title = 'Редактировать';
+                editBtn.innerHTML = '✏️';
+                editBtn.onclick = () => openEditDoctorModal(doc);
+
                 const profileBtn = document.createElement('button');
                 profileBtn.className = 'profile-icon-btn';
                 profileBtn.title = 'Профиль врача';
@@ -416,6 +466,7 @@ if (window.location.pathname.endsWith('admin.html')) {
                 deleteBtn.onclick = () => deleteDoctor(doc.id);
 
                 docContainer.appendChild(btn);
+                docContainer.appendChild(editBtn);
                 docContainer.appendChild(profileBtn);
                 docContainer.appendChild(deleteBtn);
                 doctorListDiv.appendChild(docContainer);
@@ -424,21 +475,21 @@ if (window.location.pathname.endsWith('admin.html')) {
     }
 
     function deleteDoctor(doctorId) {
-        if (!confirm('Вы уверены, что хотите удалить этого врача? Все его записи также будут удалены!')) {
-            return;
-        }
-        fetch(`/api/doctors/${doctorId}`, {
-            method: 'DELETE',
-            headers: { 'Authorization': `Bearer ${token}` }
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                loadDoctors();
-                appointmentsDiv.innerHTML = ''; // Очищаем список записей
-            } else {
-                alert(data.message || 'Ошибка удаления');
-            }
+        confirmModal('Вы уверены, что хотите удалить этого врача? Все его записи также будут удалены!').then(ok => {
+            if (!ok) return;
+            fetch(`/api/doctors/${doctorId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    loadDoctors();
+                    appointmentsDiv.innerHTML = '';
+                } else {
+                    alert(data.message || 'Ошибка удаления');
+                }
+            });
         });
     }
 
@@ -448,12 +499,16 @@ if (window.location.pathname.endsWith('admin.html')) {
         const specialtyInput = document.getElementById('new-doctor-specialty');
         const name = nameInput.value.trim();
         const specialty = specialtyInput.value.trim();
-
+        const addBtn = addDoctorForm.querySelector('.signup-btn');
+        const origText = addBtn.textContent;
+        addBtn.innerHTML = 'Добавление... <span class="button-spinner"></span>';
+        addBtn.disabled = true;
         if (!name || !specialty) {
             alert('Заполните все поля');
+            addBtn.innerHTML = origText;
+            addBtn.disabled = false;
             return;
         }
-
         fetch('/api/doctors', {
             method: 'POST',
             headers: {
@@ -464,6 +519,8 @@ if (window.location.pathname.endsWith('admin.html')) {
         })
         .then(res => res.json())
         .then(data => {
+            addBtn.innerHTML = origText;
+            addBtn.disabled = false;
             if (data.success) {
                 loadDoctors();
                 nameInput.value = '';
@@ -606,14 +663,97 @@ if (window.location.pathname.endsWith('admin.html')) {
         loadAppointments(currentProfileDoctor.id, currentProfileDoctor.name, currentProfileDoctor.specialty);
     };
 
+    // --- Модалка редактирования врача ---
+    const editDoctorModal = document.getElementById('edit-doctor-modal');
+    const editDoctorForm = document.getElementById('edit-doctor-form');
+    const editDoctorName = document.getElementById('edit-doctor-name');
+    const editDoctorSpecialty = document.getElementById('edit-doctor-specialty');
+    const editDoctorUsername = document.getElementById('edit-doctor-username');
+    const editDoctorCancel = document.getElementById('edit-doctor-cancel');
+    const editDoctorResult = document.getElementById('edit-doctor-result');
+    let currentEditDoctorId = null;
+
     // Фильтрация ФИО врача: только буквы и пробелы, максимум 40 символов
-    const newDoctorNameInput = document.getElementById('new-doctor-name');
-    if (newDoctorNameInput) {
-        newDoctorNameInput.addEventListener('input', (e) => {
+    if (editDoctorName) {
+        editDoctorName.addEventListener('input', (e) => {
             let val = e.target.value;
             val = val.replace(/[^А-Яа-яA-Za-zЁё\s]/g, '');
             if (val.length > 40) val = val.slice(0, 40);
             e.target.value = val;
         });
     }
+
+    // Открытие модалки редактирования
+    function openEditDoctorModal(doc) {
+        currentEditDoctorId = doc.id;
+        editDoctorName.value = doc.name || '';
+        editDoctorSpecialty.value = doc.specialty || '';
+        editDoctorUsername.value = doc.username || '';
+        editDoctorResult.textContent = '';
+        editDoctorModal.style.display = 'flex';
+    }
+    if (editDoctorCancel) {
+        editDoctorCancel.onclick = () => {
+            editDoctorModal.style.display = 'none';
+        };
+    }
+    editDoctorForm.onsubmit = (e) => {
+        e.preventDefault();
+        if (!currentEditDoctorId) return;
+        const saveBtn = editDoctorForm.querySelector('.signup-btn');
+        const origText = saveBtn.textContent;
+        saveBtn.innerHTML = 'Сохранение... <span class="button-spinner"></span>';
+        saveBtn.disabled = true;
+        fetch(`/api/doctors/${currentEditDoctorId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                name: editDoctorName.value.trim(),
+                specialty: editDoctorSpecialty.value.trim(),
+                username: editDoctorUsername.value.trim()
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            saveBtn.innerHTML = origText;
+            saveBtn.disabled = false;
+            if (data.success) {
+                editDoctorResult.textContent = 'Сохранено!';
+                setTimeout(() => {
+                    editDoctorModal.style.display = 'none';
+                    loadDoctors();
+                }, 600);
+            } else {
+                editDoctorResult.textContent = data.message || 'Ошибка сохранения';
+            }
+        })
+        .catch(() => {
+            saveBtn.innerHTML = origText;
+            saveBtn.disabled = false;
+            editDoctorResult.textContent = 'Ошибка соединения';
+        });
+    };
+}
+
+// Универсальная модалка подтверждения
+function confirmModal(message) {
+    return new Promise(resolve => {
+        const modal = document.getElementById('confirm-modal');
+        const text = document.getElementById('confirm-modal-text');
+        const yes = document.getElementById('confirm-yes');
+        const no = document.getElementById('confirm-no');
+        text.textContent = message;
+        modal.style.display = 'flex';
+        function close(result) {
+            modal.style.display = 'none';
+            yes.onclick = null;
+            no.onclick = null;
+            resolve(result);
+        }
+        yes.onclick = () => close(true);
+        no.onclick = () => close(false);
+    });
 }

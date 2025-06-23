@@ -66,6 +66,37 @@
                 <div id="doctor-profile-result" style="margin-top:10px;color:#1976d2;"></div>
             </div>
         </div>
+        <!-- Модалка редактирования врача -->
+        <div id="edit-doctor-modal" class="modal-bg" style="display:none;">
+            <div class="modal" style="min-width:340px;max-width:400px;">
+                <h2>Редактировать врача</h2>
+                <form id="edit-doctor-form" class="modern-form" style="margin-top:18px;">
+                    <div class="form-group">
+                        <input type="text" id="edit-doctor-name" class="form-input" placeholder=" " required pattern="[А-Яа-яA-Za-zЁё\s]+" maxlength="40" title="Только буквы, максимум 40 символов">
+                        <label for="edit-doctor-name" class="form-label">ФИО врача</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="edit-doctor-specialty" class="form-input" placeholder=" " required maxlength="40">
+                        <label for="edit-doctor-specialty" class="form-label">Специальность</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="edit-doctor-username" class="form-input" placeholder=" ">
+                        <label for="edit-doctor-username" class="form-label">Логин</label>
+                    </div>
+                    <button type="submit" class="signup-btn">Сохранить</button>
+                    <button type="button" id="edit-doctor-cancel" class="role-btn back-btn" style="width:100%;margin-top:10px;">Отмена</button>
+                    <div id="edit-doctor-result" style="margin-top:10px;color:#1976d2;"></div>
+                </form>
+            </div>
+        </div>
+        <!-- Модалка подтверждения -->
+        <div id="confirm-modal" class="modal-bg" style="display:none;">
+            <div class="modal" style="min-width:320px;max-width:360px;text-align:center;">
+                <div id="confirm-modal-text" style="margin-bottom:18px;font-size:1.1rem;"></div>
+                <button id="confirm-yes" class="signup-btn" style="width:48%;margin-right:2%;">Да</button>
+                <button id="confirm-no" class="role-btn back-btn" style="width:48%;">Нет</button>
+            </div>
+        </div>
     </div>
     <script src="app.js"></script>
 </body>

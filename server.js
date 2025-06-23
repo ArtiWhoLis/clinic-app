@@ -52,6 +52,49 @@ const verifyAdmin = (req, res, next) => {
     next();
 };
 
+// --- Ограничение попыток входа ---
+const loginAttempts = {};
+const MAX_ATTEMPTS = 5;
+const BLOCK_TIME = 10 * 60 * 1000; // 10 минут
+
+function isBlocked(ip) {
+    const entry = loginAttempts[ip];
+    if (!entry) return false;
+    if (entry.count >= MAX_ATTEMPTS && Date.now() - entry.last > BLOCK_TIME) {
+        // Снимаем блокировку после BLOCK_TIME
+        delete loginAttempts[ip];
+        return false;
+    }
+    return entry.count >= MAX_ATTEMPTS && Date.now() - entry.last < BLOCK_TIME;
+}
+function recordAttempt(ip) {
+    if (!loginAttempts[ip]) loginAttempts[ip] = { count: 0, last: Date.now() };
+    loginAttempts[ip].count++;
+    loginAttempts[ip].last = Date.now();
+}
+function resetAttempts(ip) {
+    delete loginAttempts[ip];
+}
+
+// --- Audit log ---
+async function logAction(action, details, user = null) {
+    try {
+        await pool.query(
+            'INSERT INTO audit_log (action, details, username, created_at) VALUES ($1, $2, $3, NOW())',
+            [action, details, user]
+        );
+    } catch (e) { /* ignore log errors */ }
+}
+
+// --- Создание таблицы audit_log при старте ---
+pool.query(`CREATE TABLE IF NOT EXISTS audit_log (
+    id SERIAL PRIMARY KEY,
+    action VARCHAR(100) NOT NULL,
+    details TEXT,
+    username VARCHAR(100),
+    created_at TIMESTAMP DEFAULT NOW()
+)`);
+
 // --- API ---
 
 // Получить список врачей
@@ -78,10 +121,16 @@ app.post('/api/doctors', verifyAdmin, async (req, res) => {
         return res.status(400).json({ success: false, message: 'Имя и специальность обязательны' });
     }
     try {
+        // Проверка на уникальность (имя+специальность)
+        const exists = await pool.query('SELECT 1 FROM doctors WHERE name = $1 AND specialty = $2', [name, specialty]);
+        if (exists.rows.length > 0) {
+            return res.json({ success: false, message: 'Врач с таким именем и специальностью уже существует' });
+        }
         const result = await pool.query(
             'INSERT INTO doctors (name, specialty) VALUES ($1, $2) RETURNING *',
             [name, specialty]
         );
+        await logAction('add_doctor', `Добавлен врач: ${name}, ${specialty}`, req.user?.username || 'admin');
         res.json({ success: true, doctor: result.rows[0] });
     } catch (err) {
         res.status(500).json({ success: false, message: 'DB error', error: err.message });
@@ -93,6 +142,7 @@ app.delete('/api/doctors/:id', verifyAdmin, async (req, res) => {
     const doctorId = parseInt(req.params.id, 10);
     try {
         await pool.query('DELETE FROM doctors WHERE id = $1', [doctorId]);
+        await logAction('delete_doctor', `Удалён врач id=${doctorId}`, req.user?.username || 'admin');
         res.json({ success: true });
     } catch (err) {
         res.status(500).json({ success: false, message: 'DB error', error: err.message });
@@ -118,21 +168,44 @@ app.post('/api/appointments', async (req, res) => {
             'INSERT INTO appointments (doctor_id, name, snils, phone, time) VALUES ($1, $2, $3, $4, $5) RETURNING *',
             [doctorId, name, snils, phone, time]
         );
+        await logAction('add_appointment', `Запись к врачу id=${doctorId} на ${time} (${name})`, name);
         res.json({ success: true, appointment: result.rows[0] });
     } catch (err) {
         res.status(500).json({ success: false, message: 'DB error', error: err.message });
     }
 });
 
-// Удалить запись
-app.delete('/api/appointments/:id', verifyAdmin, async (req, res) => {
+// Удалить запись (пациент или админ)
+app.delete('/api/appointments/:id', async (req, res) => {
     const appointmentId = parseInt(req.params.id, 10);
-    try {
-        await pool.query('DELETE FROM appointments WHERE id = $1', [appointmentId]);
-        res.json({ success: true });
-    } catch (err) {
-        res.status(500).json({ success: false, message: 'DB error', error: err.message });
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+        try {
+            await pool.query('DELETE FROM appointments WHERE id = $1', [appointmentId]);
+            await logAction('delete_appointment', `Удалена запись id=${appointmentId}`, req.user?.username || 'admin');
+            return res.json({ success: true });
+        } catch (err) {
+            return res.status(500).json({ success: false, message: 'DB error', error: err.message });
+        }
     }
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', async () => {
+        try {
+            const { name, phone } = JSON.parse(body || '{}');
+            if (!name || !phone) return res.status(400).json({ success: false, message: 'Имя и телефон обязательны' });
+            const result = await pool.query('SELECT * FROM appointments WHERE id = $1', [appointmentId]);
+            if (!result.rows.length) return res.status(404).json({ success: false, message: 'Запись не найдена' });
+            const app = result.rows[0];
+            if (app.name.trim() !== name.trim() || app.phone.trim() !== phone.trim()) {
+                return res.status(403).json({ success: false, message: 'Вы не можете отменить чужую запись' });
+            }
+            await pool.query('DELETE FROM appointments WHERE id = $1', [appointmentId]);
+            await logAction('delete_appointment', `Пациент отменил запись id=${appointmentId}`, name);
+            res.json({ success: true });
+        } catch (err) {
+            res.status(500).json({ success: false, message: 'DB error', error: err.message });
+        }
+    });
 });
 
 // Получить записи (по врачу или по пациенту)
@@ -176,27 +249,45 @@ app.get('/api/appointments', async (req, res) => {
 });
 
 // Вход для администратора
-app.post('/api/admin/login', (req, res) => {
+app.post('/api/admin/login', async (req, res) => {
     const { username, password } = req.body;
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    if (isBlocked(ip)) {
+        await logAction('login_blocked', `Too many attempts from ${ip}`, username);
+        return res.json({ success: false, message: 'Слишком много попыток входа. Попробуйте позже.' });
+    }
     if (username === adminUser.username && password === adminUser.password) {
-        res.json({ success: true, token: adminUser.token });
+        resetAttempts(ip);
+        await logAction('admin_login', 'Успешный вход', username);
+        return res.json({ success: true, token: adminUser.token });
     } else {
-        res.json({ success: false, message: 'Неверный логин или пароль' });
+        recordAttempt(ip);
+        await logAction('admin_login_fail', 'Неверный логин или пароль', username);
+        return res.json({ success: false, message: 'Неверный логин или пароль' });
     }
 });
 
 // Вход для врача
 app.post('/api/doctor/login', async (req, res) => {
     const { username, password } = req.body;
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    if (isBlocked(ip)) {
+        await logAction('login_blocked', `Too many attempts from ${ip}`, username);
+        return res.json({ success: false, message: 'Слишком много попыток входа. Попробуйте позже.' });
+    }
     try {
         const result = await pool.query(
             'SELECT * FROM doctors WHERE username = $1 AND password = $2',
             [username, password]
         );
         if (result.rows.length > 0) {
+            resetAttempts(ip);
             const doctor = result.rows[0];
+            await logAction('doctor_login', 'Успешный вход', username);
             res.json({ success: true, doctorId: doctor.id, name: doctor.name, specialty: doctor.specialty });
         } else {
+            recordAttempt(ip);
+            await logAction('doctor_login_fail', 'Неверный логин или пароль', username);
             res.json({ success: false, message: 'Неверный логин или пароль' });
         }
     } catch (err) {
