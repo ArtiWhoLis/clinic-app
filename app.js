@@ -826,7 +826,7 @@ if (window.location.pathname.endsWith('admin.html')) {
     }
     if (logDetailsClose) logDetailsClose.onclick = () => { logDetailsModal.style.display = 'none'; };
     if (logDetailsModal) {
-        logDetailsModal.addEventListener('mouseup', function(e) {
+        logDetailsModal.addEventListener('click', function(e) {
             if (e.target === logDetailsModal) {
                 logDetailsModal.style.display = 'none';
             }
