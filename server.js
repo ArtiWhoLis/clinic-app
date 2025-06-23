@@ -310,6 +310,7 @@ app.put('/api/doctors/:id/credentials', verifyAdmin, async (req, res) => {
         if (result.rowCount === 0) {
             return res.status(404).json({ success: false, message: 'Врач не найден' });
         }
+        await logAction('update_doctor_credentials', `Изменены логин/пароль врача id=${doctorId} (логин: ${username})`, req.user?.username || 'admin');
         res.json({ success: true, doctor: result.rows[0] });
     } catch (err) {
         res.status(500).json({ success: false, message: 'DB error', error: err.message });
@@ -331,6 +332,7 @@ app.put('/api/doctors/:id', verifyAdmin, async (req, res) => {
         if (result.rowCount === 0) {
             return res.status(404).json({ success: false, message: 'Врач не найден' });
         }
+        await logAction('update_doctor', `Изменены данные врача id=${doctorId} (имя: ${name}, спец: ${specialty}, логин: ${username})`, req.user?.username || 'admin');
         res.json({ success: true, doctor: result.rows[0] });
     } catch (err) {
         res.status(500).json({ success: false, message: 'DB error', error: err.message });
