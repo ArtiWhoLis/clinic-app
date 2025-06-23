@@ -410,28 +410,29 @@ if (window.location.pathname.endsWith('admin.html')) {
                 loginDiv.style.display = 'none';
                 panelDiv.style.display = 'block';
                 loadDoctors();
-            } else {
-                // Если не супер-админ, пробуем как врач
-                fetch('/api/doctor/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password })
-                })
-                .then(res => res.json())
-                .then(docData => {
-                    if (docData.success) {
-                        loginDiv.style.display = 'none';
-                        panelDiv.style.display = 'block';
-                        document.getElementById('doctor-management').style.display = 'none';
-                        document.getElementById('admin-doctor-list').style.display = 'none';
-                        var docListTitle = document.getElementById('admin-doctor-list-title');
-                        if (docListTitle) docListTitle.style.display = 'none';
-                        loadAppointments(docData.doctorId, docData.name, docData.specialty, true);
-                    } else {
-                        loginResult.textContent = docData.message || 'Ошибка входа';
-                    }
-                });
             }
+            // Если не супер-админ, пробуем как врач
+            fetch('/api/doctor/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            })
+            .then(res => res.json())
+            .then(docData => {
+                if (docData.success) {
+                    loginDiv.style.display = 'none';
+                    panelDiv.style.display = 'block';
+                    document.getElementById('doctor-management').style.display = 'none';
+                    document.getElementById('admin-doctor-list').style.display = 'none';
+                    var docListTitle = document.getElementById('admin-doctor-list-title');
+                    if (docListTitle) docListTitle.style.display = 'none';
+                    // Скрываем кнопку Логи для обычных врачей
+                    if (showLogsBtn) showLogsBtn.style.display = 'none';
+                    loadAppointments(docData.doctorId, docData.name, docData.specialty, true);
+                } else {
+                    loginResult.textContent = docData.message || 'Ошибка входа';
+                }
+            });
         })
         .catch(() => {
             loginBtn.innerHTML = origText;
@@ -774,14 +775,22 @@ if (window.location.pathname.endsWith('admin.html')) {
         return '';
     }
     function renderLogs(logs) {
-        logsTableBody.innerHTML = logs.map(log => `
-            <tr>
+        logsTableBody.innerHTML = logs.map((log, idx) => `
+            <tr class="log-row" data-log-idx="${idx}">
                 <td style="font-size:0.97em;white-space:nowrap;">${new Date(log.created_at).toLocaleString()}</td>
                 <td style="${actionColor(log.action)}">${actionIcon(log.action)} ${log.action.replace(/_/g,' ')}</td>
                 <td>${log.username || '-'}</td>
                 <td style="max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${log.details || ''}</td>
             </tr>
         `).join('');
+        // Добавляем обработчик клика по строке
+        Array.from(logsTableBody.querySelectorAll('.log-row')).forEach(row => {
+            row.onclick = function() {
+                const idx = this.getAttribute('data-log-idx');
+                const log = logs[idx];
+                showLogDetailsModal(log);
+            };
+        });
     }
     function loadLogs(type = '') {
         fetch(`/api/audit-log${type ? '?type=' + encodeURIComponent(type) : ''}`, {
@@ -801,6 +810,29 @@ if (window.location.pathname.endsWith('admin.html')) {
     }
     if (logsCloseBtn) logsCloseBtn.onclick = () => { logsModal.style.display = 'none'; };
     if (logsFilter) logsFilter.onchange = () => loadLogs(logsFilter.value);
+
+    // --- Модалка подробностей лога ---
+    const logDetailsModal = document.getElementById('log-details-modal');
+    const logDetailsContent = document.getElementById('log-details-content');
+    const logDetailsClose = document.getElementById('log-details-close');
+    function showLogDetailsModal(log) {
+        logDetailsContent.innerHTML = `
+            <b>Время:</b> ${new Date(log.created_at).toLocaleString()}<br>
+            <b>Действие:</b> ${actionIcon(log.action)} ${log.action.replace(/_/g,' ')}<br>
+            <b>Пользователь:</b> ${log.username || '-'}<br>
+            <b>Детали:</b><br><div style="margin-top:4px;white-space:pre-wrap;">${log.details || ''}</div>
+        `;
+        logDetailsModal.style.display = 'flex';
+    }
+    if (logDetailsClose) logDetailsClose.onclick = () => { logDetailsModal.style.display = 'none'; };
+    // Клик вне окна закрывает модалку
+    if (logDetailsModal) {
+        logDetailsModal.addEventListener('mousedown', function(e) {
+            if (e.target === logDetailsModal) {
+                logDetailsModal.style.display = 'none';
+            }
+        });
+    }
 }
 
 // Универсальная модалка подтверждения
