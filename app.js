@@ -414,29 +414,30 @@ if (window.location.pathname.endsWith('admin.html')) {
                 loginDiv.style.display = 'none';
                 panelDiv.style.display = 'block';
                 loadDoctors();
+            } else {
+                // Если не супер-админ, пробуем как врач
+                fetch('/api/doctor/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                })
+                .then(res => res.json())
+                .then(docData => {
+                    if (docData.success) {
+                        loginDiv.style.display = 'none';
+                        panelDiv.style.display = 'block';
+                        document.getElementById('doctor-management').style.display = 'none';
+                        document.getElementById('admin-doctor-list').style.display = 'none';
+                        var docListTitle = document.getElementById('admin-doctor-list-title');
+                        if (docListTitle) docListTitle.style.display = 'none';
+                        // Скрываем кнопку Логи для обычных врачей
+                        if (showLogsBtn) showLogsBtn.style.display = 'none';
+                        loadAppointments(docData.doctorId, docData.name, docData.specialty, true);
+                    } else {
+                        loginResult.textContent = docData.message || 'Ошибка входа';
+                    }
+                });
             }
-            // Если не супер-админ, пробуем как врач
-            fetch('/api/doctor/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            })
-            .then(res => res.json())
-            .then(docData => {
-                if (docData.success) {
-                    loginDiv.style.display = 'none';
-                    panelDiv.style.display = 'block';
-                    document.getElementById('doctor-management').style.display = 'none';
-                    document.getElementById('admin-doctor-list').style.display = 'none';
-                    var docListTitle = document.getElementById('admin-doctor-list-title');
-                    if (docListTitle) docListTitle.style.display = 'none';
-                    // Скрываем кнопку Логи для обычных врачей
-                    if (showLogsBtn) showLogsBtn.style.display = 'none';
-                    loadAppointments(docData.doctorId, docData.name, docData.specialty, true);
-                } else {
-                    loginResult.textContent = docData.message || 'Ошибка входа';
-                }
-            });
         })
         .catch(() => {
             loginBtn.innerHTML = origText;
