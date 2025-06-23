@@ -356,6 +356,8 @@ if (window.location.pathname.endsWith('admin.html')) {
                         // Скрываем управление врачами
                         document.getElementById('doctor-management').style.display = 'none';
                         document.getElementById('admin-doctor-list').style.display = 'none';
+                        var docListTitle = document.getElementById('admin-doctor-list-title');
+                        if (docListTitle) docListTitle.style.display = 'none';
                         // Показываем только свои записи
                         loadAppointments(docData.doctorId, docData.name, docData.specialty, true);
                         // Скрываем кнопку выхода (или можно оставить)
