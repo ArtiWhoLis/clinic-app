@@ -826,7 +826,7 @@ if (window.location.pathname.endsWith('admin.html')) {
             <b>Пользователь:</b> ${log.username || '-'}<br>
             <b>Детали:</b><br><div style="margin-top:4px;white-space:pre-wrap;">${log.details || ''}</div>
         `;
-        logDetailsModal.style.display = 'flex';
+        openModal(logDetailsModal);
     }
     if (logDetailsClose) logDetailsClose.onclick = () => { logDetailsModal.style.display = 'none'; };
     if (logDetailsModal) {
