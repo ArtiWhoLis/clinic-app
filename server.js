@@ -222,6 +222,27 @@ app.put('/api/doctors/:id/credentials', verifyAdmin, async (req, res) => {
     }
 });
 
+// Редактировать данные врача (имя, специальность, логин)
+app.put('/api/doctors/:id', verifyAdmin, async (req, res) => {
+    const doctorId = parseInt(req.params.id, 10);
+    const { name, specialty, username } = req.body;
+    if (!name || !specialty) {
+        return res.status(400).json({ success: false, message: 'Имя и специальность обязательны' });
+    }
+    try {
+        const result = await pool.query(
+            'UPDATE doctors SET name = $1, specialty = $2, username = $3 WHERE id = $4 RETURNING *',
+            [name, specialty, username, doctorId]
+        );
+        if (result.rowCount === 0) {
+            return res.status(404).json({ success: false, message: 'Врач не найден' });
+        }
+        res.json({ success: true, doctor: result.rows[0] });
+    } catch (err) {
+        res.status(500).json({ success: false, message: 'DB error', error: err.message });
+    }
+});
+
 // --- Запуск сервера ---
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
