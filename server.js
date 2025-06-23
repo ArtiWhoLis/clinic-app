@@ -187,25 +187,22 @@ app.delete('/api/appointments/:id', async (req, res) => {
             return res.status(500).json({ success: false, message: 'DB error', error: err.message });
         }
     }
-    let body = '';
-    req.on('data', chunk => { body += chunk; });
-    req.on('end', async () => {
-        try {
-            const { name, phone } = JSON.parse(body || '{}');
-            if (!name || !phone) return res.status(400).json({ success: false, message: 'Имя и телефон обязательны' });
-            const result = await pool.query('SELECT * FROM appointments WHERE id = $1', [appointmentId]);
-            if (!result.rows.length) return res.status(404).json({ success: false, message: 'Запись не найдена' });
-            const app = result.rows[0];
-            if (app.name.trim() !== name.trim() || app.phone.trim() !== phone.trim()) {
-                return res.status(403).json({ success: false, message: 'Вы не можете отменить чужую запись' });
-            }
-            await pool.query('DELETE FROM appointments WHERE id = $1', [appointmentId]);
-            await logAction('delete_appointment', `Пациент отменил запись id=${appointmentId}`, name);
-            res.json({ success: true });
-        } catch (err) {
-            res.status(500).json({ success: false, message: 'DB error', error: err.message });
+    // Теперь телефон берём из query
+    const phone = req.query.phone;
+    if (!phone) return res.status(400).json({ success: false, message: 'Телефон обязателен' });
+    try {
+        const result = await pool.query('SELECT * FROM appointments WHERE id = $1', [appointmentId]);
+        if (!result.rows.length) return res.status(404).json({ success: false, message: 'Запись не найдена' });
+        const app = result.rows[0];
+        if (app.phone.trim() !== phone.trim()) {
+            return res.status(403).json({ success: false, message: 'Вы не можете отменить чужую запись' });
         }
-    });
+        await pool.query('DELETE FROM appointments WHERE id = $1', [appointmentId]);
+        await logAction('delete_appointment', `Пациент отменил запись id=${appointmentId}`, phone);
+        res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ success: false, message: 'DB error', error: err.message });
+    }
 });
 
 // Получить записи (по врачу или по пациенту)

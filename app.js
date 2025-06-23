@@ -330,11 +330,7 @@ if (window.location.pathname.endsWith('my-appointments.html')) {
                         btn.onclick = () => {
                             confirmModal('Вы уверены, что хотите отменить эту запись?').then(ok => {
                                 if (!ok) return;
-                                fetch(`/api/appointments/${btn.dataset.id}`, {
-                                    method: 'DELETE',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({ phone: myPhoneInput.value.trim() })
-                                })
+                                fetch(`/api/appointments/${btn.dataset.id}?phone=${encodeURIComponent(myPhoneInput.value.trim())}`, { method: 'DELETE' })
                                 .then(res => res.json())
                                 .then(data => {
                                     if (data.success) {
