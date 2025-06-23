@@ -576,7 +576,7 @@ if (window.location.pathname.endsWith('admin.html')) {
                                     <td>${a.time}</td>
                                     <td>${a.name}</td>
                                     <td>${a.snils}</td>
-                                    <td>${a.phone}</td>
+                                    <td>+7${a.phone}</td>
                                     ${!isDoctor ? `<td><button class="delete-btn" data-id="${a.id}">Отменить</button></td>` : ''}
                                 </tr>
                             `).join('')}

@@ -221,8 +221,9 @@ app.get('/api/appointments', async (req, res) => {
             result = apps.rows;
         } else if (phone) {
             // Поиск для пациента
+            let cleanPhone = phone.replace(/[^0-9]/g, '').slice(-10);
             let query = 'SELECT * FROM appointments WHERE phone = $1';
-            let params = [phone.trim()];
+            let params = [cleanPhone];
             if (name) {
                 query += ' AND LOWER(name) = LOWER($2)';
                 params.push(name.trim());
