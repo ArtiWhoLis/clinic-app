@@ -336,6 +336,25 @@ app.put('/api/doctors/:id', verifyAdmin, async (req, res) => {
     }
 });
 
+// Получить логи (только для админа)
+app.get('/api/audit-log', verifyAdmin, async (req, res) => {
+    const limit = Math.min(parseInt(req.query.limit, 10) || 100, 500);
+    const type = req.query.type;
+    let query = 'SELECT * FROM audit_log';
+    let params = [];
+    if (type) {
+        query += ' WHERE action = $1';
+        params.push(type);
+    }
+    query += ' ORDER BY created_at DESC LIMIT ' + limit;
+    try {
+        const result = await pool.query(query, params);
+        res.json({ success: true, logs: result.rows });
+    } catch (err) {
+        res.status(500).json({ success: false, message: 'DB error', error: err.message });
+    }
+});
+
 // --- Запуск сервера ---
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);

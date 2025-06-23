@@ -383,6 +383,11 @@ if (window.location.pathname.endsWith('admin.html')) {
     const logoutBtn = document.getElementById('admin-logout-btn');
     const addDoctorForm = document.getElementById('add-doctor-form');
     const backArrow = document.getElementById('admin-back-arrow');
+    const showLogsBtn = document.getElementById('show-logs-btn');
+    const logsModal = document.getElementById('logs-modal');
+    const logsCloseBtn = document.getElementById('logs-close-btn');
+    const logsTableBody = document.getElementById('logs-table-body');
+    const logsFilter = document.getElementById('logs-filter');
     let token = null;
 
     loginForm.onsubmit = (e) => {
@@ -748,6 +753,56 @@ if (window.location.pathname.endsWith('admin.html')) {
             editDoctorResult.textContent = 'Ошибка соединения';
         });
     };
+
+    // --- Логи ---
+    function actionIcon(action) {
+        switch(action) {
+            case 'admin_login': return '🛡️';
+            case 'doctor_login': return '👨‍⚕️';
+            case 'add_doctor': return '➕';
+            case 'delete_doctor': return '🗑️';
+            case 'add_appointment': return '📅';
+            case 'delete_appointment': return '❌';
+            case 'admin_login_fail': return '⚠️';
+            case 'doctor_login_fail': return '⚠️';
+            case 'login_blocked': return '🚫';
+            default: return 'ℹ️';
+        }
+    }
+    function actionColor(action) {
+        if (action.includes('fail') || action === 'login_blocked') return 'color:#f44336;';
+        if (action === 'add_doctor' || action === 'add_appointment') return 'color:#4CAF50;';
+        if (action === 'delete_doctor' || action === 'delete_appointment') return 'color:#1976d2;';
+        return '';
+    }
+    function renderLogs(logs) {
+        logsTableBody.innerHTML = logs.map(log => `
+            <tr>
+                <td style="font-size:0.97em;white-space:nowrap;">${new Date(log.created_at).toLocaleString()}</td>
+                <td style="${actionColor(log.action)}">${actionIcon(log.action)} ${log.action.replace(/_/g,' ')}</td>
+                <td>${log.username || '-'}</td>
+                <td style="max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${log.details || ''}</td>
+            </tr>
+        `).join('');
+    }
+    function loadLogs(type = '') {
+        fetch(`/api/audit-log${type ? '?type=' + encodeURIComponent(type) : ''}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) renderLogs(data.logs);
+            else logsTableBody.innerHTML = '<tr><td colspan="4">Ошибка загрузки логов</td></tr>';
+        });
+    }
+    if (showLogsBtn) {
+        showLogsBtn.onclick = () => {
+            openModal(logsModal);
+            loadLogs();
+        };
+    }
+    if (logsCloseBtn) logsCloseBtn.onclick = () => { logsModal.style.display = 'none'; };
+    if (logsFilter) logsFilter.onchange = () => loadLogs(logsFilter.value);
 }
 
 // Универсальная модалка подтверждения

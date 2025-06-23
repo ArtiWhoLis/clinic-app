@@ -45,6 +45,7 @@
             <div id="admin-doctor-list"></div>
             <div id="admin-appointments"></div>
             <button class="role-btn back-btn" id="admin-logout-btn">Выйти</button>
+            <button class="role-btn" id="show-logs-btn" style="margin-bottom:18px;">Логи</button>
         </div>
         <div id="doctor-profile-modal" class="modal-bg" style="display:none;">
             <div class="modal" style="min-width:340px;max-width:400px;">
@@ -95,6 +96,41 @@
                 <div id="confirm-modal-text" style="margin-bottom:18px;font-size:1.1rem;"></div>
                 <button id="confirm-yes" class="signup-btn" style="width:48%;margin-right:2%;">Да</button>
                 <button id="confirm-no" class="role-btn back-btn" style="width:48%;">Нет</button>
+            </div>
+        </div>
+        <!-- Модалка логов -->
+        <div id="logs-modal" class="modal-bg" style="display:none;">
+            <div class="modal" style="min-width:340px;max-width:700px;max-height:90vh;overflow:auto;">
+                <h2 style="margin-bottom:10px;">Логи действий</h2>
+                <div style="margin-bottom:10px;">
+                    <label for="logs-filter">Фильтр:</label>
+                    <select id="logs-filter" style="margin-left:8px;">
+                        <option value="">Все</option>
+                        <option value="admin_login">Вход (админ)</option>
+                        <option value="doctor_login">Вход (врач)</option>
+                        <option value="add_doctor">Добавление врача</option>
+                        <option value="delete_doctor">Удаление врача</option>
+                        <option value="add_appointment">Запись к врачу</option>
+                        <option value="delete_appointment">Отмена/удаление записи</option>
+                        <option value="admin_login_fail">Ошибка входа (админ)</option>
+                        <option value="doctor_login_fail">Ошибка входа (врач)</option>
+                        <option value="login_blocked">Блокировка входа</option>
+                    </select>
+                </div>
+                <div id="logs-table-container">
+                    <table class="doctor-table" id="logs-table">
+                        <thead>
+                            <tr>
+                                <th>Время</th>
+                                <th>Действие</th>
+                                <th>Пользователь</th>
+                                <th>Детали</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logs-table-body"></tbody>
+                    </table>
+                </div>
+                <button class="role-btn back-btn" id="logs-close-btn" style="margin-top:10px;">Закрыть</button>
             </div>
         </div>
     </div>
