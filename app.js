@@ -272,7 +272,6 @@ if (window.location.pathname.endsWith('my-appointments.html')) {
     const myAppointmentsForm = document.getElementById('my-appointments-form');
     const myAppointmentsList = document.getElementById('my-appointments-list');
     const myBackArrow = document.getElementById('my-back-arrow');
-    const myNameInput = document.getElementById('my-name');
     const myPhoneInput = document.getElementById('my-phone');
 
     myAppointmentsForm.onsubmit = (e) => {
@@ -334,7 +333,7 @@ if (window.location.pathname.endsWith('my-appointments.html')) {
                                 fetch(`/api/appointments/${btn.dataset.id}`, {
                                     method: 'DELETE',
                                     headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({ name: myNameInput.value.trim(), phone: myPhoneInput.value.trim() })
+                                    body: JSON.stringify({ phone: myPhoneInput.value.trim() })
                                 })
                                 .then(res => res.json())
                                 .then(data => {
