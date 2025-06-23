@@ -1,5 +1,20 @@
 const API_URL = '/api';
 
+// --- Глобальные функции для модалок ---
+function focusFirstInput(modal) {
+    setTimeout(() => {
+        const input = modal.querySelector('input, select, textarea');
+        if (input) input.focus();
+    }, 100);
+}
+function openModal(modal) {
+    modal.style.display = 'flex';
+    setTimeout(() => {
+        modal.querySelector('.modal').classList.add('show');
+        focusFirstInput(modal);
+    }, 10);
+}
+
 // --- Theme Switcher ---
 document.addEventListener('DOMContentLoaded', () => {
     const themeSwitcher = document.getElementById('theme-switcher');
@@ -187,23 +202,6 @@ if (window.location.pathname.endsWith('patient.html')) {
         setTimeout(() => {
             toast.style.display = 'none';
         }, 3000);
-    }
-
-    // Фокусировка на первом поле формы при открытии модалки
-    function focusFirstInput(modal) {
-        setTimeout(() => {
-            const input = modal.querySelector('input, select, textarea');
-            if (input) input.focus();
-        }, 100);
-    }
-
-    // Плавная анимация открытия модалок
-    function openModal(modal) {
-        modal.style.display = 'flex';
-        setTimeout(() => {
-            modal.querySelector('.modal').classList.add('show');
-            focusFirstInput(modal);
-        }, 10);
     }
 
     // Отправка формы записи
