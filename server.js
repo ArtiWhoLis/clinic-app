@@ -156,6 +156,8 @@ app.post('/api/appointments', async (req, res) => {
         return res.json({ success: false, message: 'Все поля обязательны' });
     }
     try {
+        // Приводим телефон к 10 цифрам
+        const cleanPhone = phone.replace(/[^0-9]/g, '').slice(-10);
         // Проверяем, занято ли время
         const busy = await pool.query(
             'SELECT 1 FROM appointments WHERE doctor_id = $1 AND time = $2',
@@ -166,7 +168,7 @@ app.post('/api/appointments', async (req, res) => {
         }
         const result = await pool.query(
             'INSERT INTO appointments (doctor_id, name, snils, phone, time) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-            [doctorId, name, snils, phone, time]
+            [doctorId, name, snils, cleanPhone, time]
         );
         await logAction('add_appointment', `Запись к врачу id=${doctorId} на ${time} (${name})`, name);
         res.json({ success: true, appointment: result.rows[0] });
@@ -194,7 +196,10 @@ app.delete('/api/appointments/:id', async (req, res) => {
         const result = await pool.query('SELECT * FROM appointments WHERE id = $1', [appointmentId]);
         if (!result.rows.length) return res.status(404).json({ success: false, message: 'Запись не найдена' });
         const app = result.rows[0];
-        if (app.phone.trim() !== phone.trim()) {
+        // Приводим оба телефона к 10 цифрам
+        const cleanPhone = (phone || '').replace(/[^0-9]/g, '').slice(-10);
+        const appPhone = (app.phone || '').replace(/[^0-9]/g, '').slice(-10);
+        if (appPhone !== cleanPhone) {
             return res.status(403).json({ success: false, message: 'Вы не можете отменить чужую запись' });
         }
         await pool.query('DELETE FROM appointments WHERE id = $1', [appointmentId]);
