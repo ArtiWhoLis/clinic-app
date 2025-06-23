@@ -272,6 +272,8 @@ if (window.location.pathname.endsWith('my-appointments.html')) {
     const myAppointmentsForm = document.getElementById('my-appointments-form');
     const myAppointmentsList = document.getElementById('my-appointments-list');
     const myBackArrow = document.getElementById('my-back-arrow');
+    const myNameInput = document.getElementById('my-name');
+    const myPhoneInput = document.getElementById('my-phone');
 
     myAppointmentsForm.onsubmit = (e) => {
         e.preventDefault();
