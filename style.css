@@ -479,7 +479,62 @@ body {
         padding: 10px 0;
     }
     .main-container {
-        margin-left: 0 !important;
+        max-width: 98vw;
+        margin: 24px 0 24px 0;
+        padding: 16px 4px;
+        border-radius: 12px;
+    }
+    .main-title {
+        font-size: 1.5rem;
+        margin-bottom: 24px;
+    }
+    .doctor-table th, .doctor-table td {
+        padding: 8px 4px;
+        font-size: 0.95rem;
+    }
+    .doctor-table {
+        font-size: 0.95rem;
+        margin: 16px 0;
+    }
+    .role-btn, .signup-btn, .back-btn, .profile-icon-btn {
+        width: 100%;
+        min-width: 0;
+        margin: 10px 0;
+        font-size: 1rem;
+        padding: 12px 0;
+    }
+    .profile-icon-btn {
+        margin-left: 0;
+        margin-right: 0;
+        font-size: 1.2rem;
+        height: 40px;
+        width: 40px;
+    }
+    .form-group, .form-group.flex-group {
+        max-width: 100%;
+        margin: 16px 0;
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .form-input, .form-input.with-prefix {
+        font-size: 1rem;
+        padding: 12px 10px;
+    }
+    .modal {
+        max-width: 98vw;
+        padding: 12px 2px;
+        min-width: unset;
+        margin: 0 2px;
+    }
+    .modal h2 {
+        font-size: 1.2rem;
+    }
+    .back-arrow {
+        top: 8px;
+        left: 8px;
+        width: 36px;
+        height: 36px;
+        font-size: 1.3rem;
     }
 }
 
