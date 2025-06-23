@@ -366,11 +366,18 @@ body {
     min-width: unset;
     margin: 0 12px;
     z-index: 2000;
+    opacity: 0;
+    transform: scale(0.2);
+    clip-path: circle(0% at 50% 50%);
+    transition: none;
 }
 
 .modal.show {
-    opacity: 1;
-    transform: scale(1);
+    animation: modal-circle-in 0.45s cubic-bezier(.4,2,.6,1) forwards;
+}
+
+.modal.hide {
+    animation: modal-circle-out 0.35s cubic-bezier(.4,2,.6,1) forwards;
 }
 
 .modal input {
@@ -832,4 +839,52 @@ body {
 }
 .modal.show {
     animation: modal-fade-in 0.3s;
+}
+
+@keyframes modal-circle-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.2);
+    border-radius: 50%;
+    clip-path: circle(0% at 50% 50%);
+  }
+  80% {
+    opacity: 1;
+    border-radius: 30px;
+    clip-path: circle(80% at 50% 50%);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    border-radius: 16px;
+    clip-path: circle(150% at 50% 50%);
+  }
+}
+@keyframes modal-circle-out {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    border-radius: 16px;
+    clip-path: circle(150% at 50% 50%);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.2);
+    border-radius: 50%;
+    clip-path: circle(0% at 50% 50%);
+  }
+}
+.modal {
+  /* ...существующие стили... */
+  opacity: 0;
+  transform: scale(0.2);
+  border-radius: 50%;
+  clip-path: circle(0% at 50% 50%);
+  transition: none;
+}
+.modal.show {
+  animation: modal-circle-in 0.45s cubic-bezier(.4,2,.6,1) forwards;
+}
+.modal.hide {
+  animation: modal-circle-out 0.35s cubic-bezier(.4,2,.6,1) forwards;
 }

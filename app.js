@@ -10,7 +10,11 @@ function focusFirstInput(modal) {
 function openModal(modal) {
     modal.style.display = 'flex';
     setTimeout(() => {
-        modal.querySelector('.modal').classList.add('show');
+        const modalWindow = modal.querySelector('.modal');
+        if (modalWindow) {
+            modalWindow.classList.remove('hide');
+            modalWindow.classList.add('show');
+        }
         focusFirstInput(modal);
     }, 10);
 }
@@ -826,9 +830,14 @@ if (window.location.pathname.endsWith('admin.html')) {
     }
     if (logDetailsClose) logDetailsClose.onclick = () => { logDetailsModal.style.display = 'none'; };
     if (logDetailsModal) {
-        logDetailsModal.addEventListener('click', function(e) {
+        logDetailsModal.addEventListener('mousedown', function(e) {
             if (e.target === logDetailsModal) {
-                logDetailsModal.style.display = 'none';
+                const modalWindow = logDetailsModal.querySelector('.modal');
+                if (modalWindow) modalWindow.classList.remove('show');
+                setTimeout(() => {
+                    logDetailsModal.style.display = 'none';
+                    logDetailsContent.innerHTML = '';
+                }, 250);
             }
         });
     }
@@ -853,3 +862,31 @@ function confirmModal(message) {
         no.onclick = () => close(false);
     });
 }
+
+// Универсальный обработчик закрытия всех модалок по клику вне окна
+window.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.modal-bg').forEach(function(bg) {
+        bg.addEventListener('mousedown', function(e) {
+            if (e.target === bg) {
+                const modalWindow = bg.querySelector('.modal');
+                if (modalWindow) {
+                    modalWindow.classList.remove('show');
+                    modalWindow.classList.add('hide');
+                }
+                setTimeout(() => {
+                    bg.style.display = 'none';
+                    if (modalWindow) modalWindow.classList.remove('hide');
+                    // Очищаем содержимое для некоторых окон
+                    if (bg.id === 'log-details-modal') {
+                        const content = bg.querySelector('#log-details-content');
+                        if (content) content.innerHTML = '';
+                    }
+                    if (bg.id === 'confirm-modal') {
+                        const text = bg.querySelector('#confirm-modal-text');
+                        if (text) text.textContent = '';
+                    }
+                }, 350);
+            }
+        });
+    });
+});
