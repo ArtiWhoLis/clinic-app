@@ -825,9 +825,8 @@ if (window.location.pathname.endsWith('admin.html')) {
         logDetailsModal.style.display = 'flex';
     }
     if (logDetailsClose) logDetailsClose.onclick = () => { logDetailsModal.style.display = 'none'; };
-    // Клик вне окна закрывает модалку
     if (logDetailsModal) {
-        logDetailsModal.addEventListener('mousedown', function(e) {
+        logDetailsModal.addEventListener('mouseup', function(e) {
             if (e.target === logDetailsModal) {
                 logDetailsModal.style.display = 'none';
             }
