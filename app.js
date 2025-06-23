@@ -147,10 +147,7 @@ if (window.location.pathname.endsWith('patient.html')) {
                                     modalInfo.innerHTML = `<b>${doc.name}</b><br><span style='color:#888;'>${doc.specialty || ''}</span><br><span style='color:#1976d2;font-weight:500;'>${currentTime}</span>`;
                                 }
                                 // Анимация открытия модального окна
-                                modalBg.style.display = 'flex';
-                                setTimeout(() => {
-                                    document.querySelector('.modal').classList.add('show');
-                                }, 10);
+                                openModal(modalBg);
                             };
                             tableBody.appendChild(tr);
                         });
@@ -182,13 +179,31 @@ if (window.location.pathname.endsWith('patient.html')) {
         }
     });
 
-    // Toast-уведомление
-    function showToast(message) {
+    // Улучшенное toast-уведомление
+    function showToast(message, isError = false) {
         toast.textContent = message;
+        toast.className = 'toast' + (isError ? ' toast-error' : '');
         toast.style.display = 'block';
         setTimeout(() => {
             toast.style.display = 'none';
         }, 3000);
+    }
+
+    // Фокусировка на первом поле формы при открытии модалки
+    function focusFirstInput(modal) {
+        setTimeout(() => {
+            const input = modal.querySelector('input, select, textarea');
+            if (input) input.focus();
+        }, 100);
+    }
+
+    // Плавная анимация открытия модалок
+    function openModal(modal) {
+        modal.style.display = 'flex';
+        setTimeout(() => {
+            modal.querySelector('.modal').classList.add('show');
+            focusFirstInput(modal);
+        }, 10);
     }
 
     // Отправка формы записи
@@ -625,7 +640,7 @@ if (window.location.pathname.endsWith('admin.html')) {
         doctorUsernameInput.value = doc.username || '';
         doctorPasswordInput.value = doc.password || '';
         doctorProfileResult.textContent = '';
-        doctorProfileModal.style.display = 'flex';
+        openModal(doctorProfileModal);
     }
     doctorProfileClose.onclick = () => {
         doctorProfileModal.style.display = 'none';
@@ -687,7 +702,7 @@ if (window.location.pathname.endsWith('admin.html')) {
         editDoctorSpecialty.value = doc.specialty || '';
         editDoctorUsername.value = doc.username || '';
         editDoctorResult.textContent = '';
-        editDoctorModal.style.display = 'flex';
+        openModal(editDoctorModal);
     }
     if (editDoctorCancel) {
         editDoctorCancel.onclick = () => {
