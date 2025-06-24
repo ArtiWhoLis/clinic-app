@@ -266,12 +266,12 @@ if (window.location.pathname.endsWith('patient.html')) {
         });
     };
 
-    // Фильтрация ФИО: только буквы и пробелы, максимум 40 символов
+    // Фильтрация ФИО: только буквы, точки и пробелы, максимум 40 символов
     const fioInput = document.getElementById('fio');
     if (fioInput) {
         fioInput.addEventListener('input', (e) => {
             let val = e.target.value;
-            val = val.replace(/[^А-Яа-яA-Za-zЁё\s]/g, '');
+            val = val.replace(/[^А-Яа-яA-Za-zЁё.\s]/g, '');
             if (val.length > 40) val = val.slice(0, 40);
             e.target.value = val;
         });
@@ -694,11 +694,11 @@ if (window.location.pathname.endsWith('admin.html')) {
     const editDoctorResult = document.getElementById('edit-doctor-result');
     let currentEditDoctorId = null;
 
-    // Фильтрация ФИО врача: только буквы и пробелы, максимум 40 символов
+    // Фильтрация ФИО врача: только буквы, точки и пробелы, максимум 40 символов
     if (editDoctorName) {
         editDoctorName.addEventListener('input', (e) => {
             let val = e.target.value;
-            val = val.replace(/[^А-Яа-яA-Za-zЁё\s]/g, '');
+            val = val.replace(/[^А-Яа-яA-Za-zЁё.\s]/g, '');
             if (val.length > 40) val = val.slice(0, 40);
             e.target.value = val;
         });

@@ -30,7 +30,7 @@
                 <h3>Управление врачами</h3>
                 <form id="add-doctor-form" class="modern-form" style="max-width: 480px; margin: 24px auto; display: flex; gap: 16px; align-items: center;">
                     <div class="form-group" style="margin: 0; flex-grow: 1;">
-                        <input type="text" id="new-doctor-name" class="form-input" placeholder=" " required pattern="[А-Яа-яA-Za-zЁё\s]+" maxlength="40" title="Только буквы, максимум 40 символов">
+                        <input type="text" id="new-doctor-name" class="form-input" placeholder=" " required pattern="[А-Яа-яA-Za-zЁё.\s]+" maxlength="40" title="Только буквы, точки и пробелы, максимум 40 символов">
                         <label for="new-doctor-name" class="form-label">ФИО врача</label>
                     </div>
                     <div class="form-group" style="margin: 0; flex-grow: 1;">
@@ -73,7 +73,7 @@
                 <h2>Редактировать врача</h2>
                 <form id="edit-doctor-form" class="modern-form" style="margin-top:18px;">
                     <div class="form-group">
-                        <input type="text" id="edit-doctor-name" class="form-input" placeholder=" " required pattern="[А-Яа-яA-Za-zЁё\s]+" maxlength="40" title="Только буквы, максимум 40 символов">
+                        <input type="text" id="edit-doctor-name" class="form-input" placeholder=" " required pattern="[А-Яа-яA-Za-zЁё.\s]+" maxlength="40" title="Только буквы, точки и пробелы, максимум 40 символов">
                         <label for="edit-doctor-name" class="form-label">ФИО врача</label>
                     </div>
                     <div class="form-group">
