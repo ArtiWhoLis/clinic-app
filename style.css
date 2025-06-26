@@ -889,3 +889,480 @@ body {
 .modal.hide {
   animation: modal-circle-out 0.35s cubic-bezier(.4,2,.6,1) forwards;
 }
+
+/* Календарный компонент */
+.calendar-container {
+    background: var(--main-bg-color);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 20px var(--shadow-color);
+    margin-bottom: 24px;
+}
+
+/* Карточки врачей */
+.doctor-selection {
+    margin-bottom: 32px;
+}
+
+.doctor-selection h3 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 1.3rem;
+}
+
+.doctor-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.doctor-card {
+    background: var(--main-bg-color);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 20px var(--shadow-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    text-align: center;
+}
+
+.doctor-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px var(--shadow-color);
+    border-color: var(--primary-color);
+}
+
+.doctor-card.selected {
+    border-color: var(--accent-color);
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover-color) 100%);
+    color: white;
+}
+
+.doctor-card.selected .doctor-name,
+.doctor-card.selected .doctor-specialty {
+    color: white;
+}
+
+.doctor-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto 16px;
+    font-weight: bold;
+}
+
+.doctor-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+}
+
+.doctor-specialty {
+    color: var(--text-color);
+    opacity: 0.8;
+    margin-bottom: 12px;
+}
+
+.doctor-stats {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    opacity: 0.7;
+}
+
+.doctor-stats span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Адаптивность для карточек врачей */
+@media (max-width: 600px) {
+    .doctor-cards {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .doctor-card {
+        padding: 20px;
+    }
+    
+    .doctor-avatar {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+    
+    .doctor-name {
+        font-size: 1.1rem;
+    }
+}
+
+.calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.calendar-nav-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.calendar-nav-btn:hover {
+    background: var(--primary-hover-color);
+    transform: scale(1.1);
+}
+
+.calendar-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.calendar-grid {
+    margin-bottom: 20px;
+}
+
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-bottom: 8px;
+}
+
+.calendar-weekdays > div {
+    text-align: center;
+    font-weight: 600;
+    color: var(--text-color);
+    padding: 8px;
+    font-size: 0.9rem;
+}
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    background: var(--bg-color);
+    border: 2px solid transparent;
+}
+
+.calendar-day:hover:not(.past):not(.other-month) {
+    background: var(--primary-color);
+    color: white;
+    transform: scale(1.05);
+}
+
+.calendar-day.selected {
+    background: var(--accent-color);
+    color: white;
+    border-color: var(--accent-hover-color);
+    transform: scale(1.1);
+}
+
+.calendar-day.past {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: var(--border-color);
+}
+
+.calendar-day.other-month {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.calendar-day.load-free {
+    background: #e8f5e8;
+    border-color: #4caf50;
+}
+
+.calendar-day.load-low {
+    background: #fff3e0;
+    border-color: #ff9800;
+}
+
+.calendar-day.load-medium {
+    background: #ffe0b2;
+    border-color: #ff5722;
+}
+
+.calendar-day.load-high {
+    background: #ffebee;
+    border-color: #f44336;
+}
+
+.day-number {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.load-indicator {
+    position: absolute;
+    bottom: 2px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.calendar-legend {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: var(--text-color);
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid;
+}
+
+.legend-color.free {
+    background: #e8f5e8;
+    border-color: #4caf50;
+}
+
+.legend-color.low {
+    background: #fff3e0;
+    border-color: #ff9800;
+}
+
+.legend-color.medium {
+    background: #ffe0b2;
+    border-color: #ff5722;
+}
+
+.legend-color.high {
+    background: #ffebee;
+    border-color: #f44336;
+}
+
+/* Выбор времени */
+.time-selection {
+    background: var(--main-bg-color);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 20px var(--shadow-color);
+}
+
+.time-selection h4 {
+    margin: 0 0 16px 0;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+.time-filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.time-filter-btn {
+    padding: 8px 16px;
+    border: 2px solid var(--primary-color);
+    background: transparent;
+    color: var(--primary-color);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+}
+
+.time-filter-btn:hover,
+.time-filter-btn.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.time-slots {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 8px;
+}
+
+.time-slot {
+    padding: 12px 8px;
+    border: 2px solid var(--border-color);
+    background: var(--bg-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.time-slot:hover:not(.busy) {
+    border-color: var(--primary-color);
+    background: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.time-slot.selected {
+    background: var(--accent-color);
+    border-color: var(--accent-hover-color);
+    color: white;
+    transform: scale(1.05);
+}
+
+.time-slot.busy {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: var(--border-color);
+}
+
+.time-slot.time-morning {
+    border-left: 4px solid #4caf50;
+}
+
+.time-slot.time-afternoon {
+    border-left: 4px solid #ff9800;
+}
+
+.time-slot.time-evening {
+    border-left: 4px solid #9c27b0;
+}
+
+.busy-indicator {
+    font-size: 0.7rem;
+    opacity: 0.8;
+}
+
+.no-times {
+    text-align: center;
+    color: var(--text-color);
+    font-style: italic;
+    grid-column: 1 / -1;
+}
+
+/* Адаптивность для календаря */
+@media (max-width: 600px) {
+    .calendar-container {
+        padding: 16px;
+    }
+    
+    .calendar-title {
+        font-size: 1.2rem;
+    }
+    
+    .calendar-nav-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+    }
+    
+    .calendar-day {
+        font-size: 0.9rem;
+    }
+    
+    .calendar-legend {
+        gap: 12px;
+    }
+    
+    .legend-item {
+        font-size: 0.8rem;
+    }
+    
+    .time-filters {
+        gap: 6px;
+    }
+    
+    .time-filter-btn {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+    
+    .time-slots {
+        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+        gap: 6px;
+    }
+    
+    .time-slot {
+        padding: 10px 6px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Темная тема для календаря */
+body.dark-theme .calendar-day {
+    background: var(--border-color);
+}
+
+body.dark-theme .calendar-day.load-free {
+    background: #1b5e20;
+    border-color: #4caf50;
+}
+
+body.dark-theme .calendar-day.load-low {
+    background: #e65100;
+    border-color: #ff9800;
+}
+
+body.dark-theme .calendar-day.load-medium {
+    background: #bf360c;
+    border-color: #ff5722;
+}
+
+body.dark-theme .calendar-day.load-high {
+    background: #b71c1c;
+    border-color: #f44336;
+}
+
+body.dark-theme .time-slot {
+    background: var(--border-color);
+}
+
+body.dark-theme .time-slot.busy {
+    background: #424242;
+}

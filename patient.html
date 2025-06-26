@@ -11,19 +11,21 @@
     <div class="main-container">
         <h1 class="main-title">Запись к врачу</h1>
         <button class="role-btn" id="my-appointments-btn" style="margin-bottom: 18px;">Мои записи</button>
-        <table class="doctor-table" id="doctor-table">
-            <thead>
-                <tr>
-                    <th>Имя врача</th>
-                    <th>Специальность</th>
-                    <th>Время записи</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody id="doctor-table-body">
-                <!-- JS вставит строки -->
-            </tbody>
-        </table>
+        
+        <!-- Выбор врача -->
+        <div class="doctor-selection">
+            <h3>Выберите врача</h3>
+            <div class="doctor-cards" id="doctor-cards">
+                <!-- JS вставит карточки врачей -->
+            </div>
+        </div>
+        
+        <!-- Календарь записи -->
+        <div id="calendar-section" style="display: none;">
+            <h3>Выберите дату и время</h3>
+            <div id="calendar-container"></div>
+        </div>
+        
         <button class="back-arrow" id="patient-back-arrow" style="display:block;position:absolute;top:24px;left:24px;background:none;border:none;cursor:pointer;font-size:2rem;z-index:10;" title="Назад">&#8592;</button>
     </div>
 
@@ -66,6 +68,7 @@
     <!-- Toast-уведомление -->
     <div id="toast" class="toast" style="display:none;"></div>
 
+    <script src="calendar.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

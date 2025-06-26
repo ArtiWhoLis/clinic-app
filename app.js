@@ -59,13 +59,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // --- patient.html ---
 if (window.location.pathname.endsWith('patient.html')) {
-    const tableBody = document.getElementById('doctor-table-body');
+    const doctorCards = document.getElementById('doctor-cards');
+    const calendarSection = document.getElementById('calendar-section');
+    const calendarContainer = document.getElementById('calendar-container');
     const modalBg = document.getElementById('modal-bg');
     const signupForm = document.getElementById('signup-form');
     const closeModalBtn = document.getElementById('close-modal');
     const toast = document.getElementById('toast');
     const myAppointmentsBtn = document.getElementById('my-appointments-btn');
     const patientBackArrow = document.getElementById('patient-back-arrow');
+    
+    let selectedDoctor = null;
+    let calendar = null;
     
     // SNILS auto-formatting
     const snilsInput = document.getElementById('snils');
@@ -98,83 +103,93 @@ if (window.location.pathname.endsWith('patient.html')) {
         window.location.href = 'my-appointments.html';
     };
 
-    let currentDoctor = null;
-    let currentTime = null;
-    const modalInfo = document.getElementById('modal-info');
-
-    // Загрузка списка врачей с разделением слотов
-    function loadDoctorsTable() {
+    // Загрузка списка врачей
+    function loadDoctors() {
         fetch(`${API_URL}/doctors`)
             .then(res => res.json())
             .then(doctors => {
-                tableBody.innerHTML = '';
+                doctorCards.innerHTML = '';
                 doctors.forEach(doc => {
-                    fetch(`${API_URL}/appointments?doctorId=${doc.id}`)
-                        .then(res => res.json())
-                        .then(apps => {
-                            const busyTimes = apps.map(a => a.time);
-                            const freeOptions = [];
-                            const busyOptions = [];
-                            for (let h = 11; h <= 20; h++) {
-                                const hour = h < 10 ? '0' + h : h;
-                                const timeStr = `${hour}:00`;
-                                if (busyTimes.includes(timeStr)) {
-                                    busyOptions.push(`<option value="${timeStr}" disabled class="option-busy">${timeStr} (занято)</option>`);
-                                } else {
-                                    freeOptions.push(`<option value="${timeStr}">${timeStr}</option>`);
-                                }
-                            }
-                            let timeOptions = [];
-                            if (freeOptions.length > 0) {
-                                timeOptions = [...freeOptions];
-                                if (busyOptions.length > 0) {
-                                    timeOptions.push(`<option disabled class='option-divider'>────────────</option>`);
-                                    timeOptions = [...timeOptions, ...busyOptions];
-                                }
-                            } else {
-                                // Все занято
-                                timeOptions = [
-                                    `<option disabled class='option-divider'>Нет свободных времен</option>`,
-                                    ...busyOptions
-                                ];
-                            }
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
-                                <td>${doc.name}</td>
-                                <td>${doc.specialty || '-'}</td>
-                                <td><select class="time-select">${timeOptions.join('')}</select></td>
-                                <td><button class="signup-btn">Записаться</button></td>
-                            `;
-                            const select = tr.querySelector('.time-select');
-                            const signupBtn = tr.querySelector('.signup-btn');
-                            // Если нет свободных слотов — блокируем кнопку
-                            if (freeOptions.length === 0) {
-                                signupBtn.disabled = true;
-                                signupBtn.textContent = 'Нет мест';
-                            }
-                            // По умолчанию выбираем первый свободный слот
-                            if (freeOptions.length > 0) {
-                                select.value = freeOptions[0].match(/value=\"(.*?)\"/)[1];
-                            }
-                            // Обработчик кнопки
-                            signupBtn.onclick = () => {
-                                currentDoctor = doc;
-                                currentTime = select.value;
-                                // Показываем инфо о враче и времени
-                                if (modalInfo) {
-                                    modalInfo.style.display = 'block';
-                                    modalInfo.innerHTML = `<b>${doc.name}</b><br><span style='color:#888;'>${doc.specialty || ''}</span><br><span style='color:#1976d2;font-weight:500;'>${currentTime}</span>`;
-                                }
-                                // Анимация открытия модального окна
-                                openModal(modalBg);
-                            };
-                            tableBody.appendChild(tr);
-                        });
+                    const card = document.createElement('div');
+                    card.className = 'doctor-card';
+                    card.innerHTML = `
+                        <div class="doctor-avatar">${doc.name.charAt(0)}</div>
+                        <div class="doctor-name">${doc.name}</div>
+                        <div class="doctor-specialty">${doc.specialty || '-'}</div>
+                        <div class="doctor-stats">
+                            <span>📅 ${doc.appointmentCount || 0} записей</span>
+                        </div>
+                    `;
+                    
+                    card.onclick = () => selectDoctor(doc);
+                    doctorCards.appendChild(card);
                 });
+            })
+            .catch(err => {
+                console.error('Ошибка загрузки врачей:', err);
+                doctorCards.innerHTML = '<p style="color: red; text-align: center;">Ошибка загрузки списка врачей</p>';
             });
     }
-    // Инициализация таблицы
-    loadDoctorsTable();
+    
+    function selectDoctor(doctor) {
+        selectedDoctor = doctor;
+        
+        // Обновляем выделение карточки
+        document.querySelectorAll('.doctor-card').forEach(card => {
+            card.classList.remove('selected');
+        });
+        event.target.closest('.doctor-card').classList.add('selected');
+        
+        // Показываем календарь
+        calendarSection.style.display = 'block';
+        
+        // Инициализируем календарь
+        if (calendar) {
+            calendar.reset();
+        }
+        
+        calendar = new AppointmentCalendar(calendarContainer, {
+            doctorId: doctor.id,
+            onDateSelect: (date) => {
+                console.log('Выбрана дата:', date);
+            },
+            onTimeSelect: (date, time) => {
+                console.log('Выбрано время:', date, time);
+                openAppointmentModal(doctor, date, time);
+            }
+        });
+        
+        // Прокручиваем к календарю
+        calendarSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    function openAppointmentModal(doctor, date, time) {
+        const modalInfo = document.getElementById('modal-info');
+        if (modalInfo) {
+            modalInfo.style.display = 'block';
+            const dateObj = new Date(date);
+            const formattedDate = dateObj.toLocaleDateString('ru-RU', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            modalInfo.innerHTML = `
+                <b>${doctor.name}</b><br>
+                <span style='color:#888;'>${doctor.specialty || ''}</span><br>
+                <span style='color:#1976d2;font-weight:500;'>${formattedDate} в ${time}</span>
+            `;
+        }
+        
+        // Сохраняем выбранные дату и время в форме
+        signupForm.dataset.selectedDate = date;
+        signupForm.dataset.selectedTime = time;
+        
+        openModal(modalBg);
+    }
+
+    // Инициализация
+    loadDoctors();
 
     // Закрытие модального окна записи с анимацией
     closeModalBtn.onclick = () => {
@@ -182,6 +197,7 @@ if (window.location.pathname.endsWith('patient.html')) {
         setTimeout(() => {
             modalBg.style.display = 'none';
             signupForm.reset();
+            const modalInfo = document.getElementById('modal-info');
             if (modalInfo) modalInfo.style.display = 'none';
         }, 250);
     };
@@ -193,6 +209,7 @@ if (window.location.pathname.endsWith('patient.html')) {
             setTimeout(() => {
                 modalBg.style.display = 'none';
                 signupForm.reset();
+                const modalInfo = document.getElementById('modal-info');
                 if (modalInfo) modalInfo.style.display = 'none';
             }, 250);
         }
@@ -215,24 +232,30 @@ if (window.location.pathname.endsWith('patient.html')) {
         const snils = document.getElementById('snils').value.trim();
         const phone = document.getElementById('phone').value.trim();
         const fullPhone = `+7${phone}`;
-        if (!fio || !snils || !phone) {
-            alert('Пожалуйста, заполните все поля!');
+        const selectedDate = signupForm.dataset.selectedDate;
+        const selectedTime = signupForm.dataset.selectedTime;
+        
+        if (!fio || !snils || !phone || !selectedDate || !selectedTime) {
+            alert('Пожалуйста, заполните все поля и выберите дату и время!');
             return;
         }
+        
         // Спиннер на кнопке
         const submitBtn = signupForm.querySelector('.signup-btn');
         const origText = submitBtn.textContent;
         submitBtn.innerHTML = 'Запись... <span class="button-spinner"></span>';
         submitBtn.disabled = true;
+        
         fetch(`${API_URL}/appointments`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                doctorId: currentDoctor.id,
+                doctorId: selectedDoctor.id,
                 name: fio,
                 snils: snils,
                 phone: fullPhone,
-                time: currentTime
+                time: selectedTime,
+                date: selectedDate
             })
         })
         .then(res => res.json())
@@ -240,28 +263,32 @@ if (window.location.pathname.endsWith('patient.html')) {
             submitBtn.innerHTML = origText;
             submitBtn.disabled = false;
             if (data.success) {
-                showToast(`Вы успешно записались к ${currentDoctor.name} на ${currentTime}`);
+                showToast(`Вы успешно записались к ${selectedDoctor.name} на ${selectedDate} в ${selectedTime}`);
+                // Обновляем календарь
+                if (calendar) {
+                    calendar.updateCalendar();
+                }
             } else {
-                showToast(data.message || 'Ошибка записи. Возможно, время уже занято. Попробуйте выбрать другое.');
+                showToast(data.message || 'Ошибка записи. Возможно, время уже занято. Попробуйте выбрать другое.', true);
             }
             document.querySelector('.modal').classList.remove('show');
             setTimeout(() => {
                 modalBg.style.display = 'none';
                 signupForm.reset();
+                const modalInfo = document.getElementById('modal-info');
                 if (modalInfo) modalInfo.style.display = 'none';
-                loadDoctorsTable();
             }, 300);
         })
         .catch(err => {
             submitBtn.innerHTML = origText;
             submitBtn.disabled = false;
-            showToast('Ошибка соединения с сервером');
+            showToast('Ошибка соединения с сервером', true);
             document.querySelector('.modal').classList.remove('show');
             setTimeout(() => {
                 modalBg.style.display = 'none';
                 signupForm.reset();
+                const modalInfo = document.getElementById('modal-info');
                 if (modalInfo) modalInfo.style.display = 'none';
-                loadDoctorsTable();
             }, 300);
         });
     };
@@ -307,38 +334,59 @@ if (window.location.pathname.endsWith('my-appointments.html')) {
                 } else {
                     // Разделяем на прошедшие и будущие
                     const now = new Date();
-                    // Если в будущем появится дата — сравнивать по дате, сейчас только по времени
                     const future = [], past = [];
                     apps.forEach(a => {
-                        // a.time в формате "HH:MM"
-                        const [h, m] = a.time.split(':').map(Number);
-                        const appDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m);
-                        if (appDate >= now) future.push(a); else past.push(a);
+                        // Проверяем дату и время
+                        const appointmentDate = new Date(a.date + 'T' + a.time);
+                        if (appointmentDate >= now) {
+                            future.push(a);
+                        } else {
+                            past.push(a);
+                        }
                     });
+                    
                     let html = '';
                     if (future.length) {
                         html += '<div style="margin-bottom:12px;"><b>Будущие записи:</b></div>';
-                        html += `<table class="doctor-table"><thead><tr><th>Время</th><th>Врач</th><th>Специальность</th><th></th></tr></thead><tbody>`;
-                        html += future.map(a => `
-                            <tr>
-                                <td>${a.time}</td>
-                                <td>${a.doctorName || 'Врач'}</td>
-                                <td>${a.specialty || '-'}</td>
-                                <td><button class="delete-btn" data-id="${a.id}">Отменить</button></td>
-                            </tr>
-                        `).join('');
+                        html += `<table class="doctor-table"><thead><tr><th>Дата</th><th>Время</th><th>Врач</th><th>Специальность</th><th></th></tr></thead><tbody>`;
+                        html += future.map(a => {
+                            const dateObj = new Date(a.date);
+                            const formattedDate = dateObj.toLocaleDateString('ru-RU', { 
+                                weekday: 'short', 
+                                month: 'short', 
+                                day: 'numeric' 
+                            });
+                            return `
+                                <tr>
+                                    <td>${formattedDate}</td>
+                                    <td>${a.time}</td>
+                                    <td>${a.doctorName || 'Врач'}</td>
+                                    <td>${a.specialty || '-'}</td>
+                                    <td><button class="delete-btn" data-id="${a.id}">Отменить</button></td>
+                                </tr>
+                            `;
+                        }).join('');
                         html += '</tbody></table>';
                     }
                     if (past.length) {
                         html += '<div style="margin:18px 0 8px 0;"><b>Прошедшие записи:</b></div>';
-                        html += `<table class="doctor-table"><thead><tr><th>Время</th><th>Врач</th><th>Специальность</th></tr></thead><tbody>`;
-                        html += past.map(a => `
-                            <tr>
-                                <td>${a.time}</td>
-                                <td>${a.doctorName || 'Врач'}</td>
-                                <td>${a.specialty || '-'}</td>
-                            </tr>
-                        `).join('');
+                        html += `<table class="doctor-table"><thead><tr><th>Дата</th><th>Время</th><th>Врач</th><th>Специальность</th></tr></thead><tbody>`;
+                        html += past.map(a => {
+                            const dateObj = new Date(a.date);
+                            const formattedDate = dateObj.toLocaleDateString('ru-RU', { 
+                                weekday: 'short', 
+                                month: 'short', 
+                                day: 'numeric' 
+                            });
+                            return `
+                                <tr>
+                                    <td>${formattedDate}</td>
+                                    <td>${a.time}</td>
+                                    <td>${a.doctorName || 'Врач'}</td>
+                                    <td>${a.specialty || '-'}</td>
+                                </tr>
+                            `;
+                        }).join('');
                         html += '</tbody></table>';
                     }
                     myAppointmentsList.innerHTML = html;
@@ -564,6 +612,7 @@ if (window.location.pathname.endsWith('admin.html')) {
                     <table class="doctor-table">
                         <thead>
                             <tr>
+                                <th>Дата</th>
                                 <th>Время</th>
                                 <th>ФИО</th>
                                 <th>СНИЛС</th>
@@ -572,15 +621,24 @@ if (window.location.pathname.endsWith('admin.html')) {
                             </tr>
                         </thead>
                         <tbody>
-                            ${apps.map(a => `
-                                <tr id="appointment-${a.id}">
-                                    <td>${a.time}</td>
-                                    <td>${a.name}</td>
-                                    <td>${a.snils}</td>
-                                    <td>+7${a.phone}</td>
-                                    ${!isDoctor ? `<td><button class="delete-btn" data-id="${a.id}">Отменить</button></td>` : ''}
-                                </tr>
-                            `).join('')}
+                            ${apps.map(a => {
+                                const dateObj = new Date(a.date);
+                                const formattedDate = dateObj.toLocaleDateString('ru-RU', { 
+                                    weekday: 'short', 
+                                    month: 'short', 
+                                    day: 'numeric' 
+                                });
+                                return `
+                                    <tr id="appointment-${a.id}">
+                                        <td>${formattedDate}</td>
+                                        <td>${a.time}</td>
+                                        <td>${a.name}</td>
+                                        <td>${a.snils}</td>
+                                        <td>+7${a.phone}</td>
+                                        ${!isDoctor ? `<td><button class="delete-btn" data-id="${a.id}">Отменить</button></td>` : ''}
+                                    </tr>
+                                `;
+                            }).join('')}
                         </tbody>
                     </table>
                 `;
