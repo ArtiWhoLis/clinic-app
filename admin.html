@@ -3,415 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Админ-панель — Онлайн-запись к врачу</title>
+    <title>Админ-панель — Healthy Me</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        body {
-            background: linear-gradient(120deg, #181c24 0%, #232a36 100%);
-            min-height: 100vh;
-            font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
-            margin: 0;
-            color: #f3f6fa;
-        }
-        .theme-switcher {
-            position: fixed;
-            top: 18px;
-            right: 24px;
-            font-size: 2rem;
-            background: none;
-            border: none;
-            color: #4fc3f7;
-            cursor: pointer;
-            z-index: 100;
-            transition: color 0.2s;
-        }
-        .theme-switcher:hover { color: #fff; }
-        .admin-header {
-            background: #232a36;
-            color: #4fc3f7;
-            padding: 28px 0 18px 0;
-            text-align: center;
-            font-size: 2.1rem;
-            font-weight: 800;
-            letter-spacing: 0.01em;
-        }
-        .admin-container {
-            max-width: 900px;
-            margin: 32px auto 0 auto;
-            background: #232a36;
-            border-radius: 18px;
-            box-shadow: 0 4px 24px #0008;
-            padding: 36px 18px 32px 18px;
-        }
-        .admin-section-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 18px;
-            color: #4fc3f7;
-        }
-        .doctor-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 22px;
-            margin-bottom: 32px;
-        }
-        .doctor-card {
-            background: #181c24;
-            border-radius: 14px;
-            box-shadow: 0 2px 10px #0006;
-            padding: 22px 18px 18px 18px;
-            min-width: 220px;
-            max-width: 260px;
-            flex: 1 1 220px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            position: relative;
-        }
-        .doctor-card .doctor-name {
-            font-size: 1.13rem;
-            font-weight: 700;
-            margin-bottom: 4px;
-            color: #fff;
-        }
-        .doctor-card .doctor-spec {
-            font-size: 1.01rem;
-            color: #4fc3f7;
-            margin-bottom: 10px;
-        }
-        .doctor-card .doctor-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .doctor-card .doctor-btn {
-            padding: 8px 18px;
-            font-size: 1rem;
-            border-radius: 10px;
-            border: none;
-            cursor: pointer;
-            background: #4fc3f7;
-            color: #181c24;
-            font-weight: 600;
-            transition: background 0.18s, color 0.18s;
-        }
-        .doctor-card .doctor-btn.delete {
-            background: #e53935;
-            color: #fff;
-        }
-        .doctor-card .doctor-btn.delete:hover {
-            background: #b71c1c;
-        }
-        .doctor-card .doctor-btn:hover {
-            background: #1976d2;
-            color: #fff;
-        }
-        .add-doctor-form {
-            display: flex;
-            gap: 14px;
-            flex-wrap: wrap;
-            margin-bottom: 32px;
-        }
-        .add-doctor-form input {
-            padding: 12px 14px;
-            border-radius: 10px;
-            border: 1.5px solid #4fc3f7;
-            font-size: 1rem;
-            min-width: 180px;
-            background: #181c24;
-            color: #f3f6fa;
-        }
-        .add-doctor-form input::placeholder {
-            color: #b0b8c9;
-        }
-        .add-doctor-form button {
-            padding: 12px 28px;
-            border-radius: 10px;
-            border: none;
-            background: #4fc3f7;
-            color: #181c24;
-            font-size: 1.08rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.18s, color 0.18s;
-        }
-        .add-doctor-form button:hover {
-            background: #1976d2;
-            color: #fff;
-        }
-        .appointments-section {
-            margin-top: 38px;
-        }
-        .appointments-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 18px;
-            background: #181c24;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px #0006;
-        }
-        .appointments-table th, .appointments-table td {
-            padding: 12px 10px;
-            text-align: center;
-            border-bottom: 1px solid #232a36;
-        }
-        .appointments-table th {
-            background: #232a36;
-            color: #4fc3f7;
-            font-weight: 700;
-        }
-        .appointments-table td {
-            color: #f3f6fa;
-        }
-        .appointments-table tr:last-child td {
-            border-bottom: none;
-        }
-        .footer {
-            background: #181c24;
-            color: #b0b8c9;
-            text-align: center;
-            padding: 16px 0 10px 0;
-            font-size: 1.01rem;
-            letter-spacing: 0.01em;
-            margin-top: 60px;
-        }
-        .modal-bg {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: #181c24cc;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-        .modal {
-            background: #232a36;
-            border-radius: 16px;
-            box-shadow: 0 4px 24px #0008;
-            padding: 32px 24px 24px 24px;
-            min-width: 320px;
-            max-width: 98vw;
-        }
-        .modal h2 {
-            font-size: 1.25rem;
-            margin-bottom: 18px;
-            color: #4fc3f7;
-        }
-        .modal input {
-            width: 100%;
-            padding: 12px 14px;
-            border-radius: 10px;
-            border: 1.5px solid #4fc3f7;
-            font-size: 1rem;
-            margin-bottom: 16px;
-            background: #181c24;
-            color: #f3f6fa;
-        }
-        .modal input::placeholder {
-            color: #b0b8c9;
-        }
-        .modal .modal-btns {
-            display: flex;
-            gap: 12px;
-            margin-top: 10px;
-        }
-        .modal .modal-btn {
-            flex: 1 1 0;
-            padding: 10px 0;
-            border-radius: 10px;
-            border: none;
-            background: #4fc3f7;
-            color: #181c24;
-            font-size: 1.05rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.18s, color 0.18s;
-        }
-        .modal .modal-btn.cancel {
-            background: #e53935;
-            color: #fff;
-        }
-        .modal .modal-btn.cancel:hover {
-            background: #b71c1c;
-        }
-        .modal .modal-btn:hover {
-            background: #1976d2;
-            color: #fff;
-        }
-        .login-form-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 60vh;
-        }
-        .login-form {
-            background: #232a36;
-            border-radius: 18px;
-            box-shadow: 0 4px 24px #0008;
-            padding: 38px 32px 32px 32px;
-            min-width: 320px;
-            max-width: 98vw;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .login-form h2 {
-            color: #4fc3f7;
-            margin-bottom: 22px;
-            font-size: 1.35rem;
-        }
-        .login-form input {
-            width: 100%;
-            padding: 12px 14px;
-            border-radius: 10px;
-            border: 1.5px solid #4fc3f7;
-            font-size: 1rem;
-            margin-bottom: 18px;
-            background: #181c24;
-            color: #f3f6fa;
-        }
-        .login-form input::placeholder {
-            color: #b0b8c9;
-        }
-        .login-form button {
-            width: 100%;
-            padding: 12px 0;
-            border-radius: 10px;
-            border: none;
-            background: #4fc3f7;
-            color: #181c24;
-            font-size: 1.08rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.18s, color 0.18s;
-        }
-        .login-form button:hover {
-            background: #1976d2;
-            color: #fff;
-        }
-        .login-result {
-            color: #e53935;
-            margin-top: 10px;
-            min-height: 22px;
-            text-align: center;
-        }
-        @media (max-width: 700px) {
-            .admin-header { font-size: 1.3rem; padding: 18px 0 10px 0; }
-            .admin-container { padding: 16px 2px 18px 2px; }
-            .doctor-list { flex-direction: column; gap: 12px; }
-            .doctor-card { max-width: 100%; min-width: 0; padding: 14px 8px; }
-            .add-doctor-form input { min-width: 0; width: 100%; }
-            .modal { min-width: 0; padding: 18px 6px; }
-            .login-form { min-width: 0; padding: 18px 6px; }
-        }
-        body.light-theme {
-            background: linear-gradient(120deg, #f8fcff 0%, #e3f0ff 100%);
-            color: #1a2236;
-        }
-        body.light-theme .admin-header, body.light-theme .admin-container, body.light-theme .doctor-card, body.light-theme .appointments-table, body.light-theme .modal, body.light-theme .login-form, body.light-theme .footer, body.light-theme .add-doctor-form input, body.light-theme .modal input {
-            background: #fff !important;
-            color: #1a2236 !important;
-            box-shadow: 0 4px 24px #1976d21a !important;
-        }
-        body.light-theme .admin-section-title { color: #1976d2; }
-        body.light-theme .doctor-card .doctor-spec { color: #1976d2; }
-        body.light-theme .doctor-card .doctor-btn, body.light-theme .add-doctor-form button, body.light-theme .modal .modal-btn, body.light-theme .login-form button {
-            background: #1976d2 !important;
-            color: #fff !important;
-        }
-        body.light-theme .doctor-card .doctor-btn.delete, body.light-theme .modal .modal-btn.cancel {
-            background: #e53935 !important;
-            color: #fff !important;
-        }
-        body.light-theme .doctor-card .doctor-btn:hover, body.light-theme .add-doctor-form button:hover, body.light-theme .modal .modal-btn:hover, body.light-theme .login-form button:hover {
-            background: #1256a6 !important;
-        }
-        body.light-theme .add-doctor-form input, body.light-theme .modal input, body.light-theme .login-form input {
-            border: 1.5px solid #1976d2 !important;
-            color: #1a2236 !important;
-            background: #fff !important;
-        }
-        body.light-theme .add-doctor-form input::placeholder, body.light-theme .modal input::placeholder, body.light-theme .login-form input::placeholder {
-            color: #888 !important;
-        }
-        body.light-theme .footer { background: #1976d2 !important; color: #fff !important; }
-    </style>
 </head>
-<body>
-    <div class="theme-switcher" id="theme-switcher" title="Переключить тему">🌙</div>
-    <div class="admin-header">Админ-панель — Онлайн-запись к врачу</div>
-    <div id="admin-login">
-        <form id="admin-login-form" class="login-form">
-            <h2>Вход для администратора</h2>
-            <input type="text" id="admin-username" placeholder="Логин" required autocomplete="username">
-            <input type="password" id="admin-password" placeholder="Пароль" required autocomplete="current-password">
-            <button id="admin-login-btn" type="submit">Войти</button>
-            <div id="admin-login-result" class="login-result"></div>
-        </form>
+<body class="dark-theme">
+
+    <div class="container">
+        <header class="main-header">
+            <a href="index.html" class="logo-link"><h1>Healthy Me</h1></a>
+            <div class="theme-switcher" id="theme-switcher" title="Переключить тему">
+                <!-- Иконка будет меняться через JS -->
+            </div>
+        </header>
+
+        <main>
+            <!-- Login Form -->
+            <div id="login-div" class="form-container active">
+                <div class="logo-icon">🩺</div>
+                <h2>Вход для администратора</h2>
+                <form id="admin-login-form">
+                    <input type="text" id="admin-username" placeholder="Логин" required>
+                    <input type="password" id="admin-password" placeholder="Пароль" required>
+                    <button type="submit" id="login-btn" class="signup-btn">Войти</button>
+                </form>
+                <div id="login-result" class="form-result"></div>
+            </div>
+
+            <!-- Admin Panel -->
+            <div id="panel-div" class="form-container">
+                <header class="panel-header">
+                    <h2>Панель администратора</h2>
+                    <button id="logout-btn" class="logout-btn">Выйти</button>
+                </header>
+
+                <div class="panel-content">
+                    <div class="panel-section">
+                        <h3>Добавить врача</h3>
+                        <form id="add-doctor-form" class="form-columns">
+                            <input type="text" id="new-doctor-name" placeholder="ФИО врача" required>
+                            <input type="text" id="new-doctor-specialty" placeholder="Специальность" required>
+                            <button type="submit" class="signup-btn">Добавить</button>
+                        </form>
+                    </div>
+
+                    <div class="panel-section">
+                        <div class="section-header">
+                            <h3>Список врачей</h3>
+                             <button id="show-logs-btn" class="logs-btn">Показать логи</button>
+                        </div>
+                        <div id="doctor-list" class="doctor-list-container">
+                            <!-- Список врачей будет загружен сюда -->
+                        </div>
+                    </div>
+
+                    <div class="panel-section">
+                        <div id="appointments">
+                            <!-- Записи к врачу будут загружены сюда -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Healthy Me. Все права защищены.</p>
+        </footer>
     </div>
-    <div id="admin-panel" style="display:none;">
-        <div class="admin-container">
-            <div class="admin-section-title">Врачи</div>
-            <form class="add-doctor-form" id="add-doctor-form">
-                <input type="text" id="new-doctor-name" placeholder="ФИО врача" maxlength="100" required>
-                <input type="text" id="new-doctor-specialty" placeholder="Специальность" maxlength="100" required>
-                <button type="submit">Добавить</button>
+
+    <!-- Модальное окно: Редактирование врача -->
+    <div id="edit-doctor-modal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-title">Редактировать профиль</h3>
+            <form id="edit-doctor-form">
+                <input type="text" id="edit-doctor-name" placeholder="ФИО" required>
+                <input type="text" id="edit-doctor-specialty" placeholder="Специальность" required>
+                <input type="text" id="edit-doctor-username" placeholder="Логин (для входа)">
+                <div id="edit-doctor-result" class="form-result"></div>
+                <div class="modal-buttons">
+                    <button type="submit" class="signup-btn">Сохранить</button>
+                    <button type="button" id="edit-doctor-cancel" class="cancel-btn">Отмена</button>
+                </div>
             </form>
-            <div class="doctor-list" id="doctor-list"></div>
-            <div class="appointments-section" id="appointments-section" style="display:none;">
-                <div class="admin-section-title" id="appointments-title"></div>
-                <table class="appointments-table" id="appointments-table">
+        </div>
+    </div>
+
+    <!-- Модальное окно: Профиль врача (логин/пароль) -->
+    <div id="doctor-profile-modal" class="modal">
+        <div class="modal-content">
+             <span class="close-btn" id="doctor-profile-close">&times;</span>
+            <h3 class="modal-title">Данные для входа врача</h3>
+            <div id="doctor-profile-info" style="text-align: center; margin-bottom: 15px;"></div>
+            <form id="doctor-credentials-form">
+                <input type="text" id="doctor-username" placeholder="Логин врача">
+                <input type="text" id="doctor-password" placeholder="Новый пароль (оставьте пустым, чтобы не менять)">
+                <div id="doctor-profile-result" class="form-result"></div>
+                <div class="modal-buttons">
+                    <button type="submit" class="signup-btn">Сохранить</button>
+                    <button type="button" id="doctor-profile-view-apps" class="secondary-btn">Показать записи</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно: Логи -->
+    <div id="logs-modal" class="modal">
+        <div class="modal-content modal-lg">
+            <span class="close-btn" id="logs-close-btn">&times;</span>
+            <h3 class="modal-title">Системные логи</h3>
+            <select id="logs-filter" class="logs-filter">
+                <option value="">Все действия</option>
+                <option value="login">Все входы</option>
+                <option value="admin_login">Вход админа</option>
+                <option value="doctor_login">Вход врача</option>
+                <option value="fail">Неудачные входы</option>
+                <option value="add_doctor">Добавление врачей</option>
+                <option value="delete_doctor">Удаление врачей</option>
+                <option value="add_appointment">Создание записи</option>
+                <option value="delete_appointment">Отмена записи</option>
+            </select>
+            <div class="table-container">
+                <table class="logs-table">
                     <thead>
                         <tr>
-                            <th>Дата</th>
                             <th>Время</th>
-                            <th>ФИО</th>
-                            <th>СНИЛС</th>
-                            <th>Телефон</th>
                             <th>Действие</th>
+                            <th>Пользователь</th>
+                            <th>Детали</th>
                         </tr>
                     </thead>
-                    <tbody id="appointments-tbody"></tbody>
+                    <tbody id="logs-table-body">
+                        <!-- Логи будут тут -->
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
-    <div class="modal-bg" id="edit-doctor-modal" style="display:none;">
-        <div class="modal">
-            <h2>Редактировать врача</h2>
-            <form id="edit-doctor-form" class="modern-form modal-form">
-                <input type="text" id="edit-doctor-name" placeholder="ФИО врача" maxlength="100" required>
-                <input type="text" id="edit-doctor-specialty" placeholder="Специальность" maxlength="100" required>
-                <button class="modal-btn" id="save-doctor-btn" type="submit">Сохранить</button>
-                <button class="modal-btn cancel" id="cancel-edit-btn" type="button">Отмена</button>
-                <div id="edit-doctor-result" style="margin-top:10px;color:#e53935;"></div>
-            </form>
+
+     <!-- Модальное окно: Детали лога -->
+    <div id="log-details-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="log-details-close">&times;</span>
+            <h3 class="modal-title">Детали лога</h3>
+            <div id="log-details-content" class="log-details"></div>
         </div>
     </div>
-    <div class="footer">&copy; 2024 Онлайн-запись к врачу. Все права защищены.</div>
+    
+    <!-- Модальное окно подтверждения -->
+    <div id="confirm-modal" class="modal">
+        <div class="modal-content">
+            <p id="confirm-message">Вы уверены?</p>
+            <div class="modal-buttons">
+                <button id="confirm-yes" class="signup-btn">Да</button>
+                <button id="confirm-no" class="cancel-btn">Нет</button>
+            </div>
+        </div>
+    </div>
+
     <script src="app.js"></script>
     <script>
-    // Тема
-    function setTheme(theme) {
-        if (theme === 'light') {
-            document.body.classList.add('light-theme');
-            document.getElementById('theme-switcher').textContent = '☀️';
-        } else {
-            document.body.classList.remove('light-theme');
-            document.getElementById('theme-switcher').textContent = '🌙';
+        // --- Theme Switcher ---
+        const themeSwitcher = document.getElementById('theme-switcher');
+        
+        function setTheme(theme) {
+            if (theme === 'light') {
+                document.body.classList.remove('dark-theme');
+                document.body.classList.add('light-theme');
+                themeSwitcher.innerHTML = '☀️';
+            } else {
+                document.body.classList.remove('light-theme');
+                document.body.classList.add('dark-theme');
+                themeSwitcher.innerHTML = '🌙';
+            }
+            localStorage.setItem('theme', theme);
         }
-        localStorage.setItem('theme', theme);
-    }
-    document.getElementById('theme-switcher').onclick = function() {
-        const isLight = document.body.classList.toggle('light-theme');
-        setTheme(isLight ? 'light' : 'dark');
-    };
-    // При загрузке
-    (function() {
-        const theme = localStorage.getItem('theme') || 'dark';
-        setTheme(theme);
-    })();
+
+        themeSwitcher.onclick = function() {
+            const isDark = document.body.classList.contains('dark-theme');
+            setTheme(isDark ? 'light' : 'dark');
+        };
+
+        // Load theme from localStorage
+        (function() {
+            const storedTheme = localStorage.getItem('theme') || 'dark';
+            setTheme(storedTheme);
+        })();
     </script>
 </body>
 </html>
