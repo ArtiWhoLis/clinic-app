@@ -125,6 +125,7 @@
     </style>
 </head>
 <body>
+    <div class="theme-switcher" id="theme-switcher" title="Переключить тему">🌙</div>
     <div class="hero">
         <div class="hero-title">Онлайн-запись к врачу</div>
         <div class="hero-subtitle">Быстро, удобно и безопасно — выберите врача, дату и время, и запишитесь на приём за пару минут. Ваша забота о здоровье начинается здесь!</div>
@@ -158,5 +159,61 @@
     <div class="footer">
         &copy; 2024 Онлайн-запись к врачу. Все права защищены.
     </div>
+    <script>
+    // Тема
+    function setTheme(theme) {
+        if (theme === 'light') {
+            document.body.classList.add('light-theme');
+            document.getElementById('theme-switcher').textContent = '☀️';
+        } else {
+            document.body.classList.remove('light-theme');
+            document.getElementById('theme-switcher').textContent = '🌙';
+        }
+        localStorage.setItem('theme', theme);
+    }
+    document.getElementById('theme-switcher').onclick = function() {
+        const isLight = document.body.classList.toggle('light-theme');
+        setTheme(isLight ? 'light' : 'dark');
+    };
+    // При загрузке
+    (function() {
+        const theme = localStorage.getItem('theme') || 'dark';
+        setTheme(theme);
+    })();
+    </script>
+    <style>
+    .theme-switcher {
+        position: fixed;
+        top: 18px;
+        right: 24px;
+        font-size: 2rem;
+        background: none;
+        border: none;
+        color: #4fc3f7;
+        cursor: pointer;
+        z-index: 100;
+        transition: color 0.2s;
+    }
+    .theme-switcher:hover { color: #fff; }
+    body.light-theme {
+        background: linear-gradient(120deg, #f8fcff 0%, #e3f0ff 100%);
+        color: #1a2236;
+    }
+    body.light-theme .hero, body.light-theme .features, body.light-theme .footer {
+        background: none;
+        color: #1a2236;
+    }
+    body.light-theme .hero-title { color: #1976d2; }
+    body.light-theme .hero-subtitle { color: #3a4668; }
+    body.light-theme .main-btn { background: #1976d2; color: #fff; }
+    body.light-theme .main-btn:hover { background: #1256a6; }
+    body.light-theme .admin-btn { background: #fff; color: #1976d2; border: 2px solid #1976d2; }
+    body.light-theme .admin-btn:hover { background: #e3f0ff; }
+    body.light-theme .feature { background: #fff; color: #1a2236; }
+    body.light-theme .feature-icon { color: #1976d2; }
+    body.light-theme .feature-title { color: #1a2236; }
+    body.light-theme .feature-desc { color: #3a4668; }
+    body.light-theme .footer { background: #1976d2; color: #fff; }
+    </style>
 </body>
 </html>

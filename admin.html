@@ -226,6 +226,63 @@
             background: #1976d2;
             color: #fff;
         }
+        .login-form-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+        }
+        .login-form {
+            background: #232a36;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px #0008;
+            padding: 38px 32px 32px 32px;
+            min-width: 320px;
+            max-width: 98vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .login-form h2 {
+            color: #4fc3f7;
+            margin-bottom: 22px;
+            font-size: 1.35rem;
+        }
+        .login-form input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1.5px solid #4fc3f7;
+            font-size: 1rem;
+            margin-bottom: 18px;
+            background: #181c24;
+            color: #f3f6fa;
+        }
+        .login-form input::placeholder {
+            color: #b0b8c9;
+        }
+        .login-form button {
+            width: 100%;
+            padding: 12px 0;
+            border-radius: 10px;
+            border: none;
+            background: #4fc3f7;
+            color: #181c24;
+            font-size: 1.08rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.18s, color 0.18s;
+        }
+        .login-form button:hover {
+            background: #1976d2;
+            color: #fff;
+        }
+        .login-result {
+            color: #e53935;
+            margin-top: 10px;
+            min-height: 22px;
+            text-align: center;
+        }
         @media (max-width: 700px) {
             .admin-header { font-size: 1.3rem; padding: 18px 0 10px 0; }
             .admin-container { padding: 16px 2px 18px 2px; }
@@ -233,34 +290,91 @@
             .doctor-card { max-width: 100%; min-width: 0; padding: 14px 8px; }
             .add-doctor-form input { min-width: 0; width: 100%; }
             .modal { min-width: 0; padding: 18px 6px; }
+            .login-form { min-width: 0; padding: 18px 6px; }
         }
+        .theme-switcher {
+            position: fixed;
+            top: 18px;
+            right: 24px;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: #4fc3f7;
+            cursor: pointer;
+            z-index: 100;
+            transition: color 0.2s;
+        }
+        .theme-switcher:hover { color: #fff; }
+        body.light-theme {
+            background: linear-gradient(120deg, #f8fcff 0%, #e3f0ff 100%);
+            color: #1a2236;
+        }
+        body.light-theme .admin-header, body.light-theme .admin-container, body.light-theme .doctor-card, body.light-theme .appointments-table, body.light-theme .modal, body.light-theme .login-form, body.light-theme .footer, body.light-theme .add-doctor-form input, body.light-theme .modal input {
+            background: #fff !important;
+            color: #1a2236 !important;
+            box-shadow: 0 4px 24px #1976d21a !important;
+        }
+        body.light-theme .admin-section-title { color: #1976d2; }
+        body.light-theme .doctor-card .doctor-spec { color: #1976d2; }
+        body.light-theme .doctor-card .doctor-btn, body.light-theme .add-doctor-form button, body.light-theme .modal .modal-btn, body.light-theme .login-form button {
+            background: #1976d2 !important;
+            color: #fff !important;
+        }
+        body.light-theme .doctor-card .doctor-btn.delete, body.light-theme .modal .modal-btn.cancel {
+            background: #e53935 !important;
+            color: #fff !important;
+        }
+        body.light-theme .doctor-card .doctor-btn:hover, body.light-theme .add-doctor-form button:hover, body.light-theme .modal .modal-btn:hover, body.light-theme .login-form button:hover {
+            background: #1256a6 !important;
+        }
+        body.light-theme .add-doctor-form input, body.light-theme .modal input, body.light-theme .login-form input {
+            border: 1.5px solid #1976d2 !important;
+            color: #1a2236 !important;
+            background: #fff !important;
+        }
+        body.light-theme .add-doctor-form input::placeholder, body.light-theme .modal input::placeholder, body.light-theme .login-form input::placeholder {
+            color: #888 !important;
+        }
+        body.light-theme .footer { background: #1976d2 !important; color: #fff !important; }
     </style>
 </head>
 <body>
+    <div class="theme-switcher" id="theme-switcher" title="Переключить тему">🌙</div>
     <div class="admin-header">Админ-панель — Онлайн-запись к врачу</div>
-    <div class="admin-container">
-        <div class="admin-section-title">Врачи</div>
-        <form class="add-doctor-form" id="add-doctor-form">
-            <input type="text" id="new-doctor-name" placeholder="ФИО врача" maxlength="100" required>
-            <input type="text" id="new-doctor-specialty" placeholder="Специальность" maxlength="100" required>
-            <button type="submit">Добавить</button>
+    <div id="admin-login" class="login-form-container">
+        <form id="admin-login-form" class="login-form">
+            <h2>Вход для администратора</h2>
+            <input type="text" id="admin-username" placeholder="Логин" required autocomplete="username">
+            <input type="password" id="admin-password" placeholder="Пароль" required autocomplete="current-password">
+            <button id="admin-login-btn" type="submit">Войти</button>
+            <div id="admin-login-result" class="login-result"></div>
         </form>
-        <div class="doctor-list" id="doctor-list"></div>
-        <div class="appointments-section" id="appointments-section" style="display:none;">
-            <div class="admin-section-title" id="appointments-title"></div>
-            <table class="appointments-table" id="appointments-table">
-                <thead>
-                    <tr>
-                        <th>Дата</th>
-                        <th>Время</th>
-                        <th>ФИО</th>
-                        <th>СНИЛС</th>
-                        <th>Телефон</th>
-                        <th>Действие</th>
-                    </tr>
-                </thead>
-                <tbody id="appointments-tbody"></tbody>
-            </table>
+    </div>
+    <div id="admin-panel" style="display:none;">
+        <div class="admin-container">
+            <div class="admin-section-title">Врачи</div>
+            <form class="add-doctor-form" id="add-doctor-form">
+                <input type="text" id="new-doctor-name" placeholder="ФИО врача" maxlength="100" required>
+                <input type="text" id="new-doctor-specialty" placeholder="Специальность" maxlength="100" required>
+                <button type="submit">Добавить</button>
+            </form>
+            <div class="doctor-list" id="doctor-list"></div>
+            <div class="appointments-section" id="appointments-section" style="display:none;">
+                <div class="admin-section-title" id="appointments-title"></div>
+                <table class="appointments-table" id="appointments-table">
+                    <thead>
+                        <tr>
+                            <th>Дата</th>
+                            <th>Время</th>
+                            <th>ФИО</th>
+                            <th>СНИЛС</th>
+                            <th>Телефон</th>
+                            <th>Действие</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appointments-tbody"></tbody>
+                </table>
+            </div>
         </div>
     </div>
     <div class="admin-footer">&copy; 2024 Онлайн-запись к врачу. Все права защищены.</div>
@@ -277,5 +391,27 @@
         </div>
     </div>
     <script src="app.js"></script>
+    <script>
+    // Тема
+    function setTheme(theme) {
+        if (theme === 'light') {
+            document.body.classList.add('light-theme');
+            document.getElementById('theme-switcher').textContent = '☀️';
+        } else {
+            document.body.classList.remove('light-theme');
+            document.getElementById('theme-switcher').textContent = '🌙';
+        }
+        localStorage.setItem('theme', theme);
+    }
+    document.getElementById('theme-switcher').onclick = function() {
+        const isLight = document.body.classList.toggle('light-theme');
+        setTheme(isLight ? 'light' : 'dark');
+    };
+    // При загрузке
+    (function() {
+        const theme = localStorage.getItem('theme') || 'dark';
+        setTheme(theme);
+    })();
+    </script>
 </body>
 </html>
