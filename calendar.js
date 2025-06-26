@@ -48,18 +48,6 @@ class AppointmentCalendar {
                             <span class="legend-color free"></span>
                             <span>Свободно</span>
                         </div>
-                        <div class="legend-item">
-                            <span class="legend-color low"></span>
-                            <span>Мало записей</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-color medium"></span>
-                            <span>Средняя загрузка</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-color high"></span>
-                            <span>Высокая загрузка</span>
-                        </div>
                     </div>
                 </div>
                 <div class="time-selection" id="time-selection" style="display: none;">
