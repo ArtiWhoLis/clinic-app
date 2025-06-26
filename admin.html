@@ -7,15 +7,15 @@
     <link rel="stylesheet" href="style.css">
     <style>
         body {
-            background: linear-gradient(120deg, #f8fcff 0%, #e3f0ff 100%);
+            background: linear-gradient(120deg, #181c24 0%, #232a36 100%);
             min-height: 100vh;
             font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
             margin: 0;
-            color: #1a2236;
+            color: #f3f6fa;
         }
         .admin-header {
-            background: #1976d2;
-            color: #fff;
+            background: #232a36;
+            color: #4fc3f7;
             padding: 28px 0 18px 0;
             text-align: center;
             font-size: 2.1rem;
@@ -25,16 +25,16 @@
         .admin-container {
             max-width: 900px;
             margin: 32px auto 0 auto;
-            background: #fff;
+            background: #232a36;
             border-radius: 18px;
-            box-shadow: 0 4px 24px #1976d21a;
+            box-shadow: 0 4px 24px #0008;
             padding: 36px 18px 32px 18px;
         }
         .admin-section-title {
             font-size: 1.25rem;
             font-weight: 700;
             margin-bottom: 18px;
-            color: #1976d2;
+            color: #4fc3f7;
         }
         .doctor-list {
             display: flex;
@@ -43,9 +43,9 @@
             margin-bottom: 32px;
         }
         .doctor-card {
-            background: #f8fcff;
+            background: #181c24;
             border-radius: 14px;
-            box-shadow: 0 2px 10px #1976d21a;
+            box-shadow: 0 2px 10px #0006;
             padding: 22px 18px 18px 18px;
             min-width: 220px;
             max-width: 260px;
@@ -59,10 +59,11 @@
             font-size: 1.13rem;
             font-weight: 700;
             margin-bottom: 4px;
+            color: #fff;
         }
         .doctor-card .doctor-spec {
             font-size: 1.01rem;
-            color: #1976d2;
+            color: #4fc3f7;
             margin-bottom: 10px;
         }
         .doctor-card .doctor-actions {
@@ -76,19 +77,21 @@
             border-radius: 10px;
             border: none;
             cursor: pointer;
-            background: #1976d2;
-            color: #fff;
+            background: #4fc3f7;
+            color: #181c24;
             font-weight: 600;
-            transition: background 0.18s;
+            transition: background 0.18s, color 0.18s;
         }
         .doctor-card .doctor-btn.delete {
             background: #e53935;
+            color: #fff;
         }
         .doctor-card .doctor-btn.delete:hover {
             background: #b71c1c;
         }
         .doctor-card .doctor-btn:hover {
-            background: #1256a6;
+            background: #1976d2;
+            color: #fff;
         }
         .add-doctor-form {
             display: flex;
@@ -99,23 +102,29 @@
         .add-doctor-form input {
             padding: 12px 14px;
             border-radius: 10px;
-            border: 1.5px solid #bcd6f6;
+            border: 1.5px solid #4fc3f7;
             font-size: 1rem;
             min-width: 180px;
+            background: #181c24;
+            color: #f3f6fa;
+        }
+        .add-doctor-form input::placeholder {
+            color: #b0b8c9;
         }
         .add-doctor-form button {
             padding: 12px 28px;
             border-radius: 10px;
             border: none;
-            background: #1976d2;
-            color: #fff;
+            background: #4fc3f7;
+            color: #181c24;
             font-size: 1.08rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.18s;
+            transition: background 0.18s, color 0.18s;
         }
         .add-doctor-form button:hover {
-            background: #1256a6;
+            background: #1976d2;
+            color: #fff;
         }
         .appointments-section {
             margin-top: 38px;
@@ -124,27 +133,30 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 18px;
-            background: #f8fcff;
+            background: #181c24;
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 2px 10px #1976d21a;
+            box-shadow: 0 2px 10px #0006;
         }
         .appointments-table th, .appointments-table td {
             padding: 12px 10px;
             text-align: center;
-            border-bottom: 1px solid #e3f0ff;
+            border-bottom: 1px solid #232a36;
         }
         .appointments-table th {
-            background: #e3f0ff;
-            color: #1976d2;
+            background: #232a36;
+            color: #4fc3f7;
             font-weight: 700;
+        }
+        .appointments-table td {
+            color: #f3f6fa;
         }
         .appointments-table tr:last-child td {
             border-bottom: none;
         }
         .admin-footer {
-            background: #1976d2;
-            color: #fff;
+            background: #181c24;
+            color: #b0b8c9;
             text-align: center;
             padding: 16px 0 10px 0;
             font-size: 1.01rem;
@@ -154,16 +166,16 @@
         .modal-bg {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: #1a2236cc;
+            background: #181c24cc;
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 1000;
         }
         .modal {
-            background: #fff;
+            background: #232a36;
             border-radius: 16px;
-            box-shadow: 0 4px 24px #1976d21a;
+            box-shadow: 0 4px 24px #0008;
             padding: 32px 24px 24px 24px;
             min-width: 320px;
             max-width: 98vw;
@@ -171,15 +183,20 @@
         .modal h2 {
             font-size: 1.25rem;
             margin-bottom: 18px;
-            color: #1976d2;
+            color: #4fc3f7;
         }
         .modal input {
             width: 100%;
             padding: 12px 14px;
             border-radius: 10px;
-            border: 1.5px solid #bcd6f6;
+            border: 1.5px solid #4fc3f7;
             font-size: 1rem;
             margin-bottom: 16px;
+            background: #181c24;
+            color: #f3f6fa;
+        }
+        .modal input::placeholder {
+            color: #b0b8c9;
         }
         .modal .modal-btns {
             display: flex;
@@ -191,21 +208,23 @@
             padding: 10px 0;
             border-radius: 10px;
             border: none;
-            background: #1976d2;
-            color: #fff;
+            background: #4fc3f7;
+            color: #181c24;
             font-size: 1.05rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.18s;
+            transition: background 0.18s, color 0.18s;
         }
         .modal .modal-btn.cancel {
             background: #e53935;
+            color: #fff;
         }
         .modal .modal-btn.cancel:hover {
             background: #b71c1c;
         }
         .modal .modal-btn:hover {
-            background: #1256a6;
+            background: #1976d2;
+            color: #fff;
         }
         @media (max-width: 700px) {
             .admin-header { font-size: 1.3rem; padding: 18px 0 10px 0; }
