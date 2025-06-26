@@ -10,7 +10,7 @@
     <div class="theme-switcher" id="theme-switcher">☀️</div>
     <div class="main-container">
         <h1 class="main-title">Запись к врачу</h1>
-        <button class="role-btn" id="my-appointments-btn" style="margin-bottom: 18px;">Мои записи</button>
+        <button class="role-btn" id="my-appointments-btn">Мои записи</button>
         
         <!-- Выбор врача -->
         <div class="doctor-selection">
@@ -21,20 +21,20 @@
         </div>
         
         <!-- Календарь записи -->
-        <div id="calendar-section" style="display: none;">
+        <div id="calendar-section">
             <h3>Выберите дату и время</h3>
             <div id="calendar-container"></div>
         </div>
         
-        <button class="back-arrow" id="patient-back-arrow" style="display:block;position:absolute;top:24px;left:24px;background:none;border:none;cursor:pointer;font-size:2rem;z-index:10;" title="Назад">&#8592;</button>
+        <button class="back-arrow" id="patient-back-arrow" title="Назад">&#8592;</button>
     </div>
 
     <!-- Модальное окно для записи -->
-    <div id="modal-bg" class="modal-bg" style="display:none;">
+    <div id="modal-bg" class="modal-bg">
         <div class="modal">
             <h2>Запись к врачу</h2>
-            <div id="modal-info" style="text-align:center; margin-bottom:18px; display:none;"></div>
-            <form id="signup-form" class="modern-form" style="max-width: 320px; margin: auto;">
+            <div id="modal-info" class="modal-info"></div>
+            <form id="signup-form" class="modern-form">
                 <div class="form-group flex-group">
                     <span class="input-icon">&#128100;</span>
                     <input type="text" id="fio" class="form-input" placeholder=" " required>
@@ -66,7 +66,7 @@
     </div>
 
     <!-- Toast-уведомление -->
-    <div id="toast" class="toast" style="display:none;"></div>
+    <div id="toast" class="toast"></div>
 
     <script src="calendar.js"></script>
     <script src="app.js"></script>

@@ -67,7 +67,7 @@ body {
 }
 
 .main-container {
-    max-width: 720px;
+    max-width: 420px;
     margin: 80px auto 40px auto;
     background: var(--main-bg-color);
     padding: 40px 24px;
@@ -79,11 +79,46 @@ body {
 }
 
 .main-title {
-    font-size: 2.5rem;
-    margin-bottom: 40px;
+    font-size: 2.6rem;
+    margin-bottom: 18px;
     color: var(--primary-color);
     letter-spacing: 0.5px;
     font-weight: 600;
+}
+
+.main-desc {
+    font-size: 1.18rem;
+    color: #888;
+    margin-bottom: 32px;
+}
+
+.role-buttons {
+    gap: 32px;
+    display: flex;
+    flex-direction: column;
+}
+
+.role-btn.patient-btn, .role-btn.admin-btn {
+    font-size: 1.25rem;
+    padding: 22px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: box-shadow 0.2s;
+    box-shadow: 0 2px 12px rgba(63,81,181,0.08);
+}
+
+.role-icon {
+    font-size: 1.7em;
+}
+
+.footer-desc {
+    margin-top: 48px;
+    color: #aaa;
+    font-size: 1.05rem;
+    text-align: center;
+    opacity: 0.7;
 }
 
 .role-btn, .signup-btn, .back-btn {
@@ -440,37 +475,6 @@ body {
     box-sizing: border-box;
 }
 
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 200px;
-    height: 100vh;
-    background: #1976d2;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 40px;
-    z-index: 100;
-    box-shadow: 2px 0 12px rgba(25, 118, 210, 0.08);
-}
-.sidebar-btn {
-    width: 160px;
-    margin: 12px 0;
-    padding: 14px 0;
-    border: none;
-    border-radius: 8px;
-    background: #fff;
-    color: #1976d2;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s;
-}
-.sidebar-btn:hover {
-    background: #1565c0;
-    color: #fff;
-}
 @media (max-width: 700px) {
     .theme-switcher {
         position: fixed;
@@ -641,28 +645,6 @@ body {
         font-size: 1.05rem;
         border-radius: 10px;
     }
-}
-
-.option-busy {
-    color: #fff !important;
-    background: #f44336 !important;
-    font-weight: bold;
-}
-
-.option-divider {
-    background: #e0e0e0 !important;
-    color: #888 !important;
-    font-style: italic;
-    font-size: 0.95em;
-}
-
-.time-hint {
-    display: block;
-    margin-top: 4px;
-    margin-bottom: 12px;
-    color: #f44336;
-    font-size: 0.98em;
-    font-style: italic;
 }
 
 .flex-group {
@@ -1365,4 +1347,154 @@ body.dark-theme .time-slot {
 
 body.dark-theme .time-slot.busy {
     background: #424242;
+}
+
+#my-appointments-btn {
+    margin-bottom: 18px;
+}
+
+/* Для admin.html */
+#admin-back-arrow {
+    display: block;
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 2rem;
+    z-index: 10;
+}
+
+#admin-login-form {
+    max-width: 320px;
+    margin: auto;
+}
+
+#admin-login-result {
+    margin-top: 16px;
+}
+
+#admin-panel {
+    /* display: none; */
+}
+
+#doctor-management {
+    margin-bottom: 40px;
+}
+
+.add-doctor-form {
+    max-width: 480px;
+    margin: 24px auto;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+.form-group.grow {
+    margin: 0;
+    flex-grow: 1;
+}
+.signup-btn.add-btn {
+    margin: 0;
+    width: auto;
+    flex-shrink: 0;
+}
+
+#show-logs-btn {
+    margin-bottom: 18px;
+}
+
+.modal-narrow {
+    min-width: 340px;
+    max-width: 400px;
+}
+.modal-wide {
+    min-width: 340px;
+    max-width: 700px;
+    max-height: 90vh;
+    overflow: auto;
+}
+.modal-details {
+    min-width: 320px;
+    max-width: 480px;
+}
+.modal-title {
+    margin-bottom: 10px;
+}
+.modal-filter {
+    margin-bottom: 10px;
+}
+.modal-filter select {
+    margin-left: 8px;
+}
+.modal-btn {
+    width: 100%;
+    margin-top: 10px;
+}
+.blue-btn {
+    background: #1976d2;
+}
+.modal-result {
+    margin-top: 10px;
+    color: #1976d2;
+}
+.modal-form {
+    margin-top: 18px;
+}
+.modal-confirm {
+    min-width: 320px;
+    max-width: 360px;
+    text-align: center;
+}
+.modal-confirm-text {
+    margin-bottom: 18px;
+    font-size: 1.1rem;
+}
+.modal-half {
+    width: 48%;
+}
+.signup-btn.modal-half {
+    margin-right: 2%;
+}
+
+#log-details-content.modal-details-content {
+    word-break: break-all;
+}
+
+#my-appointments-list {
+    margin-top: 20px;
+}
+#my-back-arrow {
+    display: block;
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 2rem;
+    z-index: 10;
+}
+
+#patient-back-arrow {
+    display: block;
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 2rem;
+    z-index: 10;
+}
+#modal-info.modal-info {
+    text-align: center;
+    margin-bottom: 18px;
+    display: none;
+}
+#modal-bg.modal-bg {
+    display: none;
+}
+#toast.toast {
+    display: none;
 }

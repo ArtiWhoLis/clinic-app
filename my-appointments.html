@@ -19,15 +19,15 @@
             </div>
             <button type="submit" class="signup-btn">Показать записи</button>
         </form>
-        <div id="my-appointments-list" style="margin-top: 20px;"></div>
-        <button class="back-arrow" id="my-back-arrow" style="display:block;position:absolute;top:24px;left:24px;background:none;border:none;cursor:pointer;font-size:2rem;z-index:10;" title="Назад">&#8592;</button>
+        <div id="my-appointments-list"></div>
+        <button class="back-arrow" id="my-back-arrow" title="Назад">&#8592;</button>
     </div>
     <!-- Модалка подтверждения -->
-    <div id="confirm-modal" class="modal-bg" style="display:none;">
-      <div class="modal" style="min-width:320px;max-width:360px;text-align:center;">
-        <div id="confirm-modal-text" style="margin-bottom:18px;font-size:1.1rem;"></div>
-        <button id="confirm-yes" class="signup-btn" style="width:48%;margin-right:2%;">Да</button>
-        <button id="confirm-no" class="role-btn back-btn" style="width:48%;">Нет</button>
+    <div id="confirm-modal" class="modal-bg">
+      <div class="modal modal-confirm">
+        <div id="confirm-modal-text" class="modal-confirm-text"></div>
+        <button id="confirm-yes" class="signup-btn modal-half">Да</button>
+        <button id="confirm-no" class="role-btn back-btn modal-half">Нет</button>
       </div>
     </div>
     <script src="app.js"></script>

@@ -117,7 +117,7 @@ if (window.location.pathname.endsWith('patient.html')) {
                         <div class="doctor-name">${doc.name}</div>
                         <div class="doctor-specialty">${doc.specialty || '-'}</div>
                         <div class="doctor-stats">
-                            <span>📅 ${doc.appointmentCount || 0} записей</span>
+                            <span>📅 ${doc.appointmentcount || 0} записей</span>
                         </div>
                     `;
                     
@@ -151,10 +151,10 @@ if (window.location.pathname.endsWith('patient.html')) {
         calendar = new AppointmentCalendar(calendarContainer, {
             doctorId: doctor.id,
             onDateSelect: (date) => {
-                console.log('Выбрана дата:', date);
+                // удалён console.log('Выбрана дата:', date);
             },
             onTimeSelect: (date, time) => {
-                console.log('Выбрано время:', date, time);
+                // удалён console.log('Выбрано время:', date, time);
                 openAppointmentModal(doctor, date, time);
             }
         });
@@ -509,7 +509,7 @@ if (window.location.pathname.endsWith('admin.html')) {
                 docContainer.style.margin = '8px 0';
 
                 const btn = document.createElement('button');
-                btn.innerHTML = `${doc.name} (${doc.specialty}) <span style="font-weight:normal;opacity:0.8;"> - ${doc.appointmentCount} записей</span>`;
+                btn.innerHTML = `${doc.name} (${doc.specialty}) <span style="font-weight:normal;opacity:0.8;"> - ${doc.appointmentcount || 0} записей</span>`;
                 btn.className = 'role-btn';
                 btn.style.margin = '0';
                 btn.style.width = 'auto';
@@ -531,7 +531,6 @@ if (window.location.pathname.endsWith('admin.html')) {
                 const deleteBtn = document.createElement('button');
                 deleteBtn.textContent = 'Удалить';
                 deleteBtn.className = 'delete-btn';
-                deleteBtn.style.marginLeft = '16px';
                 deleteBtn.onclick = () => deleteDoctor(doc.id);
 
                 docContainer.appendChild(btn);
