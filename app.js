@@ -117,7 +117,7 @@ if (window.location.pathname.endsWith('patient.html')) {
                         <div class="doctor-name">${doc.name}</div>
                         <div class="doctor-specialty">${doc.specialty || '-'}</div>
                         <div class="doctor-stats">
-                            <span>📅 ${doc.appointmentcount || 0} записей</span>
+                            <span>📅 ${doc.appointmentCount || 0} записей</span>
                         </div>
                     `;
                     
@@ -510,7 +510,7 @@ if (window.location.pathname.endsWith('admin.html')) {
                 docContainer.style.margin = '8px 0';
 
                 const btn = document.createElement('button');
-                btn.innerHTML = `${doc.name} (${doc.specialty}) <span style="font-weight:normal;opacity:0.8;"> - ${doc.appointmentcount || 0} записей</span>`;
+                btn.innerHTML = `${doc.name} (${doc.specialty}) <span style="font-weight:normal;opacity:0.8;"> - ${doc.appointmentCount || 0} записей</span>`;
                 btn.className = 'role-btn';
                 btn.style.margin = '0';
                 btn.style.width = 'auto';
