@@ -33,6 +33,22 @@ body.dark-theme {
     --table-row-hover-bg: #2a2a2a;
 }
 
+body.light-theme {
+    --bg-color: #fff;
+    --main-bg-color: #f4f6fa;
+    --primary-color: #3f51b5;
+    --primary-hover-color: #303f9f;
+    --accent-color: #4CAF50;
+    --accent-hover-color: #43a047;
+    --text-color: #333;
+    --text-color-light: #fff;
+    --border-color: #e0e0e0;
+    --shadow-color: rgba(63, 81, 181, 0.1);
+    --table-header-bg: #3f51b5;
+    --table-row-hover-bg: #f5f5f5;
+    --font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+}
+
 body {
     background: linear-gradient(120deg, #181c24 0%, #232a36 100%);
     min-height: 100vh;
@@ -2047,4 +2063,52 @@ body.dark-theme .time-slot.busy {
         padding: 8px 12px;
         font-size: 0.98rem;
     }
+}
+
+body.light-theme .time-selection {
+    background: #fff;
+    color: #1a2236;
+    box-shadow: 0 8px 32px 0 #1976d233, 0 1.5px 8px 0 #1976d211;
+    border: 1.5px solid #1976d211;
+}
+body.light-theme .time-selection h4 {
+    color: #1976d2;
+}
+body.light-theme .time-filter-btn {
+    background: #e3f0ff;
+    color: #1976d2;
+    border-color: #1976d2;
+}
+body.light-theme .time-filter-btn.active,
+body.light-theme .time-filter-btn:hover {
+    background: #1976d2;
+    color: #fff;
+    border-color: #1256a6;
+}
+body.light-theme .time-slot {
+    background: #e3f0ff;
+    color: #1a2236;
+    border-color: transparent;
+}
+body.light-theme .time-slot.selected {
+    background: #4fc3f7;
+    color: #fff;
+    border-color: #1976d2;
+}
+body.light-theme .time-slot.busy {
+    background: #f5f5f5;
+    color: #bbb;
+    border-color: #ccc;
+}
+body.light-theme .time-slot.time-morning {
+    border-left: 4px solid #4caf50;
+}
+body.light-theme .time-slot.time-afternoon {
+    border-left: 4px solid #ff9800;
+}
+body.light-theme .time-slot.time-evening {
+    border-left: 4px solid #9c27b0;
+}
+body.light-theme .no-times {
+    color: #888;
 }
