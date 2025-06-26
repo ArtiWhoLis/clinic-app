@@ -1182,98 +1182,115 @@ body {
 
 /* Выбор времени */
 .time-selection {
-    background: var(--main-bg-color);
-    border-radius: 16px;
-    padding: 24px 12px 12px 12px;
-    box-shadow: 0 4px 20px var(--shadow-color);
+    background: rgba(40, 44, 52, 0.92);
+    border-radius: 22px;
+    padding: 32px 24px 20px 24px;
+    box-shadow: 0 8px 32px 0 rgba(63,81,181,0.18), 0 1.5px 8px 0 rgba(0,0,0,0.10);
     margin-top: 12px;
+    min-width: 340px;
+    max-width: 520px;
+    animation: fadeInUp 0.4s;
+    border: 1.5px solid rgba(63,81,181,0.10);
+    transition: background 0.3s, box-shadow 0.3s;
 }
 
 .time-selection h4 {
-    margin: 0 0 16px 0;
+    margin: 0 0 18px 0;
     color: var(--primary-color);
-    font-size: 1.2rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    text-align: left;
 }
 
 .time-filters {
     display: flex;
-    gap: 8px;
-    margin-bottom: 20px;
+    gap: 12px;
+    margin-bottom: 22px;
     flex-wrap: wrap;
+    justify-content: flex-start;
 }
 
 .time-filter-btn {
-    padding: 8px 16px;
+    padding: 8px 22px;
+    border-radius: 22px;
     border: 2px solid var(--primary-color);
-    background: transparent;
+    background: rgba(63,81,181,0.07);
     color: var(--primary-color);
-    border-radius: 20px;
+    font-weight: 500;
+    font-size: 1rem;
     cursor: pointer;
-    transition: all 0.2s;
-    font-size: 0.9rem;
+    transition: background 0.18s, color 0.18s, border-color 0.18s, box-shadow 0.18s;
+    box-shadow: 0 1.5px 8px 0 rgba(63,81,181,0.04);
+    outline: none;
 }
-
 .time-filter-btn:hover,
 .time-filter-btn.active {
     background: var(--primary-color);
-    color: white;
+    color: #fff;
+    border-color: var(--primary-hover-color);
+    box-shadow: 0 2px 12px 0 rgba(63,81,181,0.10);
 }
 
 .time-slots {
     display: flex;
     flex-direction: row;
-    gap: 10px;
+    gap: 16px;
     overflow-x: auto;
-    padding-bottom: 6px;
+    padding-bottom: 8px;
     scrollbar-width: thin;
     scrollbar-color: var(--primary-color) var(--bg-color);
+    margin-top: 6px;
 }
 
 .time-slot {
     min-width: 90px;
     flex: 0 0 auto;
-    padding: 12px 8px;
-    border: 2px solid var(--border-color);
-    background: var(--bg-color);
-    border-radius: 10px;
+    padding: 16px 0;
+    border: none;
+    border-radius: 22px;
+    background: rgba(63,81,181,0.09);
+    color: var(--text-color);
+    font-size: 1.08rem;
+    font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s;
-    font-size: 1rem;
+    transition: background 0.18s, color 0.18s, box-shadow 0.18s, border 0.18s, transform 0.18s;
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 4px;
+    box-shadow: 0 1.5px 8px 0 rgba(63,81,181,0.04);
+    outline: none;
+    border: 2px solid transparent;
 }
-
 .time-slot:hover:not(.busy) {
-    border-color: var(--primary-color);
     background: var(--primary-color);
-    color: white;
-    transform: translateY(-2px);
+    color: #fff;
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 4px 16px 0 rgba(63,81,181,0.13);
+    border-color: var(--primary-hover-color);
 }
-
 .time-slot.selected {
     background: var(--accent-color);
+    color: #fff;
     border-color: var(--accent-hover-color);
-    color: white;
-    transform: scale(1.05);
+    transform: scale(1.08);
+    box-shadow: 0 4px 18px 0 rgba(76,175,80,0.13);
 }
-
 .time-slot.busy {
     opacity: 0.5;
     cursor: not-allowed;
-    background: var(--border-color);
+    background: #424242;
+    color: #bbb;
+    border-color: #333;
 }
-
 .time-slot.time-morning {
     border-left: 4px solid #4caf50;
 }
-
 .time-slot.time-afternoon {
     border-left: 4px solid #ff9800;
 }
-
 .time-slot.time-evening {
     border-left: 4px solid #9c27b0;
 }
@@ -1290,51 +1307,26 @@ body {
     grid-column: 1 / -1;
 }
 
-/* Адаптивность для календаря */
-@media (max-width: 600px) {
-    .calendar-container {
-        padding: 16px;
-    }
-    
-    .calendar-title {
-        font-size: 1.2rem;
-    }
-    
-    .calendar-nav-btn {
-        width: 36px;
-        height: 36px;
-        font-size: 16px;
-    }
-    
-    .calendar-day {
-        font-size: 0.9rem;
-    }
-    
-    .calendar-legend {
+@media (max-width: 900px) {
+    .calendar-flex-row {
+        flex-direction: column;
         gap: 12px;
+        align-items: stretch;
     }
-    
-    .legend-item {
-        font-size: 0.8rem;
+    .calendar-container, .time-selection {
+        max-width: 100vw;
     }
-    
-    .time-filters {
-        gap: 6px;
+    .time-selection {
+        min-width: unset;
+        padding: 18px 4px 10px 4px;
     }
-    
-    .time-filter-btn {
-        padding: 6px 12px;
-        font-size: 0.8rem;
-    }
-    
     .time-slots {
-        gap: 6px;
+        gap: 8px;
     }
-    
     .time-slot {
         min-width: 70px;
-        font-size: 0.92rem;
-        padding: 8px 4px;
+        font-size: 0.98rem;
+        padding: 10px 0;
     }
 }
 
