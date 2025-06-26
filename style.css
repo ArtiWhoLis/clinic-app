@@ -2120,21 +2120,68 @@ body.light-theme .doctor-card {
 }
 body.light-theme .doctor-card.selected {
     border-color: #1976d2;
-    background: linear-gradient(135deg, #4fc3f7 0%, #1976d2 100%);
-    color: #fff;
-}
-body.light-theme .doctor-card .doctor-name {
+    background: linear-gradient(135deg, #e3f0ff 0%, #bcdcff 100%);
     color: #1976d2;
 }
-body.light-theme .doctor-card.selected .doctor-name,
-body.light-theme .doctor-card.selected .doctor-specialty {
-    color: #fff;
+body.light-theme .doctor-card.selected .doctor-name {
+    color: #1976d2;
 }
-body.light-theme .doctor-card .doctor-specialty {
+body.light-theme .doctor-card.selected .doctor-specialty {
     color: #3a4668;
     opacity: 0.8;
 }
-body.light-theme .doctor-card .doctor-stats {
+body.light-theme .doctor-card.selected .doctor-stats {
     color: #3a4668;
     opacity: 0.7;
+}
+
+body.light-theme .main-container,
+body.light-theme #admin-login,
+body.light-theme #admin-panel,
+body.light-theme #doctor-management,
+body.light-theme #admin-doctor-list > div,
+body.light-theme .modal {
+    background: #fff !important;
+    color: #1a2236 !important;
+    box-shadow: 0 4px 24px #1976d21a !important;
+}
+body.light-theme .admin-topbar {
+    background: #f4f6fa;
+    color: #1976d2;
+    box-shadow: 0 2px 8px #1976d233;
+}
+body.light-theme .admin-topbar-title {
+    color: #1976d2;
+}
+body.light-theme .admin-topbar .back-arrow {
+    color: #1976d2;
+}
+body.light-theme .role-btn,
+body.light-theme .signup-btn,
+body.light-theme .back-btn,
+body.light-theme .logs-btn {
+    background: #1976d2 !important;
+    color: #fff !important;
+}
+body.light-theme .role-btn:hover,
+body.light-theme .signup-btn:hover,
+body.light-theme .back-btn:hover,
+body.light-theme .logs-btn:hover {
+    background: #1256a6 !important;
+    color: #fff !important;
+}
+body.light-theme .delete-btn {
+    background: #e53935 !important;
+    color: #fff !important;
+}
+body.light-theme .delete-btn:hover {
+    background: #b71c1c !important;
+}
+body.light-theme .profile-icon-btn {
+    color: #1976d2 !important;
+    background: #e3f0ff !important;
+}
+body.light-theme .profile-icon-btn:hover {
+    color: #fff !important;
+    background: #1976d2 !important;
 }
