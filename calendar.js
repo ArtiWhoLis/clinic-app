@@ -24,55 +24,54 @@ class AppointmentCalendar {
     
     render() {
         this.container.innerHTML = `
-            <div class="calendar-container">
-                <div class="calendar-header">
-                    <button class="calendar-nav-btn" id="prev-month">‹</button>
-                    <h3 class="calendar-title" id="calendar-title"></h3>
-                    <button class="calendar-nav-btn" id="next-month">›</button>
+            <div class="calendar-flex-row">
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button class="calendar-nav-btn" id="prev-month">‹</button>
+                        <h3 class="calendar-title" id="calendar-title"></h3>
+                        <button class="calendar-nav-btn" id="next-month">›</button>
+                    </div>
+                    <div class="calendar-grid">
+                        <div class="calendar-weekdays">
+                            <div>Пн</div>
+                            <div>Вт</div>
+                            <div>Ср</div>
+                            <div>Чт</div>
+                            <div>Пт</div>
+                            <div>Сб</div>
+                            <div>Вс</div>
+                        </div>
+                        <div class="calendar-days" id="calendar-days"></div>
+                    </div>
+                    <div class="calendar-legend">
+                        <div class="legend-item">
+                            <span class="legend-color free"></span>
+                            <span>Свободно</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color low"></span>
+                            <span>Мало записей</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color medium"></span>
+                            <span>Средняя загрузка</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color high"></span>
+                            <span>Высокая загрузка</span>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="calendar-grid">
-                    <div class="calendar-weekdays">
-                        <div>Пн</div>
-                        <div>Вт</div>
-                        <div>Ср</div>
-                        <div>Чт</div>
-                        <div>Пт</div>
-                        <div>Сб</div>
-                        <div>Вс</div>
+                <div class="time-selection" id="time-selection" style="display: none;">
+                    <h4>Выберите время</h4>
+                    <div class="time-filters">
+                        <button class="time-filter-btn active" data-filter="">Все</button>
+                        <button class="time-filter-btn" data-filter="morning">Утро (9:00-12:00)</button>
+                        <button class="time-filter-btn" data-filter="afternoon">День (12:00-18:00)</button>
+                        <button class="time-filter-btn" data-filter="evening">Вечер (18:00-21:00)</button>
                     </div>
-                    <div class="calendar-days" id="calendar-days"></div>
+                    <div class="time-slots" id="time-slots"></div>
                 </div>
-                
-                <div class="calendar-legend">
-                    <div class="legend-item">
-                        <span class="legend-color free"></span>
-                        <span>Свободно</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-color low"></span>
-                        <span>Мало записей</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-color medium"></span>
-                        <span>Средняя загрузка</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-color high"></span>
-                        <span>Высокая загрузка</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="time-selection" id="time-selection" style="display: none;">
-                <h4>Выберите время</h4>
-                <div class="time-filters">
-                    <button class="time-filter-btn active" data-filter="">Все</button>
-                    <button class="time-filter-btn" data-filter="morning">Утро (9:00-12:00)</button>
-                    <button class="time-filter-btn" data-filter="afternoon">День (12:00-18:00)</button>
-                    <button class="time-filter-btn" data-filter="evening">Вечер (18:00-21:00)</button>
-                </div>
-                <div class="time-slots" id="time-slots"></div>
             </div>
         `;
         
