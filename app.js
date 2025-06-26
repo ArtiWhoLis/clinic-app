@@ -445,41 +445,51 @@ if (window.location.pathname.endsWith('admin.html')) {
         const username = document.getElementById('admin-username').value;
         const password = document.getElementById('admin-password').value;
         const loginBtn = document.getElementById('admin-login-btn');
-        const origText = loginBtn.textContent;
-        loginBtn.innerHTML = 'Вход... <span class="button-spinner"></span>';
+        loginBtn.innerHTML = 'Вход...';
         loginBtn.disabled = true;
         loginResult.textContent = '';
 
-        fetch('/api/admin/login', {
+        fetch(`/api/admin/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password }),
+            body: JSON.stringify({ username, password })
         })
         .then(res => res.json())
         .then(data => {
-            loginBtn.innerHTML = origText;
+            loginBtn.innerHTML = 'Войти';
             loginBtn.disabled = false;
             if (data.success) {
                 token = data.token;
-                loginDiv.classList.remove('active');
-                panelDiv.classList.add('active');
+                loginDiv.style.display = 'none';
+                panelDiv.style.display = 'block';
                 loadDoctors();
-            } else if (data.doctor) {
-                token = data.token;
-                const docData = data.doctor;
-                loginDiv.classList.remove('active');
-                panelDiv.classList.add('active');
-                // Скрываем все кроме записей
-                panelDiv.querySelectorAll('.panel-section').forEach(el => el.style.display = 'none');
-                const appsSection = panelDiv.querySelector('#appointments').parentElement;
-                appsSection.style.display = 'block';
-                loadAppointments(docData.doctorId, docData.name, docData.specialty, true);
             } else {
-                loginResult.textContent = data.message || 'Ошибка входа';
+                // Если не супер-админ, пробуем как врач
+                fetch('/api/doctor/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                })
+                .then(res => res.json())
+                .then(docData => {
+                    if (docData.success) {
+                        loginDiv.style.display = 'none';
+                        panelDiv.style.display = 'block';
+                        document.getElementById('doctor-management').style.display = 'none';
+                        document.getElementById('admin-doctor-list').style.display = 'none';
+                        var docListTitle = document.getElementById('admin-doctor-list-title');
+                        if (docListTitle) docListTitle.style.display = 'none';
+                        // Скрываем кнопку Логи для обычных врачей
+                        if (showLogsBtn) showLogsBtn.style.display = 'none';
+                        loadAppointments(docData.doctorId, docData.name, docData.specialty, true);
+                    } else {
+                        loginResult.textContent = docData.message || 'Ошибка входа';
+                    }
+                });
             }
         })
         .catch(() => {
-            loginBtn.innerHTML = origText;
+            loginBtn.innerHTML = 'Войти';
             loginBtn.disabled = false;
             loginResult.textContent = 'Ошибка соединения';
         });
@@ -665,8 +675,8 @@ if (window.location.pathname.endsWith('admin.html')) {
     if (logoutBtn) {
         logoutBtn.onclick = () => {
             token = null;
-            panelDiv.classList.remove('active');
-            loginDiv.classList.add('active');
+            panelDiv.style.display = 'none';
+            loginDiv.style.display = 'block';
             document.getElementById('admin-username').value = '';
             document.getElementById('admin-password').value = '';
             loginResult.textContent = '';

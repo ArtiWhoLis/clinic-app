@@ -3,190 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Админ-панель — Healthy Me</title>
+    <title>Админ-панель</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="dark-theme">
-
-    <div class="container">
-        <header class="main-header">
-            <a href="index.html" class="logo-link"><h1>Healthy Me</h1></a>
-            <div class="theme-switcher" id="theme-switcher" title="Переключить тему">
-                <!-- Иконка будет меняться через JS -->
-            </div>
-        </header>
-
-        <main>
-            <!-- Login Form -->
-            <div id="login-div" class="form-container">
-                <div class="logo-icon">🩺</div>
-                <h2>Вход для администратора</h2>
-                <form id="admin-login-form">
-                    <input type="text" id="admin-username" placeholder="Логин" required>
-                    <input type="password" id="admin-password" placeholder="Пароль" required>
-                    <button type="submit" id="login-btn" class="signup-btn">Войти</button>
+<body>
+    <div class="theme-switcher" id="theme-switcher">☀️</div>
+    <div class="main-container">
+        <button class="back-arrow" id="admin-back-arrow" style="display:block;position:absolute;top:24px;left:24px;background:none;border:none;cursor:pointer;font-size:2rem;z-index:10;" title="Назад">&#8592;</button>
+        <h1 class="main-title">Админ-панель</h1>
+        <div id="admin-login">
+            <form id="admin-login-form" class="modern-form" style="max-width: 320px; margin: auto;">
+                <div class="form-group">
+                    <input type="text" id="admin-username" class="form-input" placeholder=" " required>
+                    <label for="admin-username" class="form-label">Логин</label>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="admin-password" class="form-input" placeholder=" " required>
+                    <label for="admin-password" class="form-label">Пароль</label>
+                </div>
+                <button id="admin-login-btn" type="submit" class="role-btn">Войти</button>
+            </form>
+            <div id="admin-login-result" style="margin-top: 16px;"></div>
+        </div>
+        <div id="admin-panel" style="display:none;">
+            <div id="doctor-management" style="margin-bottom: 40px;">
+                <h3>Управление врачами</h3>
+                <form id="add-doctor-form" class="modern-form" style="max-width: 480px; margin: 24px auto; display: flex; gap: 16px; align-items: center;">
+                    <div class="form-group" style="margin: 0; flex-grow: 1;">
+                        <input type="text" id="new-doctor-name" class="form-input" placeholder=" " required pattern="[А-Яа-яA-Za-zЁё.\s]+" maxlength="40" title="Только буквы, точки и пробелы, максимум 40 символов">
+                        <label for="new-doctor-name" class="form-label">ФИО врача</label>
+                    </div>
+                    <div class="form-group" style="margin: 0; flex-grow: 1;">
+                        <input type="text" id="new-doctor-specialty" class="form-input" placeholder=" " required>
+                        <label for="new-doctor-specialty" class="form-label">Специальность</label>
+                    </div>
+                    <button type="submit" class="signup-btn" style="margin: 0; width: auto; flex-shrink: 0;">Добавить</button>
                 </form>
-                <div id="login-result" class="form-result"></div>
             </div>
-
-            <!-- Admin Panel -->
-            <div id="panel-div" class="form-container" style="display: none;">
-                <header class="panel-header">
-                    <h2>Панель администратора</h2>
-                    <button id="logout-btn" class="logout-btn">Выйти</button>
-                </header>
-
-                <div class="panel-content">
-                    <div class="panel-section">
-                        <h3>Добавить врача</h3>
-                        <form id="add-doctor-form" class="form-columns">
-                            <input type="text" id="new-doctor-name" placeholder="ФИО врача" required>
-                            <input type="text" id="new-doctor-specialty" placeholder="Специальность" required>
-                            <button type="submit" class="signup-btn">Добавить</button>
-                        </form>
+            
+            <h3 id="admin-doctor-list-title">Выберите доктора для просмотра записей</h3>
+            <div id="admin-doctor-list"></div>
+            <div id="admin-appointments"></div>
+            <button class="role-btn back-btn" id="admin-logout-btn">Выйти</button>
+            <button class="role-btn" id="show-logs-btn" style="margin-bottom:18px;">Логи</button>
+        </div>
+        <div id="doctor-profile-modal" class="modal-bg" style="display:none;">
+            <div class="modal" style="min-width:340px;max-width:400px;">
+                <h2>Профиль врача</h2>
+                <div id="doctor-profile-info"></div>
+                <form id="doctor-credentials-form" class="modern-form" style="margin-top:18px;">
+                    <div class="form-group">
+                        <input type="text" id="doctor-username" class="form-input" placeholder=" ">
+                        <label for="doctor-username" class="form-label">Логин</label>
                     </div>
-
-                    <div class="panel-section">
-                        <div class="section-header">
-                            <h3>Список врачей</h3>
-                             <button id="show-logs-btn" class="logs-btn">Показать логи</button>
-                        </div>
-                        <div id="doctor-list" class="doctor-list-container">
-                            <!-- Список врачей будет загружен сюда -->
-                        </div>
+                    <div class="form-group">
+                        <input type="text" id="doctor-password" class="form-input" placeholder=" ">
+                        <label for="doctor-password" class="form-label">Пароль</label>
                     </div>
-
-                    <div class="panel-section">
-                        <div id="appointments">
-                            <!-- Записи к врачу будут загружены сюда -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <footer>
-            <p>&copy; 2024 Healthy Me. Все права защищены.</p>
-        </footer>
-    </div>
-
-    <!-- Модальное окно: Редактирование врача -->
-    <div id="edit-doctor-modal" class="modal">
-        <div class="modal-content">
-            <h3 class="modal-title">Редактировать профиль</h3>
-            <form id="edit-doctor-form">
-                <input type="text" id="edit-doctor-name" placeholder="ФИО" required>
-                <input type="text" id="edit-doctor-specialty" placeholder="Специальность" required>
-                <input type="text" id="edit-doctor-username" placeholder="Логин (для входа)">
-                <div id="edit-doctor-result" class="form-result"></div>
-                <div class="modal-buttons">
                     <button type="submit" class="signup-btn">Сохранить</button>
-                    <button type="button" id="edit-doctor-cancel" class="cancel-btn">Отмена</button>
-                </div>
-            </form>
+                </form>
+                <button id="doctor-profile-close" class="role-btn back-btn" style="width:100%;margin-top:10px;">Закрыть</button>
+                <button id="doctor-profile-view-apps" class="role-btn" style="width:100%;margin-top:10px;background:#1976d2;">Посмотреть записи</button>
+                <div id="doctor-profile-result" style="margin-top:10px;color:#1976d2;"></div>
+            </div>
         </div>
-    </div>
-
-    <!-- Модальное окно: Профиль врача (логин/пароль) -->
-    <div id="doctor-profile-modal" class="modal">
-        <div class="modal-content">
-             <span class="close-btn" id="doctor-profile-close">&times;</span>
-            <h3 class="modal-title">Данные для входа врача</h3>
-            <div id="doctor-profile-info" style="text-align: center; margin-bottom: 15px;"></div>
-            <form id="doctor-credentials-form">
-                <input type="text" id="doctor-username" placeholder="Логин врача">
-                <input type="text" id="doctor-password" placeholder="Новый пароль (оставьте пустым, чтобы не менять)">
-                <div id="doctor-profile-result" class="form-result"></div>
-                <div class="modal-buttons">
+        <!-- Модалка редактирования врача -->
+        <div id="edit-doctor-modal" class="modal-bg" style="display:none;">
+            <div class="modal" style="min-width:340px;max-width:400px;">
+                <h2>Редактировать врача</h2>
+                <form id="edit-doctor-form" class="modern-form" style="margin-top:18px;">
+                    <div class="form-group">
+                        <input type="text" id="edit-doctor-name" class="form-input" placeholder=" " required pattern="[А-Яа-яA-Za-zЁё.\s]+" maxlength="40" title="Только буквы, точки и пробелы, максимум 40 символов">
+                        <label for="edit-doctor-name" class="form-label">ФИО врача</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="edit-doctor-specialty" class="form-input" placeholder=" " required maxlength="40">
+                        <label for="edit-doctor-specialty" class="form-label">Специальность</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="edit-doctor-username" class="form-input" placeholder=" ">
+                        <label for="edit-doctor-username" class="form-label">Логин</label>
+                    </div>
                     <button type="submit" class="signup-btn">Сохранить</button>
-                    <button type="button" id="doctor-profile-view-apps" class="secondary-btn">Показать записи</button>
+                    <button type="button" id="edit-doctor-cancel" class="role-btn back-btn" style="width:100%;margin-top:10px;">Отмена</button>
+                    <div id="edit-doctor-result" style="margin-top:10px;color:#1976d2;"></div>
+                </form>
+            </div>
+        </div>
+        <!-- Модалка подтверждения -->
+        <div id="confirm-modal" class="modal-bg" style="display:none;">
+            <div class="modal" style="min-width:320px;max-width:360px;text-align:center;">
+                <div id="confirm-modal-text" style="margin-bottom:18px;font-size:1.1rem;"></div>
+                <button id="confirm-yes" class="signup-btn" style="width:48%;margin-right:2%;">Да</button>
+                <button id="confirm-no" class="role-btn back-btn" style="width:48%;">Нет</button>
+            </div>
+        </div>
+        <!-- Модалка логов -->
+        <div id="logs-modal" class="modal-bg" style="display:none;">
+            <div class="modal" style="min-width:340px;max-width:700px;max-height:90vh;overflow:auto;">
+                <h2 style="margin-bottom:10px;">Логи действий</h2>
+                <div style="margin-bottom:10px;">
+                    <label for="logs-filter">Фильтр:</label>
+                    <select id="logs-filter" style="margin-left:8px;">
+                        <option value="">Все</option>
+                        <option value="admin_login">Вход (админ)</option>
+                        <option value="doctor_login">Вход (врач)</option>
+                        <option value="add_doctor">Добавление врача</option>
+                        <option value="delete_doctor">Удаление врача</option>
+                        <option value="add_appointment">Запись к врачу</option>
+                        <option value="delete_appointment">Отмена/удаление записи</option>
+                        <option value="admin_login_fail">Ошибка входа (админ)</option>
+                        <option value="doctor_login_fail">Ошибка входа (врач)</option>
+                        <option value="login_blocked">Блокировка входа</option>
+                    </select>
                 </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Модальное окно: Логи -->
-    <div id="logs-modal" class="modal">
-        <div class="modal-content modal-lg">
-            <span class="close-btn" id="logs-close-btn">&times;</span>
-            <h3 class="modal-title">Системные логи</h3>
-            <select id="logs-filter" class="logs-filter">
-                <option value="">Все действия</option>
-                <option value="login">Все входы</option>
-                <option value="admin_login">Вход админа</option>
-                <option value="doctor_login">Вход врача</option>
-                <option value="fail">Неудачные входы</option>
-                <option value="add_doctor">Добавление врачей</option>
-                <option value="delete_doctor">Удаление врачей</option>
-                <option value="add_appointment">Создание записи</option>
-                <option value="delete_appointment">Отмена записи</option>
-            </select>
-            <div class="table-container">
-                <table class="logs-table">
-                    <thead>
-                        <tr>
-                            <th>Время</th>
-                            <th>Действие</th>
-                            <th>Пользователь</th>
-                            <th>Детали</th>
-                        </tr>
-                    </thead>
-                    <tbody id="logs-table-body">
-                        <!-- Логи будут тут -->
-                    </tbody>
-                </table>
+                <div id="logs-table-container">
+                    <table class="doctor-table" id="logs-table">
+                        <thead>
+                            <tr>
+                                <th>Время</th>
+                                <th>Действие</th>
+                                <th>Пользователь</th>
+                                <th>Детали</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logs-table-body"></tbody>
+                    </table>
+                </div>
+                <button class="role-btn back-btn" id="logs-close-btn" style="margin-top:10px;">Закрыть</button>
             </div>
         </div>
-    </div>
-
-     <!-- Модальное окно: Детали лога -->
-    <div id="log-details-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" id="log-details-close">&times;</span>
-            <h3 class="modal-title">Детали лога</h3>
-            <div id="log-details-content" class="log-details"></div>
+        <!-- Модалка подробностей лога -->
+        <div id="log-details-modal" class="modal-bg" style="display:none;">
+          <div class="modal" style="min-width:320px;max-width:480px;">
+            <h2 style="margin-bottom:10px;">Детали лога</h2>
+            <div id="log-details-content" style="word-break:break-all;"></div>
+            <button class="role-btn back-btn" id="log-details-close" style="width:100%;margin-top:10px;">Закрыть</button>
+          </div>
         </div>
     </div>
-    
-    <!-- Модальное окно подтверждения -->
-    <div id="confirm-modal" class="modal">
-        <div class="modal-content">
-            <p id="confirm-message">Вы уверены?</p>
-            <div class="modal-buttons">
-                <button id="confirm-yes" class="signup-btn">Да</button>
-                <button id="confirm-no" class="cancel-btn">Нет</button>
-            </div>
-        </div>
-    </div>
-
     <script src="app.js"></script>
-    <script>
-        // --- Theme Switcher ---
-        const themeSwitcher = document.getElementById('theme-switcher');
-        
-        function setTheme(theme) {
-            if (theme === 'light') {
-                document.body.classList.remove('dark-theme');
-                document.body.classList.add('light-theme');
-                themeSwitcher.innerHTML = '☀️';
-            } else {
-                document.body.classList.remove('light-theme');
-                document.body.classList.add('dark-theme');
-                themeSwitcher.innerHTML = '🌙';
-            }
-            localStorage.setItem('theme', theme);
-        }
-
-        themeSwitcher.onclick = function() {
-            const isDark = document.body.classList.contains('dark-theme');
-            setTheme(isDark ? 'light' : 'dark');
-        };
-
-        // Load theme from localStorage
-        (function() {
-            const storedTheme = localStorage.getItem('theme') || 'dark';
-            setTheme(storedTheme);
-        })();
-    </script>
 </body>
 </html>

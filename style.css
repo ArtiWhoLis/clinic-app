@@ -1369,15 +1369,7 @@ body.dark-theme .time-slot.busy {
 
 /* Для admin.html */
 #admin-back-arrow {
-    display: block;
-    position: absolute;
-    top: 24px;
-    left: 24px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 2rem;
-    z-index: 10;
+    display: none; /* JS will manage this */
 }
 
 #admin-login-form {
@@ -1390,7 +1382,7 @@ body.dark-theme .time-slot.busy {
 }
 
 #admin-panel {
-    /* display: none; */
+    display: none; /* JS controls visibility */
 }
 
 #doctor-management {
@@ -1532,7 +1524,7 @@ body.dark-theme .time-slot.busy {
 }
 
 /* --- Admin Panel --- */
-#login-div, #panel-div {
+#admin-login, #admin-panel {
     background: var(--surface-color);
     padding: 2rem 2.5rem;
     border-radius: 12px;
@@ -1540,29 +1532,17 @@ body.dark-theme .time-slot.busy {
     width: 100%;
     max-width: 800px;
     margin: 2rem auto;
-    display: none; /* Скрываем по умолчанию */
 }
 
-#login-div.active {
-    display: block;
+#admin-panel {
+    display: none; /* JS controls visibility */
 }
-
-#panel-div.active {
-    display: block;
-}
-
 
 .logo-icon {
     font-size: 3rem;
     text-align: center;
     margin-bottom: 1rem;
     color: var(--primary-color);
-}
-
-#login-div h2 {
-    text-align: center;
-    margin-bottom: 1.5rem;
-    color: var(--text-color);
 }
 
 #admin-login-form {
@@ -1649,7 +1629,7 @@ body.dark-theme .time-slot.busy {
 }
 
 /* --- Modal styles --- */
-.modal {
+.modal-bg {
     display: none; /* Hidden by default */
     position: fixed;
     z-index: 1000;
@@ -1663,20 +1643,14 @@ body.dark-theme .time-slot.busy {
     backdrop-filter: blur(5px);
 }
 
-.modal-content {
+.modal {
     background-color: var(--surface-color);
     margin: 10% auto;
     padding: 2rem;
     border-radius: 12px;
-    width: 90%;
-    max-width: 500px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.3);
     position: relative;
     animation: slide-down 0.4s ease-out;
-}
-
-.modal-content.modal-lg {
-    max-width: 800px;
 }
 
 @keyframes slide-down {
@@ -1689,7 +1663,6 @@ body.dark-theme .time-slot.busy {
         opacity: 1;
     }
 }
-
 
 .close-btn {
     color: #aaa;
@@ -1813,5 +1786,69 @@ body.dark-theme .time-slot.busy {
         flex-direction: column;
         align-items: flex-start;
         gap: 1rem;
+    }
+}
+
+#add-doctor-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 1rem;
+    align-items: center;
+}
+
+#admin-doctor-list {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.modal {
+    background-color: var(--surface-color);
+    margin: 10% auto;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    position: relative;
+    animation: slide-down 0.4s ease-out;
+}
+
+#logs-modal .modal {
+    max-width: 800px;
+}
+
+@keyframes slide-down {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.doctor-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.doctor-table th, .doctor-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+@media (max-width: 768px) {
+    #add-doctor-form {
+        grid-template-columns: 1fr;
+    }
+    .modal {
+        width: 95%;
+        margin: 5% auto;
+        padding: 1.5rem;
     }
 }
