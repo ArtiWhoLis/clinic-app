@@ -13,6 +13,19 @@
             margin: 0;
             color: #f3f6fa;
         }
+        .theme-switcher {
+            position: fixed;
+            top: 18px;
+            right: 24px;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: #4fc3f7;
+            cursor: pointer;
+            z-index: 100;
+            transition: color 0.2s;
+        }
+        .theme-switcher:hover { color: #fff; }
         .admin-header {
             background: #232a36;
             color: #4fc3f7;
@@ -154,7 +167,7 @@
         .appointments-table tr:last-child td {
             border-bottom: none;
         }
-        .admin-footer {
+        .footer {
             background: #181c24;
             color: #b0b8c9;
             text-align: center;
@@ -292,19 +305,6 @@
             .modal { min-width: 0; padding: 18px 6px; }
             .login-form { min-width: 0; padding: 18px 6px; }
         }
-        .theme-switcher {
-            position: fixed;
-            top: 18px;
-            right: 24px;
-            font-size: 2rem;
-            background: none;
-            border: none;
-            color: #4fc3f7;
-            cursor: pointer;
-            z-index: 100;
-            transition: color 0.2s;
-        }
-        .theme-switcher:hover { color: #fff; }
         body.light-theme {
             background: linear-gradient(120deg, #f8fcff 0%, #e3f0ff 100%);
             color: #1a2236;
@@ -341,7 +341,7 @@
 <body>
     <div class="theme-switcher" id="theme-switcher" title="Переключить тему">🌙</div>
     <div class="admin-header">Админ-панель — Онлайн-запись к врачу</div>
-    <div id="admin-login" class="login-form-container">
+    <div id="admin-login">
         <form id="admin-login-form" class="login-form">
             <h2>Вход для администратора</h2>
             <input type="text" id="admin-username" placeholder="Логин" required autocomplete="username">
@@ -377,19 +377,19 @@
             </div>
         </div>
     </div>
-    <div class="admin-footer">&copy; 2024 Онлайн-запись к врачу. Все права защищены.</div>
     <div class="modal-bg" id="edit-doctor-modal" style="display:none;">
         <div class="modal">
             <h2>Редактировать врача</h2>
-            <input type="text" id="edit-doctor-name" placeholder="ФИО врача" maxlength="100" required>
-            <input type="text" id="edit-doctor-specialty" placeholder="Специальность" maxlength="100" required>
-            <div class="modal-btns">
-                <button class="modal-btn" id="save-doctor-btn">Сохранить</button>
-                <button class="modal-btn cancel" id="cancel-edit-btn">Отмена</button>
-            </div>
-            <div id="edit-doctor-result" style="margin-top:10px;color:#e53935;"></div>
+            <form id="edit-doctor-form" class="modern-form modal-form">
+                <input type="text" id="edit-doctor-name" placeholder="ФИО врача" maxlength="100" required>
+                <input type="text" id="edit-doctor-specialty" placeholder="Специальность" maxlength="100" required>
+                <button class="modal-btn" id="save-doctor-btn" type="submit">Сохранить</button>
+                <button class="modal-btn cancel" id="cancel-edit-btn" type="button">Отмена</button>
+                <div id="edit-doctor-result" style="margin-top:10px;color:#e53935;"></div>
+            </form>
         </div>
     </div>
+    <div class="footer">&copy; 2024 Онлайн-запись к врачу. Все права защищены.</div>
     <script src="app.js"></script>
     <script>
     // Тема
