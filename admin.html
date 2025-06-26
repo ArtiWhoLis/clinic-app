@@ -3,143 +3,258 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Админ-панель</title>
+    <title>Админ-панель — Онлайн-запись к врачу</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: linear-gradient(120deg, #f8fcff 0%, #e3f0ff 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+            margin: 0;
+            color: #1a2236;
+        }
+        .admin-header {
+            background: #1976d2;
+            color: #fff;
+            padding: 28px 0 18px 0;
+            text-align: center;
+            font-size: 2.1rem;
+            font-weight: 800;
+            letter-spacing: 0.01em;
+        }
+        .admin-container {
+            max-width: 900px;
+            margin: 32px auto 0 auto;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px #1976d21a;
+            padding: 36px 18px 32px 18px;
+        }
+        .admin-section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+            color: #1976d2;
+        }
+        .doctor-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 22px;
+            margin-bottom: 32px;
+        }
+        .doctor-card {
+            background: #f8fcff;
+            border-radius: 14px;
+            box-shadow: 0 2px 10px #1976d21a;
+            padding: 22px 18px 18px 18px;
+            min-width: 220px;
+            max-width: 260px;
+            flex: 1 1 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            position: relative;
+        }
+        .doctor-card .doctor-name {
+            font-size: 1.13rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .doctor-card .doctor-spec {
+            font-size: 1.01rem;
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+        .doctor-card .doctor-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .doctor-card .doctor-btn {
+            padding: 8px 18px;
+            font-size: 1rem;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            background: #1976d2;
+            color: #fff;
+            font-weight: 600;
+            transition: background 0.18s;
+        }
+        .doctor-card .doctor-btn.delete {
+            background: #e53935;
+        }
+        .doctor-card .doctor-btn.delete:hover {
+            background: #b71c1c;
+        }
+        .doctor-card .doctor-btn:hover {
+            background: #1256a6;
+        }
+        .add-doctor-form {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+        .add-doctor-form input {
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1.5px solid #bcd6f6;
+            font-size: 1rem;
+            min-width: 180px;
+        }
+        .add-doctor-form button {
+            padding: 12px 28px;
+            border-radius: 10px;
+            border: none;
+            background: #1976d2;
+            color: #fff;
+            font-size: 1.08rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.18s;
+        }
+        .add-doctor-form button:hover {
+            background: #1256a6;
+        }
+        .appointments-section {
+            margin-top: 38px;
+        }
+        .appointments-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 18px;
+            background: #f8fcff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px #1976d21a;
+        }
+        .appointments-table th, .appointments-table td {
+            padding: 12px 10px;
+            text-align: center;
+            border-bottom: 1px solid #e3f0ff;
+        }
+        .appointments-table th {
+            background: #e3f0ff;
+            color: #1976d2;
+            font-weight: 700;
+        }
+        .appointments-table tr:last-child td {
+            border-bottom: none;
+        }
+        .admin-footer {
+            background: #1976d2;
+            color: #fff;
+            text-align: center;
+            padding: 16px 0 10px 0;
+            font-size: 1.01rem;
+            letter-spacing: 0.01em;
+            margin-top: 60px;
+        }
+        .modal-bg {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #1a2236cc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px #1976d21a;
+            padding: 32px 24px 24px 24px;
+            min-width: 320px;
+            max-width: 98vw;
+        }
+        .modal h2 {
+            font-size: 1.25rem;
+            margin-bottom: 18px;
+            color: #1976d2;
+        }
+        .modal input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1.5px solid #bcd6f6;
+            font-size: 1rem;
+            margin-bottom: 16px;
+        }
+        .modal .modal-btns {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+        }
+        .modal .modal-btn {
+            flex: 1 1 0;
+            padding: 10px 0;
+            border-radius: 10px;
+            border: none;
+            background: #1976d2;
+            color: #fff;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.18s;
+        }
+        .modal .modal-btn.cancel {
+            background: #e53935;
+        }
+        .modal .modal-btn.cancel:hover {
+            background: #b71c1c;
+        }
+        .modal .modal-btn:hover {
+            background: #1256a6;
+        }
+        @media (max-width: 700px) {
+            .admin-header { font-size: 1.3rem; padding: 18px 0 10px 0; }
+            .admin-container { padding: 16px 2px 18px 2px; }
+            .doctor-list { flex-direction: column; gap: 12px; }
+            .doctor-card { max-width: 100%; min-width: 0; padding: 14px 8px; }
+            .add-doctor-form input { min-width: 0; width: 100%; }
+            .modal { min-width: 0; padding: 18px 6px; }
+        }
+    </style>
 </head>
 <body>
-    <div class="theme-switcher" id="theme-switcher">☀️</div>
-    <div class="main-container">
-        <button class="back-arrow" id="admin-back-arrow" title="Назад">&#8592;</button>
-        <h1 class="main-title">Админ-панель</h1>
-        <div id="admin-login">
-            <form id="admin-login-form" class="modern-form">
-                <div class="form-group">
-                    <input type="text" id="admin-username" class="form-input" placeholder=" " required>
-                    <label for="admin-username" class="form-label">Логин</label>
-                </div>
-                <div class="form-group">
-                    <input type="password" id="admin-password" class="form-input" placeholder=" " required>
-                    <label for="admin-password" class="form-label">Пароль</label>
-                </div>
-                <button id="admin-login-btn" type="submit" class="role-btn">Войти</button>
-            </form>
-            <div id="admin-login-result"></div>
+    <div class="admin-header">Админ-панель — Онлайн-запись к врачу</div>
+    <div class="admin-container">
+        <div class="admin-section-title">Врачи</div>
+        <form class="add-doctor-form" id="add-doctor-form">
+            <input type="text" id="new-doctor-name" placeholder="ФИО врача" maxlength="100" required>
+            <input type="text" id="new-doctor-specialty" placeholder="Специальность" maxlength="100" required>
+            <button type="submit">Добавить</button>
+        </form>
+        <div class="doctor-list" id="doctor-list"></div>
+        <div class="appointments-section" id="appointments-section" style="display:none;">
+            <div class="admin-section-title" id="appointments-title"></div>
+            <table class="appointments-table" id="appointments-table">
+                <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Время</th>
+                        <th>ФИО</th>
+                        <th>СНИЛС</th>
+                        <th>Телефон</th>
+                        <th>Действие</th>
+                    </tr>
+                </thead>
+                <tbody id="appointments-tbody"></tbody>
+            </table>
         </div>
-        <div id="admin-panel">
-            <div id="doctor-management">
-                <h3>Управление врачами</h3>
-                <form id="add-doctor-form" class="modern-form add-doctor-form">
-                    <div class="form-group grow">
-                        <input type="text" id="new-doctor-name" class="form-input" placeholder=" " required pattern="[А-Яа-яA-Za-zЁё.\s]+" maxlength="40" title="Только буквы, точки и пробелы, максимум 40 символов">
-                        <label for="new-doctor-name" class="form-label">ФИО врача</label>
-                    </div>
-                    <div class="form-group grow">
-                        <input type="text" id="new-doctor-specialty" class="form-input" placeholder=" " required>
-                        <label for="new-doctor-specialty" class="form-label">Специальность</label>
-                    </div>
-                    <button type="submit" class="signup-btn add-btn">Добавить</button>
-                </form>
+    </div>
+    <div class="admin-footer">&copy; 2024 Онлайн-запись к врачу. Все права защищены.</div>
+    <div class="modal-bg" id="edit-doctor-modal" style="display:none;">
+        <div class="modal">
+            <h2>Редактировать врача</h2>
+            <input type="text" id="edit-doctor-name" placeholder="ФИО врача" maxlength="100" required>
+            <input type="text" id="edit-doctor-specialty" placeholder="Специальность" maxlength="100" required>
+            <div class="modal-btns">
+                <button class="modal-btn" id="save-doctor-btn">Сохранить</button>
+                <button class="modal-btn cancel" id="cancel-edit-btn">Отмена</button>
             </div>
-            
-            <h3 id="admin-doctor-list-title">Выберите доктора для просмотра записей</h3>
-            <div id="admin-doctor-list"></div>
-            <div id="admin-appointments"></div>
-            <button class="role-btn back-btn" id="admin-logout-btn">Выйти</button>
-            <button class="role-btn" id="show-logs-btn">Логи</button>
-        </div>
-        <div id="doctor-profile-modal" class="modal-bg">
-            <div class="modal modal-narrow">
-                <h2>Профиль врача</h2>
-                <div id="doctor-profile-info"></div>
-                <form id="doctor-credentials-form" class="modern-form modal-form">
-                    <div class="form-group">
-                        <input type="text" id="doctor-username" class="form-input" placeholder=" ">
-                        <label for="doctor-username" class="form-label">Логин</label>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="doctor-password" class="form-input" placeholder=" ">
-                        <label for="doctor-password" class="form-label">Пароль</label>
-                    </div>
-                    <button type="submit" class="signup-btn">Сохранить</button>
-                </form>
-                <button id="doctor-profile-close" class="role-btn back-btn modal-btn">Закрыть</button>
-                <button id="doctor-profile-view-apps" class="role-btn modal-btn blue-btn">Посмотреть записи</button>
-                <div id="doctor-profile-result" class="modal-result"></div>
-            </div>
-        </div>
-        <!-- Модалка редактирования врача -->
-        <div id="edit-doctor-modal" class="modal-bg">
-            <div class="modal modal-narrow">
-                <h2>Редактировать врача</h2>
-                <form id="edit-doctor-form" class="modern-form modal-form">
-                    <div class="form-group">
-                        <input type="text" id="edit-doctor-name" class="form-input" placeholder=" " required pattern="[А-Яа-яA-Za-zЁё.\s]+" maxlength="40" title="Только буквы, точки и пробелы, максимум 40 символов">
-                        <label for="edit-doctor-name" class="form-label">ФИО врача</label>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="edit-doctor-specialty" class="form-input" placeholder=" " required maxlength="40">
-                        <label for="edit-doctor-specialty" class="form-label">Специальность</label>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="edit-doctor-username" class="form-input" placeholder=" ">
-                        <label for="edit-doctor-username" class="form-label">Логин</label>
-                    </div>
-                    <button type="submit" class="signup-btn">Сохранить</button>
-                    <button type="button" id="edit-doctor-cancel" class="role-btn back-btn modal-btn">Отмена</button>
-                    <div id="edit-doctor-result" class="modal-result"></div>
-                </form>
-            </div>
-        </div>
-        <!-- Модалка подтверждения -->
-        <div id="confirm-modal" class="modal-bg">
-            <div class="modal modal-confirm">
-                <div id="confirm-modal-text" class="modal-confirm-text"></div>
-                <button id="confirm-yes" class="signup-btn modal-half">Да</button>
-                <button id="confirm-no" class="role-btn back-btn modal-half">Нет</button>
-            </div>
-        </div>
-        <!-- Модалка логов -->
-        <div id="logs-modal" class="modal-bg">
-            <div class="modal modal-wide">
-                <h2 class="modal-title">Логи действий</h2>
-                <div class="modal-filter">
-                    <label for="logs-filter">Фильтр:</label>
-                    <select id="logs-filter">
-                        <option value="">Все</option>
-                        <option value="admin_login">Вход (админ)</option>
-                        <option value="doctor_login">Вход (врач)</option>
-                        <option value="add_doctor">Добавление врача</option>
-                        <option value="delete_doctor">Удаление врача</option>
-                        <option value="add_appointment">Запись к врачу</option>
-                        <option value="delete_appointment">Отмена/удаление записи</option>
-                        <option value="admin_login_fail">Ошибка входа (админ)</option>
-                        <option value="doctor_login_fail">Ошибка входа (врач)</option>
-                        <option value="login_blocked">Блокировка входа</option>
-                    </select>
-                </div>
-                <div id="logs-table-container">
-                    <table class="doctor-table" id="logs-table">
-                        <thead>
-                            <tr>
-                                <th>Время</th>
-                                <th>Действие</th>
-                                <th>Пользователь</th>
-                                <th>Детали</th>
-                            </tr>
-                        </thead>
-                        <tbody id="logs-table-body"></tbody>
-                    </table>
-                </div>
-                <button class="role-btn back-btn modal-btn" id="logs-close-btn">Закрыть</button>
-            </div>
-        </div>
-        <!-- Модалка подробностей лога -->
-        <div id="log-details-modal" class="modal-bg">
-          <div class="modal modal-details">
-            <h2 class="modal-title">Детали лога</h2>
-            <div id="log-details-content" class="modal-details-content"></div>
-            <button class="role-btn back-btn modal-btn" id="log-details-close">Закрыть</button>
-          </div>
+            <div id="edit-doctor-result" style="margin-top:10px;color:#e53935;"></div>
         </div>
     </div>
     <script src="app.js"></script>

@@ -3,22 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Запись в больницу</title>
+    <title>Онлайн-запись к врачу</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: linear-gradient(120deg, #e3f0ff 0%, #f8fcff 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+            margin: 0;
+            color: #1a2236;
+        }
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            padding: 60px 16px 32px 16px;
+            background: linear-gradient(120deg, #e3f0ff 0%, #f8fcff 100%);
+        }
+        .hero-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 18px;
+            color: #1976d2;
+            text-align: center;
+        }
+        .hero-subtitle {
+            font-size: 1.35rem;
+            color: #3a4668;
+            margin-bottom: 38px;
+            text-align: center;
+            max-width: 520px;
+        }
+        .hero-btns {
+            display: flex;
+            gap: 22px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .main-btn, .admin-btn {
+            padding: 18px 38px;
+            font-size: 1.18rem;
+            font-weight: 600;
+            border-radius: 14px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+            box-shadow: 0 4px 18px #1976d21a;
+        }
+        .main-btn {
+            background: #1976d2;
+            color: #fff;
+        }
+        .main-btn:hover {
+            background: #1256a6;
+        }
+        .admin-btn {
+            background: #fff;
+            color: #1976d2;
+            border: 2px solid #1976d2;
+        }
+        .admin-btn:hover {
+            background: #e3f0ff;
+        }
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 32px;
+            margin: 60px auto 40px auto;
+            max-width: 900px;
+        }
+        .feature {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px #1976d21a;
+            padding: 32px 28px;
+            min-width: 220px;
+            max-width: 320px;
+            flex: 1 1 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            color: #1976d2;
+        }
+        .feature-title {
+            font-size: 1.18rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1a2236;
+        }
+        .feature-desc {
+            font-size: 1.01rem;
+            color: #3a4668;
+            text-align: center;
+        }
+        .footer {
+            background: #1976d2;
+            color: #fff;
+            text-align: center;
+            padding: 18px 0 10px 0;
+            font-size: 1.01rem;
+            letter-spacing: 0.01em;
+            margin-top: 60px;
+        }
+        @media (max-width: 700px) {
+            .hero-title { font-size: 2.1rem; }
+            .hero-subtitle { font-size: 1.05rem; }
+            .features { flex-direction: column; gap: 18px; }
+            .feature { max-width: 100%; min-width: 0; padding: 22px 10px; }
+        }
+    </style>
 </head>
 <body>
-    <div class="theme-switcher" id="theme-switcher">☀️</div>
-    <div class="main-container">
-        <h1 class="main-title">Добро пожаловать!</h1>
-        <div class="main-desc">Онлайн-сервис для записи к врачу и управления приёмами</div>
-        <div class="role-buttons">
-            <button class="role-btn patient-btn" onclick="window.location.href='patient.html'"><span class="role-icon">👤</span> Я пациент</button>
-            <button class="role-btn admin-btn" onclick="window.location.href='admin.html'"><span class="role-icon">🛡️</span> Я администратор</button>
-        </div>
-        <div class="footer-desc">
-            <span>Сервис разработан для демонстрации<br>By ArtiWho © 2025</span>
+    <div class="hero">
+        <div class="hero-title">Онлайн-запись к врачу</div>
+        <div class="hero-subtitle">Быстро, удобно и безопасно — выберите врача, дату и время, и запишитесь на приём за пару минут. Ваша забота о здоровье начинается здесь!</div>
+        <div class="hero-btns">
+            <a href="patient.html" class="main-btn">Записаться на приём</a>
+            <a href="admin.html" class="admin-btn">Вход для администратора</a>
         </div>
     </div>
-    <script src="app.js"></script>
+    <div class="features">
+        <div class="feature">
+            <div class="feature-icon">🗓️</div>
+            <div class="feature-title">Удобный календарь</div>
+            <div class="feature-desc">Выбирайте свободные даты и время, фильтруйте по врачам и загруженности.</div>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">🔒</div>
+            <div class="feature-title">Безопасность данных</div>
+            <div class="feature-desc">Ваши персональные данные надёжно защищены и не передаются третьим лицам.</div>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">👩‍⚕️</div>
+            <div class="feature-title">Профессиональные врачи</div>
+            <div class="feature-desc">Только сертифицированные специалисты с опытом работы.</div>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">📱</div>
+            <div class="feature-title">Мобильная версия</div>
+            <div class="feature-desc">Полная поддержка смартфонов и планшетов — записывайтесь в любое время.</div>
+        </div>
+    </div>
+    <div class="footer">
+        &copy; 2024 Онлайн-запись к врачу. Все права защищены.
+    </div>
 </body>
 </html>
