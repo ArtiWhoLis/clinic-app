@@ -19,34 +19,6 @@ function openModal(modal) {
     }, 10);
 }
 
-// --- Theme Switcher ---
-(function() {
-    const themeSwitcher = document.getElementById('theme-switcher');
-    function applyTheme(theme) {
-        if (theme === 'dark') {
-            document.body.classList.add('dark-theme');
-            document.body.classList.remove('light-theme');
-            if (themeSwitcher) themeSwitcher.textContent = '🌙';
-        } else {
-            document.body.classList.remove('dark-theme');
-            document.body.classList.add('light-theme');
-            if (themeSwitcher) themeSwitcher.textContent = '☀️';
-        }
-    }
-    // При загрузке
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    applyTheme(savedTheme);
-    if (themeSwitcher) {
-        themeSwitcher.onclick = function() {
-            const isDark = document.body.classList.toggle('dark-theme');
-            document.body.classList.toggle('light-theme', !isDark);
-            const newTheme = isDark ? 'dark' : 'light';
-            localStorage.setItem('theme', newTheme);
-            applyTheme(newTheme);
-        };
-    }
-})();
-
 // --- patient.html ---
 if (window.location.pathname.endsWith('patient.html')) {
     const doctorCards = document.getElementById('doctor-cards');

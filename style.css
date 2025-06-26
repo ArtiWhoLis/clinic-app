@@ -33,22 +33,6 @@ body.dark-theme {
     --table-row-hover-bg: #2a2a2a;
 }
 
-body.light-theme {
-    --bg-color: #fff;
-    --main-bg-color: #f4f6fa;
-    --primary-color: #3f51b5;
-    --primary-hover-color: #303f9f;
-    --accent-color: #4CAF50;
-    --accent-hover-color: #43a047;
-    --text-color: #333;
-    --text-color-light: #fff;
-    --border-color: #e0e0e0;
-    --shadow-color: rgba(63, 81, 181, 0.1);
-    --table-header-bg: #3f51b5;
-    --table-row-hover-bg: #f5f5f5;
-    --font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
-}
-
 body {
     background: linear-gradient(120deg, #181c24 0%, #232a36 100%);
     min-height: 100vh;
@@ -947,14 +931,16 @@ body {
 }
 
 .doctor-card.selected {
-    border-color: var(--accent-color);
-    background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover-color) 100%);
-    color: white;
+    border-color: #43a047;
+    background: linear-gradient(135deg, #43a047 0%, #81c784 100%);
+    color: #fff;
 }
 
 .doctor-card.selected .doctor-name,
-.doctor-card.selected .doctor-specialty {
-    color: white;
+.doctor-card.selected .doctor-specialty,
+.doctor-card.selected .doctor-stats {
+    color: #fff;
+    opacity: 1;
 }
 
 .doctor-avatar {
@@ -2063,125 +2049,4 @@ body.dark-theme .time-slot.busy {
         padding: 8px 12px;
         font-size: 0.98rem;
     }
-}
-
-body.light-theme .time-selection {
-    background: #fff;
-    color: #1a2236;
-    box-shadow: 0 8px 32px 0 #1976d233, 0 1.5px 8px 0 #1976d211;
-    border: 1.5px solid #1976d211;
-}
-body.light-theme .time-selection h4 {
-    color: #1976d2;
-}
-body.light-theme .time-filter-btn {
-    background: #e3f0ff;
-    color: #1976d2;
-    border-color: #1976d2;
-}
-body.light-theme .time-filter-btn.active,
-body.light-theme .time-filter-btn:hover {
-    background: #1976d2;
-    color: #fff;
-    border-color: #1256a6;
-}
-body.light-theme .time-slot {
-    background: #e3f0ff;
-    color: #1a2236;
-    border-color: transparent;
-}
-body.light-theme .time-slot.selected {
-    background: #4fc3f7;
-    color: #fff;
-    border-color: #1976d2;
-}
-body.light-theme .time-slot.busy {
-    background: #f5f5f5;
-    color: #bbb;
-    border-color: #ccc;
-}
-body.light-theme .time-slot.time-morning {
-    border-left: 4px solid #4caf50;
-}
-body.light-theme .time-slot.time-afternoon {
-    border-left: 4px solid #ff9800;
-}
-body.light-theme .time-slot.time-evening {
-    border-left: 4px solid #9c27b0;
-}
-body.light-theme .no-times {
-    color: #888;
-}
-
-body.light-theme .doctor-card {
-    background: #fff;
-    color: #1a2236;
-    border: 1.5px solid #1976d2;
-}
-body.light-theme .doctor-card.selected {
-    border-color: #1976d2;
-    background: linear-gradient(135deg, #e3f0ff 0%, #bcdcff 100%);
-    color: #1976d2;
-}
-body.light-theme .doctor-card.selected .doctor-name {
-    color: #1976d2;
-}
-body.light-theme .doctor-card.selected .doctor-specialty {
-    color: #3a4668;
-    opacity: 0.8;
-}
-body.light-theme .doctor-card.selected .doctor-stats {
-    color: #3a4668;
-    opacity: 0.7;
-}
-
-body.light-theme .main-container,
-body.light-theme #admin-login,
-body.light-theme #admin-panel,
-body.light-theme #doctor-management,
-body.light-theme #admin-doctor-list > div,
-body.light-theme .modal {
-    background: #fff !important;
-    color: #1a2236 !important;
-    box-shadow: 0 4px 24px #1976d21a !important;
-}
-body.light-theme .admin-topbar {
-    background: #f4f6fa;
-    color: #1976d2;
-    box-shadow: 0 2px 8px #1976d233;
-}
-body.light-theme .admin-topbar-title {
-    color: #1976d2;
-}
-body.light-theme .admin-topbar .back-arrow {
-    color: #1976d2;
-}
-body.light-theme .role-btn,
-body.light-theme .signup-btn,
-body.light-theme .back-btn,
-body.light-theme .logs-btn {
-    background: #1976d2 !important;
-    color: #fff !important;
-}
-body.light-theme .role-btn:hover,
-body.light-theme .signup-btn:hover,
-body.light-theme .back-btn:hover,
-body.light-theme .logs-btn:hover {
-    background: #1256a6 !important;
-    color: #fff !important;
-}
-body.light-theme .delete-btn {
-    background: #e53935 !important;
-    color: #fff !important;
-}
-body.light-theme .delete-btn:hover {
-    background: #b71c1c !important;
-}
-body.light-theme .profile-icon-btn {
-    color: #1976d2 !important;
-    background: #e3f0ff !important;
-}
-body.light-theme .profile-icon-btn:hover {
-    color: #fff !important;
-    background: #1976d2 !important;
 }
