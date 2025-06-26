@@ -58,7 +58,6 @@
             letter-spacing: 0.01em;
             margin-top: 60px;
         }
-        /* Кастомные стили для форм, кнопок и т.д. */
         .modern-form input, .modern-form select {
             background: #181c24;
             color: #f3f6fa;
@@ -82,7 +81,6 @@
             background: #1976d2;
             color: #fff;
         }
-        /* Календарь и карточки врачей */
         .doctor-card {
             background: #181c24;
             color: #f3f6fa;
@@ -133,42 +131,14 @@
             background: #1976d2;
             color: #fff;
         }
+        label[for="my-phone"], .form-label[for="my-phone"] {
+            color: #888;
+            opacity: 1;
+        }
         @media (max-width: 700px) {
             .main-header { font-size: 1.3rem; padding: 18px 0 10px 0; }
             .main-container { padding: 16px 2px 18px 2px; }
         }
-        body.light-theme {
-            background: linear-gradient(120deg, #f8fcff 0%, #e3f0ff 100%);
-            color: #1a2236;
-        }
-        body.light-theme .main-header, body.light-theme .main-container, body.light-theme .doctor-card, body.light-theme .calendar, body.light-theme .modal, body.light-theme .footer, body.light-theme .modern-form input, body.light-theme .modal input {
-            background: #fff !important;
-            color: #1a2236 !important;
-            box-shadow: 0 4px 24px #1976d21a !important;
-        }
-        body.light-theme .section-title { color: #1976d2; }
-        body.light-theme .doctor-card.selected { border-color: #1976d2; }
-        body.light-theme .doctor-card { border: 1.5px solid #1976d2; }
-        body.light-theme .calendar .calendar-header { color: #1976d2; }
-        body.light-theme .calendar .calendar-day.selected { background: #1976d2; color: #fff; }
-        body.light-theme .calendar .calendar-day.free { background: #fff; color: #1976d2; }
-        body.light-theme .calendar .calendar-day.cancelled { background: #e53935; color: #fff; }
-        body.light-theme .modern-form button, body.light-theme .signup-btn, body.light-theme .modal .signup-btn {
-            background: #1976d2 !important;
-            color: #fff !important;
-        }
-        body.light-theme .modern-form button:hover, body.light-theme .signup-btn:hover, body.light-theme .modal .signup-btn:hover {
-            background: #1256a6 !important;
-        }
-        body.light-theme .modern-form input, body.light-theme .modal input {
-            border: 1.5px solid #1976d2 !important;
-            color: #1a2236 !important;
-            background: #fff !important;
-        }
-        body.light-theme .modern-form input::placeholder, body.light-theme .modal input::placeholder {
-            color: #888 !important;
-        }
-        body.light-theme .footer { background: #1976d2 !important; color: #fff !important; }
     </style>
 </head>
 <body>

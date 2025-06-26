@@ -965,18 +965,19 @@ body {
 }
 
 .doctor-specialty {
-    color: var(--text-color);
-    opacity: 0.8;
-    margin-bottom: 12px;
+    color: #b0b8c9;
+    opacity: 1;
+    margin-bottom: 10px;
+    font-size: 1.02rem;
+    font-weight: 500;
 }
 
 .doctor-stats {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    font-size: 0.9rem;
-    color: var(--text-color);
-    opacity: 0.7;
+    color: #7ea1c7;
+    opacity: 1;
+    font-size: 0.97rem;
+    margin-bottom: 2px;
+    font-weight: 400;
 }
 
 .doctor-stats span {
@@ -2085,4 +2086,70 @@ label[for="my-phone"], .form-label[for="my-phone"] {
 .doctor-card .doctor-name,
 .doctor-card.selected .doctor-name {
     color: #4fc3f7;
+}
+
+/* Для модальных окон, форм, выбора времени и календаря — только тёмный фон и светлый текст */
+.modal, .calendar-container, .time-selection, .doctor-card, .doctor-table, .main-container, .modern-form input, .modern-form select, .modal input, .modal select {
+    background: #232a36 !important;
+    color: #f3f6fa !important;
+    border-color: #4fc3f7 !important;
+    box-shadow: 0 4px 24px #0008 !important;
+}
+
+/* Для инпутов и плейсхолдеров */
+input, select, textarea {
+    background: #181c24 !important;
+    color: #f3f6fa !important;
+    border: 1.5px solid #4fc3f7 !important;
+}
+input::placeholder, select::placeholder, textarea::placeholder {
+    color: #b0b8c9 !important;
+    opacity: 1 !important;
+}
+
+/* Для label Телефон и других лейблов */
+label[for="my-phone"], .form-label[for="my-phone"], .form-label, label {
+    color: #888 !important;
+    opacity: 1 !important;
+}
+
+/* Для выбора времени (time-slot) */
+.time-slot {
+    background: #232a36 !important;
+    color: #f3f6fa !important;
+    border: 2px solid #4fc3f7 !important;
+}
+.time-slot.selected {
+    background: #4fc3f7 !important;
+    color: #181c24 !important;
+    border-color: #1976d2 !important;
+}
+.time-slot.busy {
+    background: #181c24 !important;
+    color: #888 !important;
+    border-color: #333 !important;
+}
+
+/* Для календаря */
+.calendar-day {
+    background: #232a36 !important;
+    color: #f3f6fa !important;
+    border: 2px solid #4fc3f7 !important;
+}
+.calendar-day.selected {
+    background: #4fc3f7 !important;
+    color: #181c24 !important;
+    border-color: #1976d2 !important;
+}
+.calendar-day.past {
+    background: #232a36 !important;
+    color: #888 !important;
+    opacity: 0.4 !important;
+}
+
+/* Удаляю остатки светлой темы */
+body.light-theme, body.light-theme * {
+    background: none !important;
+    color: inherit !important;
+    box-shadow: none !important;
 }
