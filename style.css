@@ -2112,3 +2112,29 @@ body.light-theme .time-slot.time-evening {
 body.light-theme .no-times {
     color: #888;
 }
+
+body.light-theme .doctor-card {
+    background: #fff;
+    color: #1a2236;
+    border: 1.5px solid #1976d2;
+}
+body.light-theme .doctor-card.selected {
+    border-color: #1976d2;
+    background: linear-gradient(135deg, #4fc3f7 0%, #1976d2 100%);
+    color: #fff;
+}
+body.light-theme .doctor-card .doctor-name {
+    color: #1976d2;
+}
+body.light-theme .doctor-card.selected .doctor-name,
+body.light-theme .doctor-card.selected .doctor-specialty {
+    color: #fff;
+}
+body.light-theme .doctor-card .doctor-specialty {
+    color: #3a4668;
+    opacity: 0.8;
+}
+body.light-theme .doctor-card .doctor-stats {
+    color: #3a4668;
+    opacity: 0.7;
+}
