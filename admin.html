@@ -10,7 +10,7 @@
     <div class="admin-topbar">
         <button class="back-arrow" id="admin-back-arrow" title="Назад">&#8592;</button>
         <div class="admin-topbar-title">Админ-панель</div>
-        <div class="admin-topbar-actions">
+        <div class="admin-topbar-actions" id="admin-topbar-actions" style="display:none;">
             <button class="role-btn" id="show-logs-btn">Логи</button>
             <button class="role-btn back-btn" id="admin-logout-btn">Выйти</button>
         </div>
@@ -145,5 +145,23 @@
         </div>
     </div>
     <script src="app.js"></script>
+    <script>
+    window.addEventListener('DOMContentLoaded', function() {
+        var loginDiv = document.getElementById('admin-login');
+        var panelDiv = document.getElementById('admin-panel');
+        var topbarActions = document.getElementById('admin-topbar-actions');
+        function updateTopbarActions() {
+            if (panelDiv && panelDiv.style.display !== 'none') {
+                topbarActions.style.display = '';
+            } else {
+                topbarActions.style.display = 'none';
+            }
+        }
+        updateTopbarActions();
+        var observer = new MutationObserver(updateTopbarActions);
+        if (loginDiv) observer.observe(loginDiv, { attributes: true, attributeFilter: ['style'] });
+        if (panelDiv) observer.observe(panelDiv, { attributes: true, attributeFilter: ['style'] });
+    });
+    </script>
 </body>
 </html>

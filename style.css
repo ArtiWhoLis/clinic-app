@@ -1182,7 +1182,8 @@ body {
 
 /* Выбор времени */
 .time-selection {
-    background: rgba(40, 44, 52, 0.92);
+    background: #232a36;
+    color: #4fc3f7;
     border-radius: 22px;
     padding: 32px 24px 20px 24px;
     box-shadow: 0 8px 32px 0 rgba(63,81,181,0.18), 0 1.5px 8px 0 rgba(0,0,0,0.10);
@@ -1196,7 +1197,7 @@ body {
 
 .time-selection h4 {
     margin: 0 0 18px 0;
-    color: var(--primary-color);
+    color: #4fc3f7;
     font-size: 1.25rem;
     font-weight: 600;
     letter-spacing: 0.2px;
@@ -1215,8 +1216,8 @@ body {
     padding: 8px 22px;
     border-radius: 22px;
     border: 2px solid var(--primary-color);
-    background: rgba(63,81,181,0.07);
-    color: var(--primary-color);
+    background: #181c24;
+    color: #4fc3f7;
     font-weight: 500;
     font-size: 1rem;
     cursor: pointer;
@@ -1226,9 +1227,9 @@ body {
 }
 .time-filter-btn:hover,
 .time-filter-btn.active {
-    background: var(--primary-color);
-    color: #fff;
-    border-color: var(--primary-hover-color);
+    background: #4fc3f7;
+    color: #181c24;
+    border-color: #1976d2;
     box-shadow: 0 2px 12px 0 rgba(63,81,181,0.10);
 }
 
@@ -1249,8 +1250,8 @@ body {
     padding: 16px 0;
     border: none;
     border-radius: 22px;
-    background: rgba(63,81,181,0.09);
-    color: var(--text-color);
+    background: #232a36;
+    color: #f3f6fa;
     font-size: 1.08rem;
     font-weight: 500;
     cursor: pointer;
@@ -1272,17 +1273,17 @@ body {
     border-color: var(--primary-hover-color);
 }
 .time-slot.selected {
-    background: var(--accent-color);
-    color: #fff;
-    border-color: var(--accent-hover-color);
+    background: #4fc3f7;
+    color: #181c24;
+    border-color: #1976d2;
     transform: scale(1.08);
     box-shadow: 0 4px 18px 0 rgba(76,175,80,0.13);
 }
 .time-slot.busy {
     opacity: 0.5;
     cursor: not-allowed;
-    background: #424242;
-    color: #bbb;
+    background: #181c24;
+    color: #888;
     border-color: #333;
 }
 .time-slot.time-morning {
@@ -1541,7 +1542,7 @@ body.dark-theme .time-slot.busy {
 
 /* --- Admin Panel --- */
 #admin-login, #admin-panel {
-    background: #181c24;
+    background: #232a36;
     padding: 1.5rem 2rem;
     border-radius: 14px;
     box-shadow: 0 4px 18px #0006;
@@ -1801,7 +1802,9 @@ body.dark-theme .time-slot.busy {
 
 /* Карточка врача */
 #admin-doctor-list > div {
-    background: #232c3a;
+    background: #232a36;
+    color: #f3f6fa;
+    border: 2px solid #4fc3f7;
     border-radius: 10px;
     box-shadow: 0 1px 6px #0004;
     padding: 12px 14px 10px 14px;
@@ -1820,8 +1823,39 @@ body.dark-theme .time-slot.busy {
 #admin-doctor-list .role-btn, #admin-doctor-list .profile-icon-btn, #admin-doctor-list .delete-btn {
     margin-top: 0.3rem;
 }
-
-/* Кнопки */
+#admin-doctor-list .doctor-name {
+    color: #4fc3f7;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+#admin-doctor-list .doctor-specialty {
+    color: #b0b8c9;
+    font-size: 1rem;
+    margin-bottom: 6px;
+}
+#admin-doctor-list .doctor-stats {
+    color: #888;
+    font-size: 0.95rem;
+    margin-bottom: 2px;
+}
+.admin-topbar {
+    background: #232a36;
+    color: #4fc3f7;
+    box-shadow: 0 2px 8px #1976d233;
+}
+.admin-topbar-title {
+    color: #4fc3f7;
+}
+.admin-topbar .back-arrow {
+    color: #4fc3f7;
+}
+#admin-login, #admin-panel, #doctor-management {
+    background: #232a36;
+    color: #f3f6fa;
+    border-radius: 14px;
+    box-shadow: 0 4px 18px #0006;
+}
 .role-btn, .signup-btn, .back-btn, .logs-btn {
     background: #4fc3f7;
     color: #181c24;
@@ -1992,14 +2026,8 @@ body.dark-theme .time-slot.busy {
     margin-top: 8px;
     margin-bottom: 18px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 10px;
-}
-.clean-header-row .main-title {
-    font-size: 2rem;
-    margin: 0;
-    color: #b3bfff;
-    font-weight: 700;
 }
 .back-arrow-wrapper {
     display: flex;
@@ -2012,10 +2040,13 @@ body.dark-theme .time-slot.busy {
     margin-top: 2px;
     margin-right: 0;
 }
-.light-icon {
-    color: #b3bfff !important;
-    opacity: 0.85;
-    font-size: 1.1rem;
+#my-phone::placeholder {
+    color: #888;
+    opacity: 1;
+}
+label[for="my-phone"], .form-label[for="my-phone"] {
+    color: #888;
+    opacity: 1;
 }
 .clean-form {
     margin-bottom: 18px;
@@ -2049,4 +2080,9 @@ body.dark-theme .time-slot.busy {
         padding: 8px 12px;
         font-size: 0.98rem;
     }
+}
+
+.doctor-card .doctor-name,
+.doctor-card.selected .doctor-name {
+    color: #4fc3f7;
 }
