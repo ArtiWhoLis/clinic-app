@@ -73,6 +73,7 @@ body {
     box-shadow: 0 4px 24px #0008;
     padding: 36px 18px 32px 18px;
     min-height: 80vh;
+    position: relative;
 }
 
 .main-title {
@@ -1366,7 +1367,23 @@ body.dark-theme .time-slot.busy {
 
 /* Для admin.html */
 #admin-back-arrow {
-    display: none; /* JS will manage this */
+    display: block;
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 2.1rem;
+    z-index: 10;
+    color: #4fc3f7;
+    opacity: 0.85;
+    transition: color 0.18s, opacity 0.18s, transform 0.18s;
+}
+#admin-back-arrow:hover {
+    color: #1976d2;
+    opacity: 1;
+    transform: scale(1.12);
 }
 
 #admin-login-form {
@@ -1523,7 +1540,7 @@ body.dark-theme .time-slot.busy {
 /* --- Admin Panel --- */
 #admin-login, #admin-panel {
     background: #181c24;
-    padding: 2rem 2.5rem;
+    padding: 1.5rem 2rem;
     border-radius: 14px;
     box-shadow: 0 4px 18px #0006;
     width: 100%;
@@ -1643,10 +1660,10 @@ body.dark-theme .time-slot.busy {
 .modal {
     background-color: #232a36;
     margin: 5% auto;
-    padding: 2rem 1.5rem 1.5rem 1.5rem;
-    border-radius: 14px;
+    padding: 1.5rem 1rem 1rem 1rem;
+    border-radius: 12px;
     width: 95%;
-    max-width: 420px;
+    max-width: 400px;
     box-shadow: 0 6px 32px #000b;
     position: relative;
     animation: slide-down 0.4s ease-out;
@@ -1768,36 +1785,38 @@ body.dark-theme .time-slot.busy {
 
 #add-doctor-form {
     display: flex;
-    gap: 14px;
+    gap: 12px;
     flex-wrap: wrap;
-    margin-bottom: 32px;
+    margin-bottom: 18px;
 }
 
 #admin-doctor-list {
-    margin-top: 1.5rem;
+    margin-top: 1.2rem;
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 14px;
 }
 
 /* Карточка врача */
 #admin-doctor-list > div {
-    background: #232a36;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px #0006;
-    padding: 18px 16px 14px 16px;
+    background: #232c3a;
+    border-radius: 10px;
+    box-shadow: 0 1px 6px #0004;
+    padding: 12px 14px 10px 14px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     position: relative;
-    transition: box-shadow 0.18s, transform 0.18s;
+    transition: box-shadow 0.15s, transform 0.15s, background 0.15s;
+    min-height: 80px;
 }
 #admin-doctor-list > div:hover {
-    box-shadow: 0 6px 18px #000a;
-    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 4px 14px #0007;
+    background: #263144;
+    transform: translateY(-1px) scale(1.01);
 }
 #admin-doctor-list .role-btn, #admin-doctor-list .profile-icon-btn, #admin-doctor-list .delete-btn {
-    margin-top: 0.5rem;
+    margin-top: 0.3rem;
 }
 
 /* Кнопки */
@@ -1806,13 +1825,14 @@ body.dark-theme .time-slot.busy {
     color: #181c24;
     border: none;
     border-radius: 8px;
-    padding: 0.7rem 1.6rem;
+    padding: 0.6rem 1.5rem;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    margin: 0.3rem 0;
+    margin: 0.2rem 0;
     box-shadow: 0 1px 4px #0002;
     transition: background 0.15s, color 0.15s, box-shadow 0.15s, transform 0.15s;
+    min-width: 110px;
 }
 .role-btn:hover, .signup-btn:hover, .back-btn:hover, .logs-btn:hover {
     background: #1976d2;
@@ -1824,10 +1844,11 @@ body.dark-theme .time-slot.busy {
     background: #e53935;
     color: #fff;
     border-radius: 8px;
-    padding: 0.6rem 1.2rem;
+    padding: 0.5rem 1.1rem;
     font-size: 0.97rem;
     margin-left: 0.7rem;
     transition: background 0.15s, box-shadow 0.15s;
+    min-width: 90px;
 }
 .delete-btn:hover {
     background: #b71c1c;
@@ -1850,16 +1871,164 @@ body.dark-theme .time-slot.busy {
 
 @media (max-width: 900px) {
     .main-container {
-        padding: 12px 2vw;
+        padding: 8px 1vw;
     }
     #admin-login, #admin-panel {
-        padding: 1rem 0.3rem;
-        max-width: 98vw;
+        padding: 0.7rem 0.2rem;
+        max-width: 99vw;
     }
     #admin-doctor-list {
         grid-template-columns: 1fr;
     }
     .modal {
-        padding: 1rem 0.3rem;
+        padding: 0.7rem 0.2rem;
     }
+}
+
+/* --- Компактные стили для admin и my-appointments --- */
+.admin-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--main-bg-color);
+    box-shadow: 0 2px 8px var(--shadow-color);
+    padding: 10px 24px;
+    border-radius: 0 0 16px 16px;
+    margin-bottom: 18px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+.admin-topbar-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    flex: 1;
+    text-align: center;
+}
+.admin-topbar-actions {
+    display: flex;
+    gap: 10px;
+}
+.admin-topbar .back-arrow {
+    position: static;
+    margin-right: 12px;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+.appointments-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+.appointments-header-row .main-title {
+    margin-bottom: 0;
+}
+.appointments-header-row .back-arrow {
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    margin-left: 12px;
+}
+
+.compact-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: flex-start;
+    max-width: 480px;
+    margin: 0 auto 18px auto;
+}
+.compact-form .form-group {
+    margin: 0;
+    flex-grow: 1;
+    min-width: 120px;
+}
+.compact-form .signup-btn, .compact-form .add-btn {
+    margin: 0;
+    width: auto;
+    min-width: 120px;
+}
+
+.compact-section {
+    margin-bottom: 24px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.compact-container {
+    max-width: 500px;
+    padding: 24px 10px 18px 10px;
+}
+
+@media (max-width: 700px) {
+    .admin-topbar, .compact-container {
+        padding: 8px 4px;
+    }
+    .appointments-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+    .compact-form {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+}
+
+.clean-header-row {
+    margin-top: 8px;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.clean-header-row .main-title {
+    font-size: 2rem;
+    margin: 0;
+    color: #b3bfff;
+    font-weight: 700;
+}
+.back-arrow.small-light {
+    font-size: 1.3rem;
+    color: #b3bfff;
+    background: none;
+    border: none;
+    box-shadow: none;
+    margin: 0 4px 0 0;
+    padding: 2px 8px 2px 2px;
+    opacity: 0.85;
+    transition: color 0.2s;
+}
+.back-arrow.small-light:hover {
+    color: #fff;
+    opacity: 1;
+}
+.light-icon {
+    color: #b3bfff !important;
+    opacity: 0.85;
+    font-size: 1.1rem;
+}
+.clean-form {
+    margin-bottom: 18px;
+    gap: 8px;
+}
+.clean-form .form-group {
+    margin-bottom: 8px;
+}
+.clean-form .signup-btn {
+    margin-top: 4px;
+    min-width: 140px;
+    font-size: 1rem;
+    padding: 10px 0;
 }

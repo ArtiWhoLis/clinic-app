@@ -7,12 +7,18 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="theme-switcher" id="theme-switcher">☀️</div>
+    <div class="theme-switcher" id="theme-switcher" style="right:24px; left:auto;">☀️</div>
+    <div class="admin-topbar">
+        <button class="back-arrow" id="admin-back-arrow" title="Назад">&#8592;</button>
+        <div class="admin-topbar-title">Админ-панель</div>
+        <div class="admin-topbar-actions">
+            <button class="role-btn" id="show-logs-btn">Логи</button>
+            <button class="role-btn back-btn" id="admin-logout-btn">Выйти</button>
+        </div>
+    </div>
     <div class="main-container">
-        <button class="back-arrow" id="admin-back-arrow" style="display:block;position:absolute;top:24px;left:24px;background:none;border:none;cursor:pointer;font-size:2rem;z-index:10;" title="Назад">&#8592;</button>
-        <h1 class="main-title">Админ-панель</h1>
         <div id="admin-login">
-            <form id="admin-login-form" class="modern-form" style="max-width: 320px; margin: auto;">
+            <form id="admin-login-form" class="modern-form compact-form">
                 <div class="form-group">
                     <input type="text" id="admin-username" class="form-input" placeholder=" " required>
                     <label for="admin-username" class="form-label">Логин</label>
@@ -26,26 +32,23 @@
             <div id="admin-login-result" style="margin-top: 16px;"></div>
         </div>
         <div id="admin-panel" style="display:none;">
-            <div id="doctor-management" style="margin-bottom: 40px;">
+            <div id="doctor-management" class="compact-section">
                 <h3>Управление врачами</h3>
-                <form id="add-doctor-form" class="modern-form" style="max-width: 480px; margin: 24px auto; display: flex; gap: 16px; align-items: center;">
-                    <div class="form-group" style="margin: 0; flex-grow: 1;">
+                <form id="add-doctor-form" class="modern-form compact-form">
+                    <div class="form-group grow">
                         <input type="text" id="new-doctor-name" class="form-input" placeholder=" " required pattern="[А-Яа-яA-Za-zЁё.\s]+" maxlength="40" title="Только буквы, точки и пробелы, максимум 40 символов">
                         <label for="new-doctor-name" class="form-label">ФИО врача</label>
                     </div>
-                    <div class="form-group" style="margin: 0; flex-grow: 1;">
+                    <div class="form-group grow">
                         <input type="text" id="new-doctor-specialty" class="form-input" placeholder=" " required>
                         <label for="new-doctor-specialty" class="form-label">Специальность</label>
                     </div>
-                    <button type="submit" class="signup-btn" style="margin: 0; width: auto; flex-shrink: 0;">Добавить</button>
+                    <button type="submit" class="signup-btn add-btn">Добавить</button>
                 </form>
             </div>
-            
             <h3 id="admin-doctor-list-title">Выберите доктора для просмотра записей</h3>
             <div id="admin-doctor-list"></div>
             <div id="admin-appointments"></div>
-            <button class="role-btn back-btn" id="admin-logout-btn">Выйти</button>
-            <button class="role-btn" id="show-logs-btn" style="margin-bottom:18px;">Логи</button>
         </div>
         <div id="doctor-profile-modal" class="modal-bg" style="display:none;">
             <div class="modal" style="min-width:340px;max-width:400px;">

@@ -8,11 +8,14 @@
 </head>
 <body>
     <div class="theme-switcher" id="theme-switcher">☀️</div>
-    <div class="main-container">
-        <h1 class="main-title">Мои записи</h1>
-        <form id="my-appointments-form" class="modern-form">
+    <div class="main-container compact-container">
+        <div class="appointments-header-row clean-header-row">
+            <button class="back-arrow small-light" id="my-back-arrow" title="Назад">&#8592;</button>
+            <h1 class="main-title">Мои записи</h1>
+        </div>
+        <form id="my-appointments-form" class="modern-form compact-form clean-form">
             <div class="form-group flex-group">
-                <span class="input-icon">&#128222;</span>
+                <span class="input-icon light-icon">&#128222;</span>
                 <span class="input-prefix">+7</span>
                 <input type="tel" id="my-phone" class="form-input with-prefix" placeholder=" " required pattern="\d{10}" title="Введите 10 цифр номера" maxlength="10">
                 <label for="my-phone" class="form-label">Телефон</label>
@@ -20,7 +23,6 @@
             <button type="submit" class="signup-btn">Показать записи</button>
         </form>
         <div id="my-appointments-list"></div>
-        <button class="back-arrow" id="my-back-arrow" title="Назад">&#8592;</button>
     </div>
     <!-- Модалка подтверждения -->
     <div id="confirm-modal" class="modal-bg" style="display: none;">
