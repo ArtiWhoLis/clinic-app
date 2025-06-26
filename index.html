@@ -159,28 +159,7 @@
     <div class="footer">
         &copy; 2024 Онлайн-запись к врачу. Все права защищены.
     </div>
-    <script>
-    // Тема
-    function setTheme(theme) {
-        if (theme === 'light') {
-            document.body.classList.add('light-theme');
-            document.getElementById('theme-switcher').textContent = '☀️';
-        } else {
-            document.body.classList.remove('light-theme');
-            document.getElementById('theme-switcher').textContent = '🌙';
-        }
-        localStorage.setItem('theme', theme);
-    }
-    document.getElementById('theme-switcher').onclick = function() {
-        const isLight = document.body.classList.toggle('light-theme');
-        setTheme(isLight ? 'light' : 'dark');
-    };
-    // При загрузке
-    (function() {
-        const theme = localStorage.getItem('theme') || 'dark';
-        setTheme(theme);
-    })();
-    </script>
+    <script src="app.js"></script>
     <style>
     .theme-switcher {
         position: fixed;

@@ -20,42 +20,32 @@ function openModal(modal) {
 }
 
 // --- Theme Switcher ---
-document.addEventListener('DOMContentLoaded', () => {
+(function() {
     const themeSwitcher = document.getElementById('theme-switcher');
-    const currentTheme = localStorage.getItem('theme');
-
-    if (currentTheme === 'dark') {
-        document.body.classList.add('dark-theme');
-        themeSwitcher.textContent = '🌙';
-    } else {
-        themeSwitcher.textContent = '☀️';
-    }
-
-    themeSwitcher.onclick = () => {
-        if (document.body.classList.contains('dark-theme')) {
-            document.body.classList.remove('dark-theme');
-            localStorage.setItem('theme', 'light');
-            themeSwitcher.textContent = '☀️';
-        } else {
+    function applyTheme(theme) {
+        if (theme === 'dark') {
             document.body.classList.add('dark-theme');
-            localStorage.setItem('theme', 'dark');
-            themeSwitcher.textContent = '🌙';
+            document.body.classList.remove('light-theme');
+            if (themeSwitcher) themeSwitcher.textContent = '🌙';
+        } else {
+            document.body.classList.remove('dark-theme');
+            document.body.classList.add('light-theme');
+            if (themeSwitcher) themeSwitcher.textContent = '☀️';
         }
-    };
-
-    // Add focus class to parent form-group for prefixed inputs
-    document.querySelectorAll('.form-input.with-prefix').forEach(input => {
-        const formGroup = input.closest('.form-group');
-        if (formGroup) {
-            input.addEventListener('focus', () => {
-                formGroup.classList.add('is-focused');
-            });
-            input.addEventListener('blur', () => {
-                formGroup.classList.remove('is-focused');
-            });
-        }
-    });
-});
+    }
+    // При загрузке
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    applyTheme(savedTheme);
+    if (themeSwitcher) {
+        themeSwitcher.onclick = function() {
+            const isDark = document.body.classList.toggle('dark-theme');
+            document.body.classList.toggle('light-theme', !isDark);
+            const newTheme = isDark ? 'dark' : 'light';
+            localStorage.setItem('theme', newTheme);
+            applyTheme(newTheme);
+        };
+    }
+})();
 
 // --- patient.html ---
 if (window.location.pathname.endsWith('patient.html')) {
@@ -336,8 +326,10 @@ if (window.location.pathname.endsWith('my-appointments.html')) {
                     const now = new Date();
                     const future = [], past = [];
                     apps.forEach(a => {
-                        // Проверяем дату и время
-                        const appointmentDate = new Date(a.date + 'T' + a.time);
+                        // Явно парсим дату и время, чтобы избежать ошибок с часовым поясом и форматом
+                        const [year, month, day] = a.date.split('-').map(Number);
+                        const [hour, minute] = a.time.split(':').map(Number);
+                        const appointmentDate = new Date(year, month - 1, day, hour, minute);
                         if (appointmentDate >= now) {
                             future.push(a);
                         } else {

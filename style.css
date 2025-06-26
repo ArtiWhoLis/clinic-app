@@ -1999,20 +1999,16 @@ body.dark-theme .time-slot.busy {
     color: #b3bfff;
     font-weight: 700;
 }
-.back-arrow.small-light {
-    font-size: 1.3rem;
-    color: #b3bfff;
-    background: none;
-    border: none;
-    box-shadow: none;
-    margin: 0 4px 0 0;
-    padding: 2px 8px 2px 2px;
-    opacity: 0.85;
-    transition: color 0.2s;
+.back-arrow-wrapper {
+    display: flex;
+    align-items: flex-start;
+    margin-right: 8px;
+    margin-top: 2px;
 }
-.back-arrow.small-light:hover {
-    color: #fff;
-    opacity: 1;
+.back-arrow.small-light {
+    font-size: 1.1rem;
+    margin-top: 2px;
+    margin-right: 0;
 }
 .light-icon {
     color: #b3bfff !important;
@@ -2031,4 +2027,24 @@ body.dark-theme .time-slot.busy {
     min-width: 140px;
     font-size: 1rem;
     padding: 10px 0;
+}
+
+.my-appointments-btn-top {
+    position: absolute;
+    top: 24px;
+    right: 32px;
+    min-width: 120px;
+    z-index: 10;
+    margin: 0;
+    padding: 10px 22px;
+    font-size: 1.05rem;
+    box-shadow: 0 2px 8px #1976d233;
+}
+@media (max-width: 700px) {
+    .my-appointments-btn-top {
+        top: 10px;
+        right: 10px;
+        padding: 8px 12px;
+        font-size: 0.98rem;
+    }
 }

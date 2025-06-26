@@ -175,7 +175,7 @@
     <div class="theme-switcher" id="theme-switcher" title="Переключить тему">🌙</div>
     <div class="main-header">Запись к врачу онлайн</div>
     <div class="main-container">
-        <button class="role-btn" id="my-appointments-btn">Мои записи</button>
+        <button class="role-btn my-appointments-btn-top" id="my-appointments-btn">Мои записи</button>
         <!-- Выбор врача -->
         <div class="doctor-selection">
             <h3>Выберите врача</h3>
@@ -228,27 +228,5 @@
     <div class="footer">&copy; 2024 Онлайн-запись к врачу. Все права защищены.</div>
     <script src="calendar.js"></script>
     <script src="app.js"></script>
-    <script>
-    // Тема
-    function setTheme(theme) {
-        if (theme === 'light') {
-            document.body.classList.add('light-theme');
-            document.getElementById('theme-switcher').textContent = '☀️';
-        } else {
-            document.body.classList.remove('light-theme');
-            document.getElementById('theme-switcher').textContent = '🌙';
-        }
-        localStorage.setItem('theme', theme);
-    }
-    document.getElementById('theme-switcher').onclick = function() {
-        const isLight = document.body.classList.toggle('light-theme');
-        setTheme(isLight ? 'light' : 'dark');
-    };
-    // При загрузке
-    (function() {
-        const theme = localStorage.getItem('theme') || 'dark';
-        setTheme(theme);
-    })();
-    </script>
 </body>
 </html>
