@@ -1068,61 +1068,47 @@ body {
 }
 
 .calendar-day {
-    aspect-ratio: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s;
+    background: #232a36 !important;
+    color: #f3f6fa !important;
+    border: 2px solid #3a4e6e !important;
+    border-radius: 12px !important;
+    transition: box-shadow 0.18s, border-color 0.18s, background 0.18s, color 0.18s;
     position: relative;
-    background: var(--bg-color);
-    border: 2px solid transparent;
+    z-index: 1;
 }
-
-.calendar-day:hover:not(.past):not(.other-month) {
-    background: var(--primary-color);
-    color: white;
-    transform: scale(1.05);
-}
-
 .calendar-day.selected {
-    background: var(--accent-color);
-    color: white;
-    border-color: var(--accent-hover-color);
-    transform: scale(1.1);
+    background: #4fc3f7 !important;
+    color: #181c24 !important;
+    border-color: #1976d2 !important;
+    border-radius: 22px !important;
+    box-shadow: 0 0 0 3px #4fc3f7cc;
+    z-index: 2;
 }
-
+.calendar-day:hover:not(.past):not(.other-month) {
+    border-color: #4fc3f7 !important;
+    box-shadow: 0 0 8px 2px #4fc3f799;
+    background: #263144 !important;
+    color: #fff !important;
+}
 .calendar-day.past {
-    opacity: 0.4;
-    cursor: not-allowed;
-    background: var(--border-color);
+    background: #232a36 !important;
+    color: #888 !important;
+    opacity: 0.4 !important;
+    border-color: #232a36 !important;
 }
-
 .calendar-day.other-month {
-    opacity: 0.3;
-    cursor: not-allowed;
+    opacity: 0.2 !important;
+    border-color: #232a36 !important;
 }
-
-.calendar-day.load-free {
-    background: #e8f5e8;
-    border-color: #4caf50;
+/* Убираем точки внутри дат */
+.calendar-day .load-indicator {
+    display: none !important;
 }
-
-.calendar-day.load-low {
-    background: #fff3e0;
-    border-color: #ff9800;
-}
-
-.calendar-day.load-medium {
-    background: #ffe0b2;
-    border-color: #ff5722;
-}
-
-.calendar-day.load-high {
-    background: #ffebee;
-    border-color: #f44336;
+/* Текущий день */
+.calendar-day.today {
+    border-color: #4fc3f7 !important;
+    box-shadow: 0 0 0 2px #4fc3f7bb;
+    background: #26314488 !important;
 }
 
 .day-number {
@@ -1858,38 +1844,25 @@ body.dark-theme .time-slot.busy {
     box-shadow: 0 4px 18px #0006;
 }
 .role-btn, .signup-btn, .back-btn, .logs-btn {
-    background: #4fc3f7;
-    color: #181c24;
-    border: none;
-    border-radius: 8px;
-    padding: 0.6rem 1.5rem;
-    font-size: 1rem;
+    background: #4fc3f7 !important;
+    color: #181c24 !important;
+    border-radius: 10px !important;
+    border: none !important;
     font-weight: 600;
-    cursor: pointer;
-    margin: 0.2rem 0;
-    box-shadow: 0 1px 4px #0002;
-    transition: background 0.15s, color 0.15s, box-shadow 0.15s, transform 0.15s;
-    min-width: 110px;
+    box-shadow: 0 2px 8px #1976d233 !important;
+    transition: background 0.18s, color 0.18s;
 }
 .role-btn:hover, .signup-btn:hover, .back-btn:hover, .logs-btn:hover {
-    background: #1976d2;
-    color: #fff;
-    box-shadow: 0 2px 8px #1976d233;
-    transform: translateY(-1px) scale(1.03);
+    background: #1976d2 !important;
+    color: #fff !important;
 }
 .delete-btn {
-    background: #e53935;
-    color: #fff;
-    border-radius: 8px;
-    padding: 0.5rem 1.1rem;
-    font-size: 0.97rem;
-    margin-left: 0.7rem;
-    transition: background 0.15s, box-shadow 0.15s;
-    min-width: 90px;
+    background: #e53935 !important;
+    color: #fff !important;
+    border-radius: 8px !important;
 }
 .delete-btn:hover {
-    background: #b71c1c;
-    box-shadow: 0 1px 6px #e5393533;
+    background: #b71c1c !important;
 }
 
 @media (min-width: 1200px) {
@@ -2134,22 +2107,110 @@ label[for="my-phone"], .form-label[for="my-phone"], .form-label, label {
 .calendar-day {
     background: #232a36 !important;
     color: #f3f6fa !important;
-    border: 2px solid #4fc3f7 !important;
+    border: 2px solid #3a4e6e !important;
+    border-radius: 12px !important;
+    transition: box-shadow 0.18s, border-color 0.18s, background 0.18s, color 0.18s;
+    position: relative;
+    z-index: 1;
 }
 .calendar-day.selected {
     background: #4fc3f7 !important;
     color: #181c24 !important;
     border-color: #1976d2 !important;
+    border-radius: 22px !important;
+    box-shadow: 0 0 0 3px #4fc3f7cc;
+    z-index: 2;
+}
+.calendar-day:hover:not(.past):not(.other-month) {
+    border-color: #4fc3f7 !important;
+    box-shadow: 0 0 8px 2px #4fc3f799;
+    background: #263144 !important;
+    color: #fff !important;
 }
 .calendar-day.past {
     background: #232a36 !important;
     color: #888 !important;
     opacity: 0.4 !important;
+    border-color: #232a36 !important;
 }
-
+.calendar-day.other-month {
+    opacity: 0.2 !important;
+    border-color: #232a36 !important;
+}
 /* Удаляю остатки светлой темы */
 body.light-theme, body.light-theme * {
     background: none !important;
     color: inherit !important;
     box-shadow: none !important;
+}
+
+#admin-login, #admin-panel, #doctor-management, #admin-doctor-list > div, .modal, .doctor-table, .compact-section, .compact-container, .panel-header, .panel-content, .panel-section, .modal-bg, .modal-title, .modal-form, .modal-confirm, .modal-details, .modal-wide, .modal-narrow, .table-container, .logs-table, .log-details, .logs-filter, .form-group, .form-input, .form-label, .role-btn, .signup-btn, .back-btn, .logs-btn, .delete-btn {
+    background: #232a36 !important;
+    color: #f3f6fa !important;
+    border-color: #4fc3f7 !important;
+    box-shadow: 0 4px 24px #0008 !important;
+}
+
+#admin-doctor-list .doctor-name, #admin-doctor-list .doctor-specialty, #admin-doctor-list .doctor-stats {
+    color: #b0b8c9 !important;
+    opacity: 1 !important;
+}
+
+#admin-doctor-list .doctor-name {
+    color: #4fc3f7 !important;
+    font-weight: 600;
+}
+
+#admin-doctor-list .doctor-specialty {
+    color: #b0b8c9 !important;
+}
+
+#admin-doctor-list .doctor-stats {
+    color: #7ea1c7 !important;
+}
+
+.panel-header, .panel-section h3, .admin-topbar, .admin-topbar-title {
+    background: #232a36 !important;
+    color: #4fc3f7 !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.logs-table th, .doctor-table th {
+    background: #232a36 !important;
+    color: #4fc3f7 !important;
+}
+
+.logs-table td, .doctor-table td {
+    background: #232a36 !important;
+    color: #f3f6fa !important;
+}
+
+.logs-filter, .form-input, .form-label {
+    background: #181c24 !important;
+    color: #b0b8c9 !important;
+    border: 1.5px solid #4fc3f7 !important;
+}
+
+.role-btn, .signup-btn, .back-btn, .logs-btn {
+    background: #4fc3f7 !important;
+    color: #181c24 !important;
+    border-radius: 10px !important;
+    border: none !important;
+    font-weight: 600;
+    box-shadow: 0 2px 8px #1976d233 !important;
+    transition: background 0.18s, color 0.18s;
+}
+.role-btn:hover, .signup-btn:hover, .back-btn:hover, .logs-btn:hover {
+    background: #1976d2 !important;
+    color: #fff !important;
+}
+
+.delete-btn {
+    background: #e53935 !important;
+    color: #fff !important;
+    border-radius: 8px !important;
+}
+.delete-btn:hover {
+    background: #b71c1c !important;
 }
